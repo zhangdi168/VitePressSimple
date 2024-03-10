@@ -1,0 +1,15 @@
+{
+  "name": "wails2-template-vue",
+  "outputfilename": "wails2-template-vue",
+  "assetdir": "frontend/dist",
+  "frontend:install": "npm install",
+  "frontend:build": "npm run build",
+  "frontend:dev:build": "npm run build-only",
+  "frontend:dev:watcher": "npm run dev",
+  "frontend:dev:serverUrl": "auto",
+  "debounceMS": 500,
+  "author": {
+    "name": "xiaod-xiaommi",
+    "email": "1778871523@qq.com"
+  }
+}

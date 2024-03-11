@@ -1,6 +1,7 @@
 package services
 
 import (
+	"fmt"
 	"os"
 	"path/filepath"
 	"sort"
@@ -117,6 +118,38 @@ func (s *ArticleTreeData) Rename(oriPath string, newPath string) string {
 // Move 移动文件
 func (s *ArticleTreeData) Move(srcPath string, destDir string) string {
 	err := filehelper.MovePath(srcPath, destDir)
+	if err != nil {
+		return err.Error()
+	}
+	return ""
+}
+
+// CreateDir 创建文件夹
+func (s *ArticleTreeData) CreateDir(dir string) string {
+	return filehelper.CreateDir(dir)
+}
+
+// CreateFile  创建文件
+func (s *ArticleTreeData) CreateFile(fullPath string) string {
+	dir := filepath.Dir(fullPath)
+	filehelper.CreateDir(dir)
+	// 使用os.Create函数创建或打开并清空文件
+	file, err := os.Create(fullPath)
+	if err != nil {
+		return fmt.Sprintf("Error creating file:%s", err.Error())
+	}
+	defer file.Close() // 在函数结束时确保关闭文件
+	// 写入内容到文件（如果需要的话）
+	content := []byte("# Hello vitrpress <br /> > this is a  demo file created by vitepress simple!")
+	if _, err := file.Write(content); err != nil {
+		return "Error writing to file:" + err.Error()
+	}
+	return ""
+}
+
+// DeletePath 删除文件或文件夹
+func (s *ArticleTreeData) DeletePath(filePath string) string {
+	err := os.RemoveAll(filePath)
 	if err != nil {
 		return err.Error()
 	}

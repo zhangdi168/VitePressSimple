@@ -18,6 +18,13 @@ export const NavList = (): navItem[] => {
     },
 
     {
+      title: lang("nav.config"),
+      name: "config",
+      path: "/config",
+      icon: "setting-config",
+      borderTop: false,
+    },
+    {
       title: lang("nav.setting"),
       name: "setting",
       path: "/setting",

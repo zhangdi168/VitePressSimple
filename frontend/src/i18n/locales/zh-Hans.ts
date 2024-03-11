@@ -1,7 +1,8 @@
 export const zhHans = {
   nav: {
     home: "主页",
-    setting: "设置",
+    setting: "程序设置",
+    config: "项目配置",
     about: "关于",
   },
   languages: {

@@ -14,19 +14,28 @@
         <!--     右键菜单-->
         <q-menu touch-position context-menu>
           <q-list dense style="min-width: 100px">
-            <q-item v-if="!title.endsWith('.md')" clickable v-close-popup>
+            <q-item
+              v-if="!title.endsWith('.md')"
+              @click="showPopCreate(treeKey)"
+              clickable
+              v-close-popup
+            >
               <q-item-section>新建文章</q-item-section>
             </q-item>
             <q-separator />
-            <q-item clickable v-close-popup>
+            <q-item
+              clickable
+              @click="showPopRename(title, treeKey)"
+              v-close-popup
+            >
               <q-item-section>重命名</q-item-section>
             </q-item>
             <q-separator />
-            <q-item clickable v-close-popup>
-              <q-item-section>剪切</q-item-section>
-            </q-item>
+            <!--            <q-item clickable v-close-popup>-->
+            <!--              <q-item-section>移到根目录</q-item-section>-->
+            <!--            </q-item>-->
             <q-separator />
-            <q-item clickable v-close-popup>
+            <q-item clickable @click="deletePath(treeKey)" v-close-popup>
               <q-item-section>删除</q-item-section>
             </q-item>
           </q-list>
@@ -65,12 +74,32 @@
       ref="refModalRename"
       @submit-input-modal="onSubmitInputModalRename"
     ></input-model>
+
+    <q-dialog v-model="confirm" persistent>
+      <q-card>
+        <q-card-section class="row items-center">
+          <q-avatar icon="signal_wifi_off" color="primary" text-color="white" />
+          <span class="q-ml-sm"
+            >You are currently not connected to any network.</span
+          >
+        </q-card-section>
+
+        <q-card-actions align="right">
+          <q-btn flat label="Cancel" color="primary" v-close-popup />
+          <q-btn flat label="Turn on Wifi" color="primary" v-close-popup />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
   </div>
 </template>
 <script lang="ts" setup>
-import { watch, ref, onMounted } from "vue";
+import { watch, ref, onMounted, createVNode } from "vue";
 import InputModel from "../../components/inputModel.vue";
-import { FileTextOutlined, DownOutlined } from "@ant-design/icons-vue";
+import {
+  FileTextOutlined,
+  DownOutlined,
+  ExclamationCircleOutlined,
+} from "@ant-design/icons-vue";
 
 import matter from "gray-matter";
 import { IconPark } from "@icon-park/vue-next/es/all";
@@ -79,7 +108,14 @@ import {
   AntTreeNodeDropEvent,
 } from "ant-design-vue/es/tree";
 import { useIndexStore } from "@/store";
-import { ReadFileContent } from "../../../wailsjs/go/services/ArticleTreeData";
+import {
+  DeletePath,
+  ReadFileContent,
+  Rename,
+} from "../../../wailsjs/go/services/ArticleTreeData";
+import { getParentDirectory, removeMdExtension } from "@/utils/file";
+import { ToastError, ToastInfo } from "@/utils/Toast";
+import { Modal } from "ant-design-vue";
 
 const storeIndex = useIndexStore();
 const moreIconShownKeys = ref<string[]>([]);
@@ -96,6 +132,7 @@ const onDragEnter = (info: AntTreeNodeDragEnterEvent) => {
 };
 
 const onDrop = (info: AntTreeNodeDropEvent) => {
+  console.log(info, "-----info value");
   storeIndex.moveTo(String(info.dragNode.key), String(info.node.key));
 };
 
@@ -107,6 +144,29 @@ const hideMoreIcon = (treeKey: string) => {
   if (index > -1) {
     moreIconShownKeys.value.splice(index, 1);
   }
+};
+
+const deletePath = (key: string) => {
+  Modal.confirm({
+    content: "确定删除么？",
+    okType: "danger",
+    okText: "确定删除",
+    icon: createVNode(ExclamationCircleOutlined),
+    onOk() {
+      DeletePath(key).then((res: string) => {
+        if (res != "") {
+          ToastError(res);
+        } else {
+          ToastInfo("删除成功");
+          storeIndex.loadTreeData();
+        }
+      });
+    },
+    cancelText: "取消",
+    onCancel() {
+      Modal.destroyAll();
+    },
+  });
 };
 
 //双击标题展开菜单
@@ -152,11 +212,31 @@ watch(expandedKeys, () => {
 
 //弹出层回调 新建
 const refModalCreate = ref();
+const currentCreateParentPath = ref<string>();
+const showPopCreate = (path_: string) => {
+  refModalCreate.value.showModal("");
+  currentCreateParentPath.value = path_;
+};
 const onSubmitInputModalCreate = (value: string) => {};
 
 //弹出层回调 重命名
 const refModalRename = ref();
-const onSubmitInputModalRename = (value: string) => {};
+const currentRenamePath = ref<string>();
+const showPopRename = (value: string, path_: string) => {
+  refModalRename.value.showModal(removeMdExtension(value));
+  currentRenamePath.value = path_;
+};
+const onSubmitInputModalRename = (value: string) => {
+  let oldPath = currentRenamePath.value;
+  let newPath = getParentDirectory(currentRenamePath.value ?? "") + "/" + value;
+  if (oldPath?.endsWith(".md")) newPath = newPath + ".md";
+  newPath = newPath.replace("//", "/");
+  // console.log(currentRenamePath.value, "-----currentRenamePath value");
+  // console.log(newPath, "-----newPath value");
+  Rename(currentRenamePath.value ?? "", newPath).then(() => {
+    storeIndex.loadTreeData();
+  });
+};
 </script>
 
 <style scoped>

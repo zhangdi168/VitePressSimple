@@ -42,7 +42,7 @@ func main() {
 	err := wails.Run(&options.App{
 		Title:  "wails2快速开发模板 " + setting.Version,
 		Width:  1280,
-		Height: 960,
+		Height: 920,
 		//MinWidth:  900,
 		//MinHeight: 600,
 		//MaxWidth:          1200,

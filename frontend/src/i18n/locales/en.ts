@@ -2,6 +2,7 @@ export const en = {
   nav: {
     home: "Home",
     setting: "Setting",
+    config: "Config",
     about: "About",
   },
   languages: {

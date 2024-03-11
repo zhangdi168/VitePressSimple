@@ -41,13 +41,12 @@ const routerClick = (path: string, name: string) => {
           <icon-park
             :size="iconSize"
             :type="item.icon"
-            fill="#333"
+            fill="#190e19"
             strokeLinejoin="bevel"
             theme="outline"
           />
         </router-link>
       </div>
-
       <a
         class="flex items-center w-12 h-12 justify-center mt-auto bg-gray-200 hover:bg-gray-300"
         href="#"

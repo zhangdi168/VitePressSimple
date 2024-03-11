@@ -44,8 +44,9 @@ export const useIndexStore = defineStore("index", {
       this.vditor = vditor_;
     },
     moveTo(path: string, target: string) {
-      console.log(target, "target -- console.log");
       const targetDir = getDirectoryPath(target);
+      console.log(target, targetDir);
+
       Move(path, targetDir).then(() => {
         this.loadTreeData();
       });

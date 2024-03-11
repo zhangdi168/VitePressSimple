@@ -1,6 +1,6 @@
 import { createApp } from "vue";
 import { createPinia } from "pinia";
-
+import "./style.scss";
 import App from "./App.vue";
 import router from "./router";
 import i18n from "./i18n";
@@ -21,7 +21,6 @@ import {
   Empty,
 } from "ant-design-vue";
 
-import "./style.scss";
 // Import icon libraries
 import { Quasar } from "quasar";
 import "@quasar/extras/material-icons/material-icons.css";

@@ -36,7 +36,14 @@
           @click.prevent="handleClick(treeKey)"
         >
           <!-- 文字靠-->
-          <div>{{ title.replaceAll(".md", "") }}</div>
+          <div
+            class="truncate"
+            :class="
+              title.endsWith('.md') ? 'text-base text-black' : 'text-gray-900'
+            "
+          >
+            {{ title.replaceAll(".md", "") }}
+          </div>
         </div>
       </template>
       <template #switcherIcon="{ switcherCls }">
@@ -63,11 +70,7 @@
 <script lang="ts" setup>
 import { watch, ref, onMounted } from "vue";
 import InputModel from "../../components/inputModel.vue";
-import {
-  FileTextOutlined,
-  FileTextTwoTone,
-  DownOutlined,
-} from "@ant-design/icons-vue";
+import { FileTextOutlined, DownOutlined } from "@ant-design/icons-vue";
 
 import matter from "gray-matter";
 import { IconPark } from "@icon-park/vue-next/es/all";
@@ -93,7 +96,7 @@ const onDragEnter = (info: AntTreeNodeDragEnterEvent) => {
 };
 
 const onDrop = (info: AntTreeNodeDropEvent) => {
-  console.log(info, "onDrop info -- console.log");
+  storeIndex.moveTo(String(info.dragNode.key), String(info.node.key));
 };
 
 const showMoreIcon = (treeKey: string) => {

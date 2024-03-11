@@ -41,8 +41,8 @@ func main() {
 	// 使用选项创建应用
 	err := wails.Run(&options.App{
 		Title:  "wails2快速开发模板 " + setting.Version,
-		Width:  900,
-		Height: 600,
+		Width:  1280,
+		Height: 960,
 		//MinWidth:  900,
 		//MinHeight: 600,
 		//MaxWidth:          1200,

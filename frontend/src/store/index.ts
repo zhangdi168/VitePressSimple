@@ -2,10 +2,12 @@ import { defineStore } from "pinia";
 import Vditor from "vditor";
 import { ToastInfo } from "@/utils/Toast";
 import {
+  Move,
   ParseTreeData,
   WriteFileContent,
 } from "../../wailsjs/go/services/ArticleTreeData";
 import { dto } from "../../wailsjs/go/models";
+import { getDirectoryPath } from "@/utils/file";
 
 //定义首页的数据类型
 export interface indexStore {
@@ -40,6 +42,13 @@ export const useIndexStore = defineStore("index", {
     //设置编辑器的实例
     async setVditorInstance(vditor_: Vditor | null) {
       this.vditor = vditor_;
+    },
+    moveTo(path: string, target: string) {
+      console.log(target, "target -- console.log");
+      const targetDir = getDirectoryPath(target);
+      Move(path, targetDir).then(() => {
+        this.loadTreeData();
+      });
     },
     clearCurrData() {
       this.currArticlePath = "";

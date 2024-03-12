@@ -5,6 +5,7 @@ import (
 	"log"
 	"wailstemplate/application/first"
 	"wailstemplate/application/services"
+	"wailstemplate/application/services/system"
 	setting "wailstemplate/settings"
 
 	"github.com/wailsapp/wails/v2"
@@ -26,6 +27,7 @@ var icon []byte
 var resource embed.FS
 
 func main() {
+
 	// Create an instance of the app structure
 	// 创建一个App结构体实例
 	app := NewApp()
@@ -69,6 +71,7 @@ func main() {
 		Bind: []interface{}{
 			app,
 			services.NewTreeData(),
+			system.NewSystemService(),
 		},
 		// Windows platform specific options
 		// Windows平台特定选项

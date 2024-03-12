@@ -5,7 +5,9 @@ import (
 	"os"
 	"path/filepath"
 	"sort"
+	"wailstemplate/application/constant/keys"
 	"wailstemplate/application/dto"
+	"wailstemplate/application/pkg/cfg"
 	"wailstemplate/application/pkg/filehelper"
 	"wailstemplate/application/pkg/mylog"
 )
@@ -20,7 +22,10 @@ func NewTreeData() *ArticleTreeData {
 
 // ParseTreeData 解析文件夹
 func (s *ArticleTreeData) ParseTreeData() []*dto.TreeNode {
-	dir := `E:\mydev\vitepress-demo\guide`
+	dir := cfg.GetString(keys.ConfigKeyProjectDir)
+	if dir == "" {
+		return nil
+	}
 	data, err := DirToTreeNode(dir)
 	if err != nil {
 		mylog.Err("解析文件夹树", err)

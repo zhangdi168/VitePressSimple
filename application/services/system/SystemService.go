@@ -1,4 +1,4 @@
-package service
+package system
 
 import (
 	"fmt"
@@ -74,7 +74,7 @@ func (s *SystemService) CheckNetConnect() string {
 }
 
 // SelectDir 选择一个文件夹
-func (s *SystemService) SelectDir() string {
+func (s *SystemService) SelectDir(title string) string {
 	ctx := wailshelper.GetCtx()
 	if ctx == nil {
 		mylog.Error("SelectDir() 获取ctx失败")
@@ -86,7 +86,7 @@ func (s *SystemService) SelectDir() string {
 	opts := runtime.OpenDialogOptions{
 		DefaultDirectory: fmt.Sprintf("C:\\"),
 		DefaultFilename:  fmt.Sprintf("a"),
-		Title:            fmt.Sprintf("请选择"),
+		Title:            title,
 		Filters:          filters,
 	}
 	res, err := runtime.OpenDirectoryDialog(ctx, opts)

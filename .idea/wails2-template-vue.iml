@@ -9,5 +9,6 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="SearchFile" />
+    <orderEntry type="module" module-name="vitepress-demo" />
   </component>
 </module>

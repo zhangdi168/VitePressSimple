@@ -21,9 +21,9 @@ const pageSetting = reactive({
 </script>
 
 <template>
-  <div v-if="storeIndex.currArticlePath == ''">
-    <a-empty description="未选择文章" />
-  </div>
+  <!--  <div v-if="storeIndex.currArticlePath == ''">-->
+  <!--    <a-empty description="未选择文章" />-->
+  <!--  </div>-->
   <div v-if="storeIndex.currArticlePath != ''">
     <a-tabs v-model:activeKey="activeKey" class="my-0.5 pl-1" type="card">
       <!-- tab   seo相关配置-->

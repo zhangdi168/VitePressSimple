@@ -45,12 +45,12 @@ import { IconPark } from "@icon-park/vue-next/es/all";
 import { useIndexStore } from "@/store";
 import { nextTick, onMounted, ref } from "vue";
 import { FileSearchOutlined } from "@ant-design/icons-vue";
+
 const iconSize = ref(24);
 const storeIndex = ref();
 onMounted(() => {
   nextTick(() => {
     storeIndex.value = useIndexStore();
-    console.log(storeIndex.value.Test, "-----storeIndex value");
   });
 });
 </script>

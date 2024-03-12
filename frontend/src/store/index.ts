@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import Vditor from "vditor";
-import { ToastInfo } from "@/utils/Toast";
+import { ToastError, ToastInfo } from "@/utils/Toast";
 import {
   Move,
   ParseTreeData,
@@ -8,25 +8,33 @@ import {
 } from "../../wailsjs/go/services/ArticleTreeData";
 import { dto } from "../../wailsjs/go/models";
 import { getDirectoryPath } from "@/utils/file";
+import {
+  ConfigGet,
+  ConfigSet,
+  SelectDir,
+} from "../../wailsjs/go/system/SystemService";
+import { ConfigKeyProjectDir } from "@/constant/keys/config";
 
 //定义首页的数据类型
 export interface indexStore {
-  articleTreeData: dto.TreeNode[];
+  articleTreeData: dto.TreeNode[] | null;
   vditor: Vditor | null;
   expandKeys: string[];
   selectKeys: string[];
   currArticlePath: string; //当前文章路径
   currCutPath: string;
-  test: string;
+  currProjectDir: string; //当前项目的根目录
+  currDocDir: string; //文档所在目录
   currVueCode: string; //当前vue代码
   currArticleFrontMatter: Record<string, any>; //当前文章front matter
 }
 
 export const useIndexStore = defineStore("index", {
   state: (): indexStore => ({
-    articleTreeData: [],
+    articleTreeData: null,
     vditor: null,
-    test: "123",
+    currProjectDir: "",
+    currDocDir: "",
     expandKeys: [],
     selectKeys: [],
     currArticlePath: "", //当前文章路径
@@ -38,6 +46,7 @@ export const useIndexStore = defineStore("index", {
   actions: {
     async loadTreeData() {
       this.articleTreeData = await ParseTreeData();
+      console.log(this.articleTreeData, "this.articleTreeData -- console.log");
     },
     //设置编辑器的实例
     async setVditorInstance(vditor_: Vditor | null) {
@@ -56,6 +65,24 @@ export const useIndexStore = defineStore("index", {
       this.currCutPath = "";
       this.currVueCode = "";
       this.currArticleFrontMatter = {};
+    },
+    loadCurrProjectFromConfig() {
+      ConfigGet(ConfigKeyProjectDir).then((dir) => {
+        if (dir != "") {
+          this.currDocDir = dir;
+          this.loadTreeData();
+        }
+      });
+    },
+    selectProjectDir() {
+      SelectDir("请选择项目目录").then((dir) => {
+        if (dir === "") {
+          return ToastError("取消选择目录");
+        }
+        this.currProjectDir = dir;
+        ConfigSet(ConfigKeyProjectDir, dir);
+        this.loadTreeData();
+      });
     },
     //保存文章
     async saveCurrArticle() {
@@ -97,6 +124,7 @@ export const useIndexStore = defineStore("index", {
     CurrArticlePath: (state) => state.currArticlePath,
     CurrArticleFrontMatter: (state) => state.currArticleFrontMatter,
     Vditor: (state) => state.vditor,
-    Test: (state) => state.test,
+    CurrProjectDir: (state) => state.currProjectDir,
+    CurrDocDir: (state) => state.currDocDir,
   },
 });

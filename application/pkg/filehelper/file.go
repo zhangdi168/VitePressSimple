@@ -1,7 +1,10 @@
 package filehelper
 
 import (
+	"embed"
 	"fmt"
+	"io"
+	"io/fs"
 	"io/ioutil"
 	"os"
 	"path/filepath"
@@ -132,4 +135,47 @@ func moveAll(srcPath string, destPath string) error {
 
 	// 现在目录为空，可以删除
 	return os.Remove(srcPath)
+}
+
+// CopyEmbedFsToDisk 拷贝嵌入的文件到磁盘
+func CopyEmbedFsToDisk(embeddedFS embed.FS, embedDir, targetDir string) error {
+	entries, err := fs.ReadDir(embeddedFS, embedDir)
+	if err != nil {
+		return err
+	}
+	CreateDir(targetDir)
+	for _, entry := range entries {
+		srcPath := filepath.Join(embedDir, entry.Name())
+		targetPath := filepath.Join(targetDir, entry.Name())
+
+		if entry.IsDir() {
+			err = os.MkdirAll(targetPath, 0755)
+			if err != nil {
+				return err
+			}
+			continue
+		}
+
+		// 打开嵌入的文件
+		srcFile, err := embeddedFS.Open(srcPath)
+		if err != nil {
+			return err
+		}
+		defer srcFile.Close()
+
+		// 创建目标文件
+		targetFile, err := os.Create(targetPath)
+		if err != nil {
+			return err
+		}
+		defer targetFile.Close()
+
+		// 拷贝内容
+		_, err = io.Copy(targetFile, srcFile)
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
 }

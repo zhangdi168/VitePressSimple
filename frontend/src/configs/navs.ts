@@ -7,6 +7,7 @@ export interface navItem {
   icon?: string;
   borderTop?: boolean;
 }
+
 export const NavList = (): navItem[] => {
   return [
     {
@@ -19,8 +20,8 @@ export const NavList = (): navItem[] => {
 
     {
       title: lang("nav.config"),
-      name: "config",
-      path: "/config",
+      name: "projectSetting",
+      path: "/projectSetting",
       icon: "setting-config",
       borderTop: false,
     },

@@ -5,20 +5,21 @@ import App from "./App.vue";
 import router from "./router";
 import i18n from "./i18n";
 import {
+  Alert,
   Button,
-  Tree,
-  Input,
-  Form,
-  Tabs,
-  Switch,
-  InputNumber,
-  Radio,
-  Modal,
   Dropdown,
-  Tooltip,
+  Empty,
+  Form,
+  Input,
+  InputNumber,
   Menu,
   message,
-  Empty,
+  Modal,
+  Radio,
+  Switch,
+  Tabs,
+  Tooltip,
+  Tree,
 } from "ant-design-vue";
 
 // Import icon libraries
@@ -50,6 +51,7 @@ app
   .use(Dropdown)
   .use(Menu)
   .use(Empty)
+  .use(Alert)
   .use(Tooltip);
 
 app.use(InstallCodemirro);

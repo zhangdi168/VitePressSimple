@@ -26,8 +26,11 @@ var icon []byte
 //go:embed all:resources
 var resource embed.FS
 
-func main() {
+//go:embed all:vitepress-template
+var vpFs embed.FS
 
+func main() {
+	
 	// Create an instance of the app structure
 	// 创建一个App结构体实例
 	app := NewApp()
@@ -43,8 +46,8 @@ func main() {
 	// 使用选项创建应用
 	err := wails.Run(&options.App{
 		Title:  "wails2快速开发模板 " + setting.Version,
-		Width:  1280,
-		Height: 920,
+		Width:  1080,
+		Height: 720,
 		//MinWidth:  900,
 		//MinHeight: 600,
 		//MaxWidth:          1200,
@@ -71,6 +74,7 @@ func main() {
 		Bind: []interface{}{
 			app,
 			services.NewTreeData(),
+			services.NewVitePress(vpFs),
 			system.NewSystemService(),
 		},
 		// Windows platform specific options

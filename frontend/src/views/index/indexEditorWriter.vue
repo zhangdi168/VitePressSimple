@@ -25,7 +25,7 @@
       <!--          <a href="#api">Description</a>-->
       <!--        </span>-->
       <!--      </template>-->
-      <a-button @click="createProject" class="bg-green-400" type="default"
+      <a-button @click="createProject" class="bg-green-300" type="default"
         >新建项目
       </a-button>
       <a-button

@@ -8,6 +8,7 @@ import (
 	"wailstemplate/application/pkg/cfg"
 	"wailstemplate/application/pkg/mylog"
 	"wailstemplate/application/pkg/mynet"
+	"wailstemplate/application/pkg/utils"
 	"wailstemplate/application/wailshelper"
 )
 
@@ -33,9 +34,33 @@ func (s *SystemService) OpenFileBrowser(dir string) {
 	}
 }
 
+// OpenURL 打开网址
+func (s *SystemService) OpenURL(url string) {
+	var err error
+	switch runtime_.GOOS {
+	case "windows":
+		err = exec.Command("cmd", "/c", "start", url).Run()
+	case "darwin":
+		err = exec.Command("open", url).Run()
+	case "linux":
+		err = exec.Command("xdg-open", url).Run()
+	default:
+		err = fmt.Errorf("unsupported platform")
+	}
+
+	if err != nil {
+		fmt.Printf("failed to open URL: %v\n", err)
+	}
+}
+
 // ConfigSet 配置写入
 func (s *SystemService) ConfigSet(k, v string) {
 	cfg.Set(k, v)
+}
+
+// GetSystemUserHomeDir 获取当前系统用户家目录
+func (s *SystemService) GetSystemUserHomeDir() string {
+	return utils.GetUserHomeDir()
 }
 
 // ConfigGet 配置写入

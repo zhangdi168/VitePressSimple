@@ -6,6 +6,7 @@ import (
 	"wailstemplate/application/first"
 	"wailstemplate/application/services"
 	"wailstemplate/application/services/system"
+	"wailstemplate/application/vitepress/vpsimpler"
 	setting "wailstemplate/settings"
 
 	"github.com/wailsapp/wails/v2"
@@ -30,7 +31,7 @@ var resource embed.FS
 var vpFs embed.FS
 
 func main() {
-	
+
 	// Create an instance of the app structure
 	// 创建一个App结构体实例
 	app := NewApp()
@@ -74,7 +75,8 @@ func main() {
 		Bind: []interface{}{
 			app,
 			services.NewTreeData(),
-			services.NewVitePress(vpFs),
+			vpsimpler.NewVpManager(vpFs),
+			vpsimpler.NewVpConfig(),
 			system.NewSystemService(),
 		},
 		// Windows platform specific options

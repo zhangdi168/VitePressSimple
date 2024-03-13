@@ -8,7 +8,7 @@ import (
 	"os/exec"
 	"sync"
 	"testing"
-	"wailstemplate/application/pkg/vpsimpler"
+	"wailstemplate/application/vitepress/vpsimpler"
 )
 
 func TestShell(t *testing.T) {

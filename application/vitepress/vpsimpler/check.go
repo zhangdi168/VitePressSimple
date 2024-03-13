@@ -14,7 +14,7 @@ func NodejsIsInstall() bool {
 	return true
 }
 
-// GetNodeVersion 获取nodejs版本
+// GetNodeVersion 获取nodejs版本 v18.17.1
 func GetNodeVersion() string {
 	output, err := exec.Command("node", "-v").Output()
 	if err != nil {

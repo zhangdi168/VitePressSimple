@@ -1,34 +1,48 @@
 import { defineStore } from "pinia";
 import { GetVpConfigData } from "../../wailsjs/go/vpsimpler/VpConfig";
-import { UserConfig } from "vite";
-import { ToastError } from "@/utils/Toast";
+import { IsEmptyString, parseJsObject } from "@/utils/utils";
+import { ConfigGet } from "../../wailsjs/go/system/SystemService";
+import { ConfigKeyProjectDir } from "@/constant/keys/config";
 //这是一个简单的推荐store案例，可以在这里定义你的状态
 //新建pinia时把vpconfig全局替换成你的store名字
 export interface vpconfigStore {
-  currDocDir: string;
+  srcDir: string;
+  baseDir: string;
+  isInstall: boolean;
 }
 
 export const useVpconfigStore = defineStore("vpconfig", {
   state: (): vpconfigStore => ({
-    currDocDir: "",
+    srcDir: "./",
+    baseDir: "",
+    isInstall: false,
   }),
   actions: {
+    async initConfig() {
+      if (!this.isInstall) {
+        await this.getConfigFileContent();
+      }
+      //获取项目根目录
+      this.baseDir = await ConfigGet(ConfigKeyProjectDir);
+    },
     //获取config.mts文件内容
-    getConfigFileContent() {
-      GetVpConfigData().then((content) => {
-        // 使用正则将非标准键名转换为标准JSON格式
-        // const standardJson = content.replace(/(?<!https?):(?!\/\/)/g, '":');
-        // const data = JSON.parse(standardJson);
-        // console.log(JSON.parse(content), "content -- console.log");
-        const objectLiteralPattern = /^\s*\{.*\}\s*$/; // 简单的对象字面量检查
-        if (objectLiteralPattern.test(content)) {
-          // 极其不推荐的做法，无奈之举，不然没办法正确解析配置的内容
-          const data = eval(`(${content})`) as UserConfig; // 用括号包裹以确保解析为对象而非代码块
-        } else {
-          ToastError("配置文件内容校验不通过请检查");
-        }
-      });
+    async getConfigFileContent() {
+      const content = await GetVpConfigData();
+      const configData = parseJsObject(content);
+      if (configData == null) return;
+      console.log(configData, "vp config get completed----- value");
+      this.srcDir = configData["srcDir"];
     },
   },
-  getters: {},
+  getters: {
+    //完整的doc文档原目录（绝对路径）
+    FullSrcDir: (state) => {
+      if (IsEmptyString(state.srcDir) || state.srcDir == "./") {
+        return state.baseDir;
+      }
+      return state.baseDir + "/" + state.srcDir;
+    },
+    //相对路径
+    SrcDir: (state) => state.srcDir,
+  },
 });

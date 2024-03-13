@@ -21,12 +21,12 @@ func NewTreeData() *ArticleTreeData {
 }
 
 // ParseTreeData 解析文件夹
-func (s *ArticleTreeData) ParseTreeData() []*dto.TreeNode {
+func (s *ArticleTreeData) ParseTreeData(srcDoc string) []*dto.TreeNode {
 	dir := cfg.GetString(keys.ConfigKeyProjectDir)
 	if dir == "" {
 		return nil
 	}
-	data, err := DirToTreeNode(dir)
+	data, err := DirToTreeNode(filepath.Join(dir, srcDoc))
 	if err != nil {
 		mylog.Err("解析文件夹树", err)
 		return nil
@@ -61,7 +61,7 @@ func DirToTreeNode(rootPath string) ([]*dto.TreeNode, error) {
 			childNode := &dto.TreeNode{
 				Title: entry.Name(),
 				Key:   filepath.Join(parent.Key, entry.Name()),
-				Class: "text-xl",
+				//Class: "text-base",
 			}
 
 			parent.Children = append(parent.Children, childNode) // 尾部插入
@@ -131,15 +131,14 @@ func (s *ArticleTreeData) Move(srcPath string, destDir string) string {
 
 // CreateDir 创建文件夹
 func (s *ArticleTreeData) CreateDir(dir string) string {
-	return filehelper.CreateDir(dir)
+	return filehelper.CreateDir(filepath.Join(dir))
 }
 
 // CreateFile  创建文件
 func (s *ArticleTreeData) CreateFile(fullPath string) string {
-	dir := filepath.Dir(fullPath)
-	filehelper.CreateDir(dir)
+	filehelper.CreateDir(filepath.Dir(fullPath))
 	// 使用os.Create函数创建或打开并清空文件
-	file, err := os.Create(fullPath)
+	file, err := os.Create(filepath.Join(fullPath))
 	if err != nil {
 		return fmt.Sprintf("Error creating file:%s", err.Error())
 	}
@@ -154,7 +153,7 @@ func (s *ArticleTreeData) CreateFile(fullPath string) string {
 
 // DeletePath 删除文件或文件夹
 func (s *ArticleTreeData) DeletePath(filePath string) string {
-	err := os.RemoveAll(filePath)
+	err := os.RemoveAll(filepath.Join(filePath))
 	if err != nil {
 		return err.Error()
 	}

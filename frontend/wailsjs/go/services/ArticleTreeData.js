@@ -18,8 +18,8 @@ export function Move(arg1, arg2) {
   return window['go']['services']['ArticleTreeData']['Move'](arg1, arg2);
 }
 
-export function ParseTreeData() {
-  return window['go']['services']['ArticleTreeData']['ParseTreeData']();
+export function ParseTreeData(arg1) {
+  return window['go']['services']['ArticleTreeData']['ParseTreeData'](arg1);
 }
 
 export function ReadFileContent(arg1) {

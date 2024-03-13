@@ -14,6 +14,7 @@ import {
   SelectDir,
 } from "../../wailsjs/go/system/SystemService";
 import { ConfigKeyProjectDir } from "@/constant/keys/config";
+import { useVpconfigStore } from "@/store/vpconfig";
 
 //定义首页的数据类型
 export interface indexStore {
@@ -45,7 +46,9 @@ export const useIndexStore = defineStore("index", {
   //定义actions
   actions: {
     async loadTreeData() {
-      this.articleTreeData = await ParseTreeData();
+      const cfg = useVpconfigStore();
+      await cfg.initConfig();
+      this.articleTreeData = await ParseTreeData(cfg.SrcDir);
     },
     //设置编辑器的实例
     async setVditorInstance(vditor_: Vditor | null) {
@@ -54,7 +57,6 @@ export const useIndexStore = defineStore("index", {
     moveTo(path: string, target: string) {
       const targetDir = getDirectoryPath(target);
       console.log(target, targetDir);
-
       Move(path, targetDir).then(() => {
         this.loadTreeData();
       });

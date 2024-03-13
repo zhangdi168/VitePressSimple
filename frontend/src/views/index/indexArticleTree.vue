@@ -1,17 +1,16 @@
 <template>
   <div v-if="!isEmptyArray(storeIndex.articleTreeData)" class="mt-1">
-    {{ storeIndex.articleTreeData }}
     <a-tree
       v-model:expandedKeys="expandedKeys"
       v-model:selected-keys="selectKeys"
       :tree-data="storeIndex.ArticleTreeData"
       block-node
-      class="mt-1.5 text-lg .ant-tree-treenode-selected customized-tree"
+      class="text-blue text-center items-center"
       draggable
-      @dragenter="onDragEnter"
       @drop="onDrop"
     >
-      <template #title="{ node, key: treeKey, title }">
+      <!--      标题-->
+      <template #title="{ key: treeKey, title }">
         <!--     右键菜单-->
         <q-menu touch-position context-menu>
           <q-list dense style="min-width: 100px">
@@ -56,9 +55,9 @@
           </div>
         </div>
       </template>
-      <template #switcherIcon="{ switcherCls }">
-        <down-outlined :class="switcherCls" />
-      </template>
+      <!--      <template #switcherIcon="{ switcherCls }">-->
+      <!--        <down-outlined :class="switcherCls" />-->
+      <!--      </template>-->
 
       <template #icon="{ key }">
         <template v-if="key.endsWith('.md')">
@@ -69,10 +68,12 @@
 
     <input-model
       ref="refModalCreate"
+      placeholder="请输入文章标题"
       @submit-input-modal="onSubmitInputModalCreate"
     ></input-model>
     <input-model
       ref="refModalRename"
+      placeholder="请输入新名称"
       @submit-input-modal="onSubmitInputModalRename"
     ></input-model>
   </div>
@@ -94,30 +95,25 @@ import {
 } from "ant-design-vue/es/tree";
 import { useIndexStore } from "@/store";
 import {
+  CreateFile,
   DeletePath,
   ReadFileContent,
   Rename,
 } from "../../../wailsjs/go/services/ArticleTreeData";
 import { getParentDirectory, removeMdExtension } from "@/utils/file";
-import { ToastError, ToastInfo } from "@/utils/Toast";
+import { ToastCheck, ToastError, ToastInfo } from "@/utils/Toast";
 import { Modal } from "ant-design-vue";
 import { isEmptyArray } from "@/utils/array";
+import { useVpconfigStore } from "@/store/vpconfig";
 
 const storeIndex = useIndexStore();
 const moreIconShownKeys = ref<string[]>([]);
+const storeVpConfig = useVpconfigStore();
 onMounted(async () => {
   nextTick(async () => {
     await storeIndex.loadTreeData();
   });
 });
-
-//拖拽移动的逻辑
-const onDragEnter = (info: AntTreeNodeDragEnterEvent) => {
-  console.log(info, "onDragEnter info -- console.log");
-
-  // expandedKeys 需要展开时
-  // expandedKeys.value = info.expandedKeys;
-};
 
 const onDrop = (info: AntTreeNodeDropEvent) => {
   console.log(info, "-----info value");
@@ -164,7 +160,7 @@ const handleClick = (key: string) => {
       //删除
       expandedKeys.value = expandedKeys.value.filter((s) => s !== key);
     } else {
-      //添加
+      //删除
       expandedKeys.value.push(key); // 或者添加逻辑来控制是否展开/收起
     }
   } else {
@@ -194,10 +190,6 @@ const isDir = (key: string) => {
 const expandedKeys = ref<string[]>([]);
 const selectKeys = ref<string[]>([]);
 
-watch(expandedKeys, () => {
-  console.log("expandedKeys", expandedKeys);
-});
-
 //弹出层回调 新建
 const refModalCreate = ref();
 const currentCreateParentPath = ref<string>();
@@ -205,7 +197,12 @@ const showPopCreate = (path_: string) => {
   refModalCreate.value.showModal("");
   currentCreateParentPath.value = path_;
 };
-const onSubmitInputModalCreate = (value: string) => {};
+const onSubmitInputModalCreate = async (value: string) => {
+  let fullFile = currentCreateParentPath.value + "/" + value + ".md";
+  console.log(fullFile, "-----fullFile value");
+  let res = await CreateFile(fullFile);
+  if (ToastCheck(res, "文件创建完成")) await storeIndex.loadTreeData();
+};
 
 //弹出层回调 重命名
 const refModalRename = ref();

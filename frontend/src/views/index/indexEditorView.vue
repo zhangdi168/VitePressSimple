@@ -110,7 +110,7 @@ const pageSetting = reactive({
 
     <div class="flex mt-6 border-t justify-end pr-3 pt-2">
       <a-button
-        class="bg-green-200 flex justify-center items-center hover:bg-blue-100"
+        class="bg-blue-200 flex justify-center items-center hover:bg-blue-100"
       >
         <icon-park
           class="mr-1"

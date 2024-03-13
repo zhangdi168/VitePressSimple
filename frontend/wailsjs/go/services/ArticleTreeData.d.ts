@@ -10,7 +10,7 @@ export function DeletePath(arg1:string):Promise<string>;
 
 export function Move(arg1:string,arg2:string):Promise<string>;
 
-export function ParseTreeData():Promise<Array<dto.TreeNode>>;
+export function ParseTreeData(arg1:string):Promise<Array<dto.TreeNode>>;
 
 export function ReadFileContent(arg1:string):Promise<string>;
 

@@ -2,7 +2,7 @@
   <div id="components-modal-demo-position">
     <a-modal
       v-model:open="modalVisible"
-      :closable="false"
+      :closable="true"
       :title="props.placeholder"
       centered
       okType="default"
@@ -13,7 +13,7 @@
       :cancel-button-props="{ ghost: true }"
       @ok="hideModal"
     >
-      <div class="my-1">
+      <div class="mt-4 mb-2">
         <a-textarea
           @keydown.prevent.enter="hideModal"
           v-model:value="val"
@@ -30,6 +30,7 @@ import { onMounted, ref } from "vue";
 interface inputModelProps {
   defaultValue?: string;
   placeholder?: string;
+  title?: string;
 }
 
 const props = defineProps<inputModelProps>();

@@ -47,6 +47,7 @@ export const useIndexStore = defineStore("index", {
   actions: {
     async loadTreeData() {
       GetVpConfigData().then((content) => {
+        // const data = JSON.parse(content);
         console.log(content, "content -- console.log");
       });
       return;

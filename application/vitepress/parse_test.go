@@ -6,7 +6,7 @@ import (
 )
 
 func TestParseTsArray(t *testing.T) {
-	s := `export const vpSimpleNav = [
+	s := `import { defineConfig } from "vitepress"; export const vpSimpleNav = [
   {
     text: 'Home',
     link: '/',
@@ -21,6 +21,6 @@ func TestParseTsArray(t *testing.T) {
   },
 ]`
 
-	println(tsparser.GetTsDataContent(s, "[", "]"))
+	println(tsparser.GetTsDataContent(s, "[", "]", "export"))
 
 }

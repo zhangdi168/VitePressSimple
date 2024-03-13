@@ -34,7 +34,7 @@ func (s *VpConfig) GetVpConfigData() string {
 		return ""
 	}
 
-	dataContent, err := tsparser.GetTsDataContent(content, "{", "}")
+	dataContent, err := tsparser.GetTsDataContent(content, "{", "}", "export")
 	if err != nil {
 		mylog.Error("解析vitepress配置文件内容异常" + err.Error())
 		return dataContent

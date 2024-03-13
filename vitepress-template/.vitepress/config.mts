@@ -5,7 +5,6 @@ export default defineConfig({
   description: "A VitePress Site",
   srcDir: "./docs",
   themeConfig: {
-    //导航
     nav: [
       {
         text: "Home",
@@ -20,7 +19,6 @@ export default defineConfig({
         link: "/contact"
       }
     ],
-    //侧栏
     sidebar: [
       {
         text: "Examples",
@@ -30,7 +28,6 @@ export default defineConfig({
         ]
       }
     ],
-    //社交账号
     socialLinks: [
       { icon: "github", link: "https://github.com/vuejs/vitepress" }
     ]

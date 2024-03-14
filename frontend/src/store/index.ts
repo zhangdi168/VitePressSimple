@@ -15,6 +15,7 @@ import {
 } from "../../wailsjs/go/system/SystemService";
 import { ConfigKeyProjectDir } from "@/constant/keys/config";
 import { useVpconfigStore } from "@/store/vpconfig";
+import { getFileNameFromPath, IsEmptyValue } from "@/utils/utils";
 
 //定义首页的数据类型
 export interface indexStore {
@@ -50,6 +51,7 @@ export const useIndexStore = defineStore("index", {
       await cfg.initConfig();
       this.articleTreeData = await ParseTreeData(cfg.SrcDir);
     },
+
     //设置编辑器的实例
     async setVditorInstance(vditor_: Vditor | null) {
       this.vditor = vditor_;
@@ -90,7 +92,7 @@ export const useIndexStore = defineStore("index", {
       if (this.vditor) {
         const content = this.vditor.getValue();
         const fontMatterStr = JSON.stringify(this.currArticleFrontMatter);
-        const fullContent = `---\n${fontMatterStr}\n---${content}`;
+        const fullContent = `---\n${fontMatterStr}\n---\n${content}`;
         WriteFileContent(this.currArticlePath, fullContent).then(() => {
           ToastInfo("已提交保存");
         });
@@ -109,10 +111,22 @@ export const useIndexStore = defineStore("index", {
     //设置当前文章front matter
     setCurrArticleFrontMatter(frontMatter: any) {
       this.currArticleFrontMatter = frontMatter;
+      this.checkFrontMatterKeyKey("title", this.CurrArticleTitle);
+      this.checkFrontMatterKeyKey("description", "");
+      this.checkFrontMatterKeyKey("navbar", true); //是否显示导航
+      this.checkFrontMatterKeyKey("sideBar", true); //是否显示侧栏
+      this.checkFrontMatterKeyKey("footer", false); //是否显示页脚
+      this.checkFrontMatterKeyKey("outline", 2); //是否显示页脚
+      this.checkFrontMatterKeyKey("editLink", false); //是否显示编辑链接
+      this.checkFrontMatterKeyKey("lastUpdated", true); //是否显示页脚更新时间
+      this.checkFrontMatterKeyKey("aside", "left"); //侧边栏位置
+      // console.log(frontMatter, "frontMatter -- console.log");
     },
-    //判断是否有选中文章
-    hasSelectArticle() {
-      return this.CurrCutPath !== "";
+    //判断front matter的key是否存在,不存在则设置默认值
+    checkFrontMatterKeyKey(key: string, defaultValue: any) {
+      if (IsEmptyValue(this.currArticleFrontMatter[key])) {
+        this.currArticleFrontMatter[key] = defaultValue;
+      }
     },
   },
   getters: {
@@ -127,5 +141,8 @@ export const useIndexStore = defineStore("index", {
     Vditor: (state) => state.vditor,
     CurrProjectDir: (state) => state.currProjectDir,
     CurrDocDir: (state) => state.currDocDir,
+    CurrArticleTitle: (state) =>
+      getFileNameFromPath(state.currArticlePath).replaceAll(".md", ""),
+    GetArticleFrontMatter: (state) => state.currArticleFrontMatter,
   },
 });

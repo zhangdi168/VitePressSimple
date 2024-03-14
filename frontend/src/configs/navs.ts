@@ -26,17 +26,24 @@ export const NavList = (): navItem[] => {
       borderTop: false,
     },
     {
+      title: lang("nav.preview"),
+      name: "preview",
+      path: "/preview",
+      icon: "web-page",
+      borderTop: false,
+    },
+    {
       title: lang("nav.setting"),
       name: "setting",
       path: "/setting",
       icon: "setting",
-      borderTop: false,
+      borderTop: true,
     },
     {
       title: lang("nav.about"),
       name: "a",
       path: "/about",
-      icon: "other",
+      icon: "more-three",
       borderTop: false,
     },
   ];

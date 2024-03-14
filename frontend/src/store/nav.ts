@@ -5,6 +5,7 @@ export interface navStore {
   activeName: string; //当前选中的导航
   activePath: string; //当前选中的导航路径
 }
+
 export const useNavStore = defineStore("nav", {
   state: (): navStore => ({
     activeName: "index",

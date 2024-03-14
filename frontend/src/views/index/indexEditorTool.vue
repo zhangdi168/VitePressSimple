@@ -1,13 +1,28 @@
 <template>
   <div class="flex items-center justify-end pr-5">
     <a-tooltip class="mx-1 cursor-pointer">
-      <template #title>front matter配置</template>
+      <template #title
+        >{{ storeLayout.showEditorView ? "隐藏" : "显示" }}右侧编辑栏
+      </template>
       <icon-park
-        :size="28"
-        fill="blue"
+        class="select-none"
+        @click="storeLayout.setEditorViewShow(false)"
+        v-show="storeLayout.showEditorView"
+        :size="storeLayout.editorToolIconSize"
+        fill="#493c3c"
         strokeLinejoin="bevel"
         theme="outline"
-        type="seo"
+        type="file-display"
+      />
+      <icon-park
+        class="select-none"
+        @click="storeLayout.setEditorViewShow(true)"
+        v-show="!storeLayout.showEditorView"
+        :size="storeLayout.editorToolIconSize"
+        fill="#493c3c"
+        strokeLinejoin="bevel"
+        theme="outline"
+        type="file-hiding"
       />
     </a-tooltip>
 
@@ -17,8 +32,8 @@
     >
       <template #title>保存 ctrl+s</template>
       <icon-park
-        :size="28"
-        fill="black"
+        :size="storeLayout.editorToolIconSize"
+        fill="#493c3c"
         strokeLinejoin="bevel"
         theme="outline"
         type="save"
@@ -29,7 +44,9 @@
 <script lang="ts" setup>
 import { IconPark } from "@icon-park/vue-next/es/all";
 import { useIndexStore } from "@/store";
+import { useLayoutStore } from "@/store/layout";
 
 const storeIndex = useIndexStore();
+const storeLayout = useLayoutStore();
 </script>
 <style scoped></style>

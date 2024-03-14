@@ -4,6 +4,7 @@ import { ref } from "vue";
 import { NavList } from "@/configs/navs";
 import { useNavStore } from "@/store/nav";
 import { useRouter } from "vue-router";
+
 const navStore = useNavStore();
 const iconSize = ref<number>(28);
 
@@ -37,7 +38,14 @@ const routerClick = (path: string, name: string) => {
           href="#"
           @click="routerClick(item.path, item.name)"
         >
-          <q-tooltip v-if="item.title">{{ item.title }} </q-tooltip>
+          <q-tooltip
+            anchor="center right"
+            self="center left"
+            transition-show="scale"
+            transition-hide="scale"
+            v-if="item.title"
+            >{{ item.title }}
+          </q-tooltip>
           <icon-park
             :size="iconSize"
             :type="item.icon"

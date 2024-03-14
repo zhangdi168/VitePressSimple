@@ -1,11 +1,16 @@
 <script lang="ts" setup>
-import { ref } from "vue";
+import { nextTick, onMounted, ref } from "vue";
 import IndexEditorTool from "./indexEditorTool.vue";
-import IndexEditorFooter from "./indexEditorFooter.vue";
 import IndexEditorWriter from "./indexEditorWriter.vue";
 import IndexEditorReader from "./indexEditorView.vue";
+import { useLayoutStore } from "@/store/layout";
 
-const splitterModel = ref(68);
+const storeLayout = useLayoutStore();
+// const refSplitterEditor = ref();
+// onMounted(() => {
+//   nextTick(() => {
+//   });
+// });
 </script>
 
 <template>
@@ -16,7 +21,12 @@ const splitterModel = ref(68);
     ></index-editor-tool>
 
     <!--    编辑器写作和预览区-->
-    <q-splitter v-model="splitterModel" style="height: 100vh">
+    <q-splitter
+      ref="refSplitterEditor"
+      unit="%"
+      style="height: 100vh"
+      :model-value="storeLayout.EditorLeftWriterWidth"
+    >
       <template v-slot:before>
         <!--编辑器写作区，确保内容区域高度自适应-->
         <index-editor-writer></index-editor-writer>

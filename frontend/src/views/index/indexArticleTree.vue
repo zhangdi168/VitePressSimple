@@ -116,7 +116,7 @@ onMounted(async () => {
 });
 
 const onDrop = (info: AntTreeNodeDropEvent) => {
-  console.log(info, "-----info value");
+  // console.log(info, "-----info value");
   storeIndex.moveTo(String(info.dragNode.key), String(info.node.key));
 };
 
@@ -177,7 +177,7 @@ const handleClick = (key: string) => {
       let val = matterData.content
         ? matterData.content
         : "# hello vitePress client";
-      console.log("val:" + val);
+      // console.log("val:" + val);
       storeIndex.Vditor?.setValue(val);
     });
   }

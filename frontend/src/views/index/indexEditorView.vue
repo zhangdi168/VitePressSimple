@@ -1,17 +1,3 @@
-<script lang="ts" setup>
-import DyAddHead from "../../components/dyAddKV.vue";
-import { IconPark } from "@icon-park/vue-next/es/all";
-import { nextTick, onMounted, reactive, ref, UnwrapRef } from "vue";
-import IndexEditorViewVue from "./indexEditorViewVue.vue";
-import { useIndexStore } from "../../store";
-import { useLayoutStore } from "@/store/layout";
-import IndexEditorViewBase from "@/views/index/indexEditorViewBase.vue";
-
-const storeIndex = useIndexStore();
-const storeLayout = useLayoutStore();
-const activeKey = ref("1");
-</script>
-
 <template>
   <!--  <div v-if="storeIndex.currArticlePath == ''">-->
   <!--    <a-empty description="未选择文章" />-->
@@ -23,7 +9,7 @@ const activeKey = ref("1");
         <index-editor-view-base></index-editor-view-base>
       </a-tab-pane>
 
-      <a-tab-pane key="4" tab="js">
+      <a-tab-pane key="4" tab="vue">
         <div class="ml-1">
           <index-editor-view-vue></index-editor-view-vue>
         </div>
@@ -36,6 +22,7 @@ const activeKey = ref("1");
 
     <div class="flex justify-end pr-3 pt-2">
       <a-button
+        @click="savePageConfig"
         class="bg-blue-600 hover:bg-blue-500 text-white flex justify-center items-center"
       >
         <icon-park
@@ -44,10 +31,24 @@ const activeKey = ref("1");
           theme="outline"
           type="save"
         />
-        保存
+        保存页面配置
       </a-button>
     </div>
   </div>
 </template>
+<script lang="ts" setup>
+import DyAddHead from "../../components/dyAddKV.vue";
+import { IconPark } from "@icon-park/vue-next/es/all";
+import { nextTick, onMounted, reactive, ref, UnwrapRef } from "vue";
+import IndexEditorViewVue from "./indexEditorViewVue.vue";
+import { useIndexStore } from "../../store";
+import { useLayoutStore } from "@/store/layout";
+import IndexEditorViewBase from "@/views/index/indexEditorViewBase.vue";
+
+const storeIndex = useIndexStore();
+const storeLayout = useLayoutStore();
+const activeKey = ref("1");
+const savePageConfig = () => {};
+</script>
 
 <style scoped></style>

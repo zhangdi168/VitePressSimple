@@ -16,6 +16,7 @@ import {
 import { ConfigKeyProjectDir } from "@/constant/keys/config";
 import { useVpconfigStore } from "@/store/vpconfig";
 import { getFileNameFromPath, IsEmptyValue } from "@/utils/utils";
+import { useLayoutStore } from "@/store/layout";
 
 //定义首页的数据类型
 export interface indexStore {
@@ -90,9 +91,21 @@ export const useIndexStore = defineStore("index", {
     //保存文章
     async saveCurrArticle() {
       if (this.vditor) {
+        const storeLayout = useLayoutStore();
         const content = this.vditor.getValue();
+        this.currArticleFrontMatter["custom"] =
+          storeLayout.componentDyAddCustomFrontMatter.getObject();
+        this.currArticleFrontMatter["head"]["meta"] =
+          storeLayout.componentDyAddHeader.getArray();
         const fontMatterStr = JSON.stringify(this.currArticleFrontMatter);
         const fullContent = `---\n${fontMatterStr}\n---\n${content}`;
+        //获取动态新增的数据
+
+        // metas
+        // console.log(
+        //
+        //   "storeLayout.refDyAddHeader.getArray() -- console.log",
+        // );
         WriteFileContent(this.currArticlePath, fullContent).then(() => {
           ToastInfo("已提交保存");
         });
@@ -111,21 +124,35 @@ export const useIndexStore = defineStore("index", {
     //设置当前文章front matter
     setCurrArticleFrontMatter(frontMatter: any) {
       this.currArticleFrontMatter = frontMatter;
-      this.checkFrontMatterKeyKey("title", this.CurrArticleTitle);
-      this.checkFrontMatterKeyKey("description", "");
-      this.checkFrontMatterKeyKey("navbar", true); //是否显示导航
-      this.checkFrontMatterKeyKey("sideBar", true); //是否显示侧栏
-      this.checkFrontMatterKeyKey("footer", false); //是否显示页脚
-      this.checkFrontMatterKeyKey("outline", 2); //是否显示页脚
-      this.checkFrontMatterKeyKey("editLink", false); //是否显示编辑链接
-      this.checkFrontMatterKeyKey("lastUpdated", true); //是否显示页脚更新时间
-      this.checkFrontMatterKeyKey("aside", "left"); //侧边栏位置
+      this.checkFrontMatterKey("title", this.CurrArticleTitle);
+      this.checkFrontMatterKey("description", "");
+      this.checkFrontMatterKey("navbar", true); //是否显示导航
+      this.checkFrontMatterKey("sideBar", true); //是否显示侧栏
+      this.checkFrontMatterKey("footer", false); //是否显示页脚
+      this.checkFrontMatterKey("outline", 2); //是否显示页脚
+      this.checkFrontMatterKey("editLink", false); //是否显示编辑链接
+      this.checkFrontMatterKey("lastUpdated", true); //是否显示页脚更新时间
+      this.checkFrontMatterKey("aside", "left"); //侧边栏位置
+      this.checkFrontMatterKey("layout", "doc"); //页面类型
+      this.checkFrontMatterKey("custom", {}); //用户自定义变量
+      this.checkFrontMatterKey2("head", "meta", []); //页面类型
       // console.log(frontMatter, "frontMatter -- console.log");
     },
     //判断front matter的key是否存在,不存在则设置默认值
-    checkFrontMatterKeyKey(key: string, defaultValue: any) {
+    checkFrontMatterKey(key: string, defaultValue: any) {
       if (IsEmptyValue(this.currArticleFrontMatter[key])) {
         this.currArticleFrontMatter[key] = defaultValue;
+      }
+    },
+    //判断front matter的key是否存在,不存在则设置默认值
+    checkFrontMatterKey2(key1: string, key2: string, defaultValue: any) {
+      if (IsEmptyValue(this.currArticleFrontMatter[key1])) {
+        this.currArticleFrontMatter[key1] = {};
+        this.currArticleFrontMatter[key1][key2] = defaultValue;
+        return;
+      }
+      if (IsEmptyValue(this.currArticleFrontMatter[key1][key2])) {
+        this.currArticleFrontMatter[key1][key2] = defaultValue;
       }
     },
   },
@@ -135,7 +162,7 @@ export const useIndexStore = defineStore("index", {
     ExpandKeys: (state) => state.expandKeys,
     SelectKeys: (state) => state.selectKeys,
     CurrCutPath: (state) => state.currCutPath,
-    CurrVueCode: (state) => state.currVueCode,
+    getCurrVueCode: (state) => state.currVueCode,
     CurrArticlePath: (state) => state.currArticlePath,
     CurrArticleFrontMatter: (state) => state.currArticleFrontMatter,
     Vditor: (state) => state.vditor,

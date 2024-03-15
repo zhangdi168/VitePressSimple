@@ -2,7 +2,7 @@
   <div class="flex items-center justify-end pr-5">
     <a-tooltip class="mx-1 cursor-pointer">
       <template #title
-        >{{ storeLayout.showEditorView ? "隐藏" : "显示" }}右侧编辑栏
+        >{{ storeLayout.showEditorView ? "隐藏" : "显示" }}页面属性编辑栏
       </template>
       <icon-park
         class="select-none"

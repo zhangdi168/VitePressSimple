@@ -23,7 +23,7 @@ const storeLayout = useLayoutStore();
     <!--    编辑器写作和预览区-->
     <q-splitter
       ref="refSplitterEditor"
-      unit="%"
+      :unit="'%'"
       style="height: 100vh"
       :model-value="storeLayout.EditorLeftWriterWidth"
     >

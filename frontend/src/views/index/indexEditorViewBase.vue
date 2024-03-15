@@ -1,17 +1,6 @@
-<script setup lang="ts">
-import DyAddHead from "@/components/dyAddKV.vue";
-import { onBeforeMount, onMounted, reactive, ref } from "vue";
-import { useIndexStore } from "@/store";
-
-const labelCol = { style: { width: "150px" } };
-const wrapperCol = { span: 14 };
-// const storeIndex.GetArticleFrontMatter = ref();
-const storeIndex = useIndexStore();
-</script>
-
 <template>
   <div>
-    <div class="px-2 mb-2">
+    <div class="px-1 mb-2">
       <a-input
         :value="storeIndex.GetArticleFrontMatter['title']"
         placeholder="请输入文章标题"
@@ -20,7 +9,7 @@ const storeIndex = useIndexStore();
       />
     </div>
 
-    <div class="px-2 my-2">
+    <div class="px-1 my-2">
       <a-textarea
         class="text-gray-500"
         :value="storeIndex.GetArticleFrontMatter['description']"
@@ -102,12 +91,15 @@ const storeIndex = useIndexStore();
 
   <div class="mt-3">
     <dy-add-head
-      ref="dyAddHead"
+      :default-value="storeIndex.GetArticleFrontMatter['head']['meta']"
+      ref="refDyAddHead"
       add-btn-text="新增meta"
       add-btn-class="bg-blue-500 text-white hover:bg-blue-600"
       class="mt-2"
-      key-placeholder="seo head meta-name"
-      value-placeholder="seo head meta-content"
+      key-placeholder="key"
+      value-placeholder="value meta-content"
+      key-name="name"
+      value-name="content"
     ></dy-add-head>
   </div>
   <div class="mt-3">
@@ -116,14 +108,38 @@ const storeIndex = useIndexStore();
 
   <!--  自定义formatter-->
   <div class="mt-3">
-    <dy-add-head
-      ref="dyAddFontMatter"
-      add-btn-class="bg-blue-500 text-white hover:bg-blue-600"
-      add-btn-text="新增自定义fontMatter"
-      key-placeholder="key"
-      value-placeholder="value"
-    ></dy-add-head>
+    <a-tooltip
+      title="变量数据存放于custom属性中，通过{frontmatter}.custom.{xx}进行访问"
+    >
+      <dy-add-head
+        :default-value="storeIndex.GetArticleFrontMatter['custom']"
+        ref="refDyAddFontMatter"
+        add-btn-class="bg-blue-500 text-white hover:bg-blue-600"
+        add-btn-text="新增自定义fontMatter"
+        key-placeholder="key"
+        value-placeholder="value"
+      >
+      </dy-add-head>
+    </a-tooltip>
   </div>
 </template>
+<script setup lang="ts">
+import DyAddHead from "@/components/dyAddKV.vue";
+import { nextTick, onMounted, ref } from "vue";
+import { useIndexStore } from "@/store";
+import { useLayoutStore } from "@/store/layout";
 
+const labelCol = { style: { width: "150px" } };
+const wrapperCol = { span: 14 };
+const storeIndex = useIndexStore();
+const layoutStore = useLayoutStore();
+const refDyAddHead = ref();
+const refDyAddFontMatter = ref();
+onMounted(() => {
+  nextTick(() => {
+    layoutStore.setComponentDyAddHeader(refDyAddHead.value);
+    layoutStore.setComponentDyAddCustomFrontMatter(refDyAddFontMatter.value);
+  });
+});
+</script>
 <style scoped></style>

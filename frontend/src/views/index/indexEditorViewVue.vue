@@ -1,7 +1,10 @@
 <template>
-  <div class="flex justify-end mr-4">
+  <div class="mb-1">
+    <a-alert message="Success Text" type="success"> asas</a-alert>
+  </div>
+  <div class="flex justify-start mb-1.5">
     <a-button
-      class="bg-orange-200 flex justify-center items-center hover:bg-blue-100"
+      class="bg-blue-300 flex justify-center items-center hover:bg-blue-100"
       @click="useDemoCode"
     >
       <icon-park
@@ -15,7 +18,7 @@
   </div>
   <Codemirror
     ref="cmRef"
-    v-model:value="storeIndex.CurrVueCode"
+    v-model:value="storeIndex.currVueCode"
     :options="cmOptions"
     border
     height="70vh"
@@ -37,7 +40,7 @@ import { IconPark } from "@icon-park/vue-next/es/all";
 
 const storeIndex = useIndexStore();
 const code = ref<string>(
-  `<script setup>\nimport { ref } from 'vue'\nconst count = ref(0)\n</\script>\n\n<style module>\n.button {color: red; font-weight: bold;}\n</style>\n<button :class="$style.button" @click="count++">Increment</button>\n`,
+  `<script setup>\nimport { ref } from 'vue'\nconst count = ref(0)\n</\script>\n\n<style module>\n.button {color: red; font-weight: bold;}\n</style>\n`,
 );
 
 const useDemoCode = () => {

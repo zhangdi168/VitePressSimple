@@ -105,7 +105,7 @@ import { ToastCheck, ToastError, ToastInfo } from "@/utils/Toast";
 import { Modal } from "ant-design-vue";
 import { isEmptyArray } from "@/utils/array";
 import { useVpconfigStore } from "@/store/vpconfig";
-import { extractJsContent } from "@/utils/parse";
+import { parseTagContent, regexScript, regexStyle } from "@/utils/parse";
 
 const storeIndex = useIndexStore();
 const moreIconShownKeys = ref<string[]>([]);
@@ -119,16 +119,6 @@ onMounted(async () => {
 const onDrop = (info: AntTreeNodeDropEvent) => {
   // console.log(info, "-----info value");
   storeIndex.moveTo(String(info.dragNode.key), String(info.node.key));
-};
-
-const showMoreIcon = (treeKey: string) => {
-  moreIconShownKeys.value.push(treeKey);
-};
-const hideMoreIcon = (treeKey: string) => {
-  const index = moreIconShownKeys.value.indexOf(treeKey);
-  if (index > -1) {
-    moreIconShownKeys.value.splice(index, 1);
-  }
 };
 
 const deletePath = (key: string) => {
@@ -169,19 +159,28 @@ const handleClick = (key: string) => {
     ReadFileContent(key).then((content: string) => {
       // console.log(content, "读取文件内容成功")
       let matterData = matter(content);
-      let jsContent = extractJsContent(matterData.content ?? "");
-      console.log(jsContent, "-----jsContent value");
-
-      // console.log(matterData, "matterData -- console.log")
+      let matchScriptArray = parseTagContent(
+        matterData.content ?? "",
+        regexScript,
+      );
+      let matchStyleArray = parseTagContent(
+        matterData.content ?? "",
+        regexStyle,
+      );
+      let scriptContent = matchScriptArray[0] ?? "";
+      let styleContent = matchStyleArray[0] ?? "";
+      storeIndex.setCurrScriptContent(scriptContent);
+      storeIndex.setCurrStyleContent(styleContent);
       storeIndex.setCurrArticlePath(key);
       // //matter字符串
       storeIndex.setCurrArticleFrontMatter(matterData.data);
 
-      let val = matterData.content
-        ? matterData.content
-        : "# hello vitePress client";
+      let vditorContent = (matterData.content ?? "")
+        .replace(scriptContent, "")
+        .replace(styleContent, "");
+      let val = vditorContent ? vditorContent : "# hello vitePress client";
       // console.log("val:" + val);
-      storeIndex.Vditor?.setValue(val);
+      storeIndex.Vditor?.setValue(val); //设置编辑器的值
     });
   }
 };

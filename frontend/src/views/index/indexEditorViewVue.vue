@@ -1,8 +1,8 @@
 <template>
-  <div class="mb-1">
-    <a-alert message="Success Text" type="success"> asas</a-alert>
-  </div>
-  <div class="flex justify-start mb-1.5">
+  <!--  <div class="mb-1">-->
+  <!--    <a-alert message="Success Text" type="success"> asas</a-alert>-->
+  <!--  </div>-->
+  <div v-show="storeIndex.currVueCode == ''" class="flex justify-start mb-1.5">
     <a-button
       class="bg-blue-300 flex justify-center items-center hover:bg-blue-100"
       @click="useDemoCode"

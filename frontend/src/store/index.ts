@@ -26,9 +26,11 @@ export interface indexStore {
   selectKeys: string[];
   currArticlePath: string; //当前文章路径
   currCutPath: string;
+  currScriptContent: string; //当前js代码
+  currStyleContent: string; //当前css代码
+  currVueCode: string; //当前vue代码 css+js
   currProjectDir: string; //当前项目的根目录
   currDocDir: string; //文档所在目录
-  currVueCode: string; //当前vue代码
   currArticleFrontMatter: Record<string, any>; //当前文章front matter
 }
 
@@ -41,9 +43,11 @@ export const useIndexStore = defineStore("index", {
     expandKeys: [],
     selectKeys: [],
     currArticlePath: "", //当前文章路径
-    currCutPath: "", //当前剪切路径
-    currVueCode: "", //当前vue代码
+    currScriptContent: "", //当前js代码
+    currStyleContent: "", //当前css代码
+    currVueCode: "", //当前vue代码 js+css
     currArticleFrontMatter: {}, //当前文章front matter
+    currCutPath: "", //当前剪切路径
   }),
   //定义actions
   actions: {
@@ -63,6 +67,16 @@ export const useIndexStore = defineStore("index", {
       Move(path, targetDir).then(() => {
         this.loadTreeData();
       });
+    },
+    //设置当前script
+    async setCurrScriptContent(content: string) {
+      this.currScriptContent = content;
+      this.currVueCode = this.currScriptContent + "\n" + this.currStyleContent;
+    },
+    //设置当前style
+    async setCurrStyleContent(content: string) {
+      this.currStyleContent = content;
+      this.currVueCode = this.currScriptContent + "\n" + this.currStyleContent;
     },
     clearCurrData() {
       this.currArticlePath = "";
@@ -98,7 +112,7 @@ export const useIndexStore = defineStore("index", {
         this.currArticleFrontMatter["head"]["meta"] =
           storeLayout.componentDyAddHeader.getArray();
         const fontMatterStr = JSON.stringify(this.currArticleFrontMatter);
-        const fullContent = `---\n${fontMatterStr}\n---\n${content}`;
+        const fullContent = `---\n${fontMatterStr}\n---\n${this.currVueCode}\n${content}`;
         //获取动态新增的数据
 
         // metas

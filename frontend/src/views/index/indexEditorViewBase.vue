@@ -96,8 +96,8 @@
       add-btn-text="新增meta"
       add-btn-class="bg-blue-500 text-white hover:bg-blue-600"
       class="mt-2"
-      key-placeholder="key"
-      value-placeholder="value meta-content"
+      key-placeholder="name"
+      value-placeholder="content"
       key-name="name"
       value-name="content"
     ></dy-add-head>

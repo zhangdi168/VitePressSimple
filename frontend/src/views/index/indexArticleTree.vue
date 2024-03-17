@@ -105,6 +105,7 @@ import { ToastCheck, ToastError, ToastInfo } from "@/utils/Toast";
 import { Modal } from "ant-design-vue";
 import { isEmptyArray } from "@/utils/array";
 import { useVpconfigStore } from "@/store/vpconfig";
+import { extractJsContent } from "@/utils/parse";
 
 const storeIndex = useIndexStore();
 const moreIconShownKeys = ref<string[]>([]);
@@ -168,6 +169,8 @@ const handleClick = (key: string) => {
     ReadFileContent(key).then((content: string) => {
       // console.log(content, "读取文件内容成功")
       let matterData = matter(content);
+      let jsContent = extractJsContent(matterData.content ?? "");
+      console.log(jsContent, "-----jsContent value");
 
       // console.log(matterData, "matterData -- console.log")
       storeIndex.setCurrArticlePath(key);

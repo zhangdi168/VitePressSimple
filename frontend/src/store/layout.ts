@@ -41,7 +41,7 @@ export const useLayoutStore = defineStore("layout", {
     EditorLeftWriterWidth: (state) => {
       if (state.showEditorView) {
         //如果显示编辑区
-        return 74; //70%
+        return 70; //70%
       } else {
         //如果隐藏编辑区
         return 100; //100%

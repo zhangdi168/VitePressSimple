@@ -3,8 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/../publicity-system-client/.idea/SearchFile.iml" filepath="$PROJECT_DIR$/../publicity-system-client/.idea/SearchFile.iml" />
-      <module fileurl="file://$PROJECT_DIR$/../../cach/my1/.idea/my1.iml" filepath="$PROJECT_DIR$/../../cach/my1/.idea/my1.iml" />
-      <module fileurl="file://$PROJECT_DIR$/../vitepress-demo/.idea/vitepress-demo.iml" filepath="$PROJECT_DIR$/../vitepress-demo/.idea/vitepress-demo.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/wails2-template-vue.iml" filepath="$PROJECT_DIR$/.idea/wails2-template-vue.iml" />
     </modules>
   </component>

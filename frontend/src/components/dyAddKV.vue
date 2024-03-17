@@ -18,24 +18,26 @@
     <div
       v-for="(item, index) in inputs"
       :key="index"
-      class="flex mt-2 px-3 justify-between items-center"
+      class="flex mt-2 justify-between items-center"
     >
-      <div class="mt-1">
+      <div class="mt-1 w-2/5">
         <a-input
-          class="w-28"
+          class="w-full"
           v-model:value="inputs[index].key"
           :placeholder="props.keyPlaceholder"
         />
       </div>
-      <div class="mt-1">
+      <div class="mt-1 w-2/5">
         <a-textarea
+          class="w-full"
           :auto-size="{ minRows: 1 }"
           v-model:value="inputs[index].value"
           :placeholder="props.valuePlaceholder"
         ></a-textarea>
       </div>
-      <div>
+      <div class="mt-1 flex">
         <a-button
+          size="small"
           v-if="inputs.length > 0"
           type="default"
           @click="removeInput(index)"

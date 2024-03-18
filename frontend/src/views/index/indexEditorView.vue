@@ -8,8 +8,10 @@
       <a-tab-pane key="1" tab="基础">
         <index-editor-view-base></index-editor-view-base>
       </a-tab-pane>
-
-      <a-tab-pane key="4" tab="vue">
+      <a-tab-pane key="2" tab="主页">
+        <index-editor-view-hero></index-editor-view-hero>
+      </a-tab-pane>
+      <a-tab-pane key="4" tab="代码">
         <div class="ml-1">
           <index-editor-view-vue></index-editor-view-vue>
         </div>
@@ -44,6 +46,7 @@ import IndexEditorViewVue from "./indexEditorViewVue.vue";
 import { useIndexStore } from "../../store";
 import { useLayoutStore } from "@/store/layout";
 import IndexEditorViewBase from "@/views/index/indexEditorViewBase.vue";
+import IndexEditorViewHero from "@/views/index/indexEditorViewHero.vue";
 
 const storeIndex = useIndexStore();
 const storeLayout = useLayoutStore();

@@ -154,19 +154,18 @@ onMounted(() => {
 const modalVisible = ref<boolean>(false);
 const val = ref();
 
-const showModal = (val_: string = "") => {
-  if (val_ != "") {
-    val.value = val_;
-  }
-  modalVisible.value = true;
-};
-
 //隐藏弹出层并返回输入的值
 const emits = defineEmits(["submitInputModal"]);
 const hideModal = () => {
   modalVisible.value = false;
   emits("submitInputModal", val.value);
   return val.value;
+};
+const showModal = (val_: string = "") => {
+  if (val_ != "") {
+    val.value = val_;
+  }
+  modalVisible.value = true;
 };
 
 defineExpose({ showModal });

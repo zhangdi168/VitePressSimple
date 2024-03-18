@@ -11,10 +11,22 @@ export function ConfigGetBool(arg1:string):Promise<boolean>;
 
 export function ConfigSet(arg1:string,arg2:string):Promise<void>;
 
+export function CopyPath(arg1:string,arg2:string,arg3:boolean):Promise<string>;
+
+export function GetPathDir(arg1:string):Promise<string>;
+
+export function GetPathExt(arg1:string):Promise<string>;
+
+export function GetPathFileName(arg1:string):Promise<string>;
+
 export function GetSystemUserHomeDir():Promise<string>;
 
 export function OpenFileBrowser(arg1:string):Promise<void>;
 
 export function OpenURL(arg1:string):Promise<void>;
 
+export function PathJoin(arg1:Array<string>):Promise<string>;
+
 export function SelectDir(arg1:string):Promise<string>;
+
+export function SelectFile(arg1:string,arg2:string):Promise<string>;

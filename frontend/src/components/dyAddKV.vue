@@ -49,8 +49,20 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, ref } from "vue";
+import { onMounted, ref, watch } from "vue";
 import { IconPark } from "@icon-park/vue-next/es/all";
+
+//双向绑定的数据
+const arr = defineModel<Array<any>>("arr");
+const obj = defineModel<any>("obj");
+const arrayObject = defineModel<any>("arrayObject");
+const inputs = ref<InputItem[]>([]);
+watch(inputs.value, (newVal, oVal) => {
+  arr.value = getArray(); //[{},{}]
+  obj.value = getObject(); //{name1:vale1,name2:value2}
+  //数组第一个值是outKeyName,第二个值是Object。很奇葩的格式。。。
+  arrayObject.value = getArrayObject(); //[outKeyName, {keyName1:input1,keyName2:input2}]
+});
 
 export interface dyAddKvProps {
   keyPlaceholder: string;
@@ -58,30 +70,30 @@ export interface dyAddKvProps {
   addBtnText: string;
   defaultValue?: any;
   addBtnClass?: string;
-  keyName?: string; //键名 默认key
+  outKeyName?: string; //数组外层键名
+  keyName?: string; //键名 默认key 仅对getArray有效
   valueName?: string; //值名 默认为value
 }
 
 const props = defineProps<dyAddKvProps>();
 onMounted(() => {
   //判断props.defaultValue是数组还是对象
-  if (Array.isArray(props.defaultValue)) {
+  if (arr.value) {
     //遍历数组 依次将defaultValue的props.keyName和 props.valueName赋值给inuts
-    for (let i = 0; i < props.defaultValue.length; i++) {
+    for (let i = 0; i < arr.value.length; i++) {
       inputs.value.push({
-        key: props.defaultValue[i][props.keyName ?? "key"],
-        value: props.defaultValue[i][props.valueName ?? "value"],
+        key: arr.value[i][props.keyName ?? "key"],
+        value: arr.value[i][props.valueName ?? "value"],
       });
     }
   } else {
     //遍历对象 依次将key 赋值key和value
-    for (const key in props.defaultValue) {
+    for (const key in obj.value) {
       inputs.value.push({
         key: key,
-        value: props.defaultValue[key],
+        value: obj.value[key],
       });
     }
-    // console.log(props.defaultValue, "遍历对象 得到inputs -- console.log");
   }
 });
 
@@ -89,8 +101,6 @@ interface InputItem {
   key: string;
   value: string;
 }
-
-const inputs = ref<InputItem[]>([]);
 
 // Method to add a new set of inputs
 const addInput = () => {
@@ -125,6 +135,21 @@ const getObject = () => {
   let result: any = {};
   for (let i = 0; i < inputs.value.length; i++) {
     result[inputs.value[i].key] = inputs.value[i].value;
+  }
+  return result;
+};
+const getArrayObject = () => {
+  let keyName = props.keyName || "key";
+  let valueName = props.valueName || "value";
+  let result = [];
+  for (let i = 0; i < inputs.value.length; i++) {
+    let item = [];
+    item.push(props.outKeyName ?? "meta");
+    item.push({
+      [keyName]: inputs.value[i].key,
+      [valueName]: inputs.value[i].value,
+    });
+    result.push(item);
   }
   return result;
 };

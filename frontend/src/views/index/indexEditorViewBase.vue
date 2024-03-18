@@ -91,7 +91,7 @@
 
   <div class="mt-3">
     <dy-add-head
-      :default-value="storeIndex.GetArticleFrontMatter['head']['meta']"
+      v-model:arrayObject="storeIndex.GetArticleFrontMatter['head']"
       ref="refDyAddHead"
       add-btn-text="新增meta"
       add-btn-class="bg-blue-500 text-white hover:bg-blue-600"
@@ -112,7 +112,7 @@
       title="变量数据存放于custom属性中，通过{frontmatter}.custom.{xx}进行访问"
     >
       <dy-add-head
-        :default-value="storeIndex.GetArticleFrontMatter['custom']"
+        v-model:obj="storeIndex.GetArticleFrontMatter['custom']"
         ref="refDyAddFontMatter"
         add-btn-class="bg-blue-500 text-white hover:bg-blue-600"
         add-btn-text="新增自定义fontMatter"
@@ -132,14 +132,9 @@ import { useLayoutStore } from "@/store/layout";
 const labelCol = { style: { width: "150px" } };
 const wrapperCol = { span: 14 };
 const storeIndex = useIndexStore();
-const layoutStore = useLayoutStore();
+
 const refDyAddHead = ref();
 const refDyAddFontMatter = ref();
-onMounted(() => {
-  nextTick(() => {
-    layoutStore.setComponentDyAddHeader(refDyAddHead.value);
-    layoutStore.setComponentDyAddCustomFrontMatter(refDyAddFontMatter.value);
-  });
-});
+onMounted(() => {});
 </script>
 <style scoped></style>

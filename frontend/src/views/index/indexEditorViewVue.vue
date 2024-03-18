@@ -13,9 +13,10 @@
         theme="outline"
         type="page-template"
       />
-      使用示例代码
+      使用示例vue代码
     </a-button>
   </div>
+
   <Codemirror
     ref="cmRef"
     v-model:value="storeIndex.currVueCode"

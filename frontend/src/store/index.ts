@@ -17,6 +17,7 @@ import { ConfigKeyProjectDir } from "@/constant/keys/config";
 import { useVpconfigStore } from "@/store/vpconfig";
 import { getFileNameFromPath, IsEmptyValue } from "@/utils/utils";
 import { useLayoutStore } from "@/store/layout";
+import { VitePressHome } from "@/types/home";
 
 //定义首页的数据类型
 export interface indexStore {
@@ -26,6 +27,7 @@ export interface indexStore {
   selectKeys: string[];
   currArticlePath: string; //当前文章路径
   currCutPath: string;
+  currHomeConfig?: VitePressHome; //当前主页配置
   currScriptContent: string; //当前js代码
   currStyleContent: string; //当前css代码
   currVueCode: string; //当前vue代码 css+js
@@ -72,11 +74,13 @@ export const useIndexStore = defineStore("index", {
     async setCurrScriptContent(content: string) {
       this.currScriptContent = content;
       this.currVueCode = this.currScriptContent + "\n" + this.currStyleContent;
+      this.currVueCode = this.currVueCode.trim();
     },
     //设置当前style
     async setCurrStyleContent(content: string) {
       this.currStyleContent = content;
       this.currVueCode = this.currScriptContent + "\n" + this.currStyleContent;
+      this.currVueCode = this.currVueCode.trim();
     },
     clearCurrData() {
       this.currArticlePath = "";
@@ -107,10 +111,10 @@ export const useIndexStore = defineStore("index", {
       if (this.vditor) {
         const storeLayout = useLayoutStore();
         const content = this.vditor.getValue();
-        this.currArticleFrontMatter["custom"] =
-          storeLayout.componentDyAddCustomFrontMatter.getObject();
-        this.currArticleFrontMatter["head"]["meta"] =
-          storeLayout.componentDyAddHeader.getArray();
+        // this.currArticleFrontMatter["custom"] =
+        //   storeLayout.componentDyAddCustomFrontMatter.getObject();
+        // this.currArticleFrontMatter["head"]["meta"] =
+        //   storeLayout.componentDyAddHeader.getArray();
         const fontMatterStr = JSON.stringify(this.currArticleFrontMatter);
         const fullContent = `---\n${fontMatterStr}\n---\n${this.currVueCode}\n${content}`;
         //获取动态新增的数据
@@ -149,7 +153,17 @@ export const useIndexStore = defineStore("index", {
       this.checkFrontMatterKey("aside", "left"); //侧边栏位置
       this.checkFrontMatterKey("layout", "doc"); //页面类型
       this.checkFrontMatterKey("custom", {}); //用户自定义变量
+      this.checkFrontMatterKey("hero", {}); //用户自定义变量
+      this.checkFrontMatterKey("features", []); //功能列表
       this.checkFrontMatterKey2("head", "meta", []); //页面类型
+      this.checkFrontMatterKey2("hero", "image", {}); //页面类型
+      this.checkFrontMatterKey2("hero", "actions", []); //页面类型
+      //当前页面是主页
+      if (this.currArticleFrontMatter["layout"] == "home") {
+        this.currHomeConfig = this.currArticleFrontMatter[
+          "hero"
+        ] as VitePressHome;
+      }
       // console.log(frontMatter, "frontMatter -- console.log");
     },
     //判断front matter的key是否存在,不存在则设置默认值

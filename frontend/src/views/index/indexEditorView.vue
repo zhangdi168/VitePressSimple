@@ -21,21 +21,6 @@
     <div class="mt-6">
       <q-separator inset />
     </div>
-
-    <div class="flex justify-end pr-3 pt-2">
-      <a-button
-        @click="savePageConfig"
-        class="bg-blue-600 hover:bg-blue-500 text-white flex justify-center items-center"
-      >
-        <icon-park
-          class="mr-1"
-          strokeLinejoin="bevel"
-          theme="outline"
-          type="save"
-        />
-        保存页面配置
-      </a-button>
-    </div>
   </div>
 </template>
 <script lang="ts" setup>

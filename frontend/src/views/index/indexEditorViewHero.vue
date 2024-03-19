@@ -56,7 +56,7 @@
             v-model:value="
               storeIndex.currArticleFrontMatter['hero']['image']['src']
             "
-            placeholder="主页图片的 alt 属性"
+            placeholder="主页图片的链接"
             class="w-full"
           >
           </a-input>

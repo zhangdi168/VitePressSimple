@@ -5,8 +5,7 @@ export function parseJsObject(content: string): any {
   // 现在尝试解析为JSON
   content = content.trim();
   try {
-    const jsonObj = JSON.parse(content);
-    return JSON.stringify(jsonObj);
+    return JSON.parse(content);
   } catch (error) {
     //解析异常 尝试使用eval的方式进行解析
     if (!content.endsWith("}") || !content.startsWith("{")) {

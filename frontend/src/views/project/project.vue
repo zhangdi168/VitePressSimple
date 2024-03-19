@@ -16,7 +16,7 @@
       </a-radio-group>
     </div>
     <div v-if="activeKey1 === '1'">
-      <div class="mt-5">
+      <div class="mt-1">
         <a-tabs
           style="min-height: 55vh"
           v-model:activeKey="activeKey2"
@@ -62,7 +62,7 @@
       </div>
     </div>
     <div v-if="activeKey1 === '2'">
-      <div class="mt-5">
+      <div class="mt-1">
         <setting-nav></setting-nav>
       </div>
     </div>

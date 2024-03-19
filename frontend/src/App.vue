@@ -9,7 +9,15 @@ import NavTemplate1 from "@/layout/nav/navTemplate1.vue";
 import NavTemplate2 from "@/layout/nav/navTemplate2.vue";
 import { onMounted, ref } from "vue";
 import { useVpconfigStore } from "@/store/vpconfig";
+import { ConfigGet } from "../wailsjs/go/system/SystemService";
+import { ConfigKeyProjectDir } from "@/constant/keys/config";
+import { useIndexStore } from "@/store";
 //在这里可以设置默认的模板
 const useTemplateIndex = ref(2);
+const storeIndex = useIndexStore();
+const vpConfig = useVpconfigStore();
+onMounted(async () => {
+  await vpConfig.initConfig();
+});
 </script>
 <style lang="scss"></style>

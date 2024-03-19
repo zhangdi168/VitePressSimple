@@ -52,8 +52,9 @@
       <div class="my-3 flex justify-between">
         <div class="flex-1">
           <a-input
+            disabled
             v-model:value="
-              storeIndex.currArticleFrontMatter['hero']['image']['alt']
+              storeIndex.currArticleFrontMatter['hero']['image']['src']
             "
             placeholder="主页图片的 alt 属性"
             class="w-full"
@@ -109,31 +110,35 @@ import {
   SelectFile,
 } from "../../../wailsjs/go/system/SystemService";
 import { ToastCheck, ToastError } from "@/utils/Toast";
+import { useVpconfigStore } from "@/store/vpconfig";
 
 const storeIndex = useIndexStore();
+const storeVpConfig = useVpconfigStore();
 
 const selectLogo = async () => {
   let oriImagePath = await SelectFile("选择主页图片", "");
   console.log(oriImagePath, "filePath -- console.log");
   let ext = await GetPathExt(oriImagePath);
-  if (ext == "png" || ext == "jpg" || ext == "jpeg" || ext == "bmp") {
-    ToastError("请选则图片格式文件");
+  let allowExt = [".png", ".jpg", ".jpeg", ".bmp"];
+  if (!allowExt.includes(ext)) {
+    ToastError("请选则图片格式文件" + allowExt);
+    return;
   }
+  //当前文章的文件名
   let currFileName = await GetPathFileName(storeIndex.currArticlePath);
+  currFileName = currFileName.replaceAll(".md", "");
   //组装新路径
+  let publicDir = await PathJoin([storeVpConfig.fullSrcDir, "public"]);
   let newImagePath = await PathJoin([
-    storeIndex.currProjectDir,
+    publicDir,
     "images",
     "home",
-    currFileName.replaceAll(".md", ""),
-    "_home",
-    ext,
+    currFileName + "_home" + ext,
   ]);
   let copyResult = await CopyPath(oriImagePath, newImagePath, false);
   ToastCheck(copyResult);
-  //赋值给store
   storeIndex.currArticleFrontMatter["hero"]["image"]["src"] =
-    newImagePath.replaceAll(storeIndex.currProjectDir, "");
+    newImagePath.replaceAll(publicDir, "");
 };
 
 const refPopShowFeatures = ref();

@@ -10,6 +10,7 @@ import (
 	"wailstemplate/application/pkg/cfg"
 	"wailstemplate/application/pkg/filehelper"
 	"wailstemplate/application/pkg/mylog"
+	"wailstemplate/application/pkg/utils"
 )
 
 type ArticleTreeData struct {
@@ -41,7 +42,7 @@ func (s *ArticleTreeData) ParseTreeData(srcDoc string) []*dto.TreeNode {
 func DirToTreeNode(rootPath string) ([]*dto.TreeNode, error) {
 	// 定义递归构建树函数
 	var buildTree func(path string, parent *dto.TreeNode) error
-
+	var ignoreDirs = []string{"public"}
 	buildTree = func(path string, parent *dto.TreeNode) error {
 		// 读取目录内容
 		files, err := os.ReadDir(path)
@@ -57,6 +58,9 @@ func DirToTreeNode(rootPath string) ([]*dto.TreeNode, error) {
 		// 遍历目录中的每个条目
 
 		for _, entry := range files {
+			if utils.ArrContains(ignoreDirs, entry.Name()) {
+				continue
+			}
 			// 创建子节点
 			childNode := &dto.TreeNode{
 				Title: entry.Name(),

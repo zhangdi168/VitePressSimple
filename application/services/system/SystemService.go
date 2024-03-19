@@ -229,6 +229,6 @@ func (s *SystemService) GetPathExt(path string) string {
 }
 
 // PathJoin 组装文件成系统能识别的路径
-func (s *SystemService) PathJoin(elem ...string) string {
+func (s *SystemService) PathJoin(elem []string) string {
 	return filepath.Join(elem...)
 }

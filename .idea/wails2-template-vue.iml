@@ -10,5 +10,6 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="SearchFile" />
     <orderEntry type="module" module-name="my1" />
+    <orderEntry type="module" module-name="my1" />
   </component>
 </module>

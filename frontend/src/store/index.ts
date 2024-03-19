@@ -2,7 +2,6 @@ import { defineStore } from "pinia";
 import Vditor from "vditor";
 import { ToastError, ToastInfo } from "@/utils/Toast";
 import {
-  Move,
   ParseTreeData,
   WriteFileContent,
 } from "../../wailsjs/go/services/ArticleTreeData";
@@ -18,6 +17,7 @@ import { useVpconfigStore } from "@/store/vpconfig";
 import { getFileNameFromPath, IsEmptyValue } from "@/utils/utils";
 import { useLayoutStore } from "@/store/layout";
 import { VitePressHome } from "@/types/home";
+import { moveTo } from "@/utils/system";
 
 //定义首页的数据类型
 export interface indexStore {
@@ -55,8 +55,9 @@ export const useIndexStore = defineStore("index", {
   actions: {
     async loadTreeData() {
       const cfg = useVpconfigStore();
-      await cfg.initConfig();
-      this.articleTreeData = await ParseTreeData(cfg.SrcDir);
+      await cfg.getConfigFileContent();
+      //这里只需要传入相对路径即可
+      this.articleTreeData = await ParseTreeData(cfg.srcDir);
     },
 
     //设置编辑器的实例
@@ -64,9 +65,7 @@ export const useIndexStore = defineStore("index", {
       this.vditor = vditor_;
     },
     moveTo(path: string, target: string) {
-      const targetDir = getDirectoryPath(target);
-      console.log(target, targetDir);
-      Move(path, targetDir).then(() => {
+      moveTo(path, getDirectoryPath(target)).then(() => {
         this.loadTreeData();
       });
     },

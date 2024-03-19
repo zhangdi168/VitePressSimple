@@ -22,6 +22,22 @@ export function ConfigSet(arg1, arg2) {
   return window['go']['system']['SystemService']['ConfigSet'](arg1, arg2);
 }
 
+export function CopyPath(arg1, arg2, arg3) {
+  return window['go']['system']['SystemService']['CopyPath'](arg1, arg2, arg3);
+}
+
+export function GetPathDir(arg1) {
+  return window['go']['system']['SystemService']['GetPathDir'](arg1);
+}
+
+export function GetPathExt(arg1) {
+  return window['go']['system']['SystemService']['GetPathExt'](arg1);
+}
+
+export function GetPathFileName(arg1) {
+  return window['go']['system']['SystemService']['GetPathFileName'](arg1);
+}
+
 export function GetSystemUserHomeDir() {
   return window['go']['system']['SystemService']['GetSystemUserHomeDir']();
 }
@@ -34,6 +50,14 @@ export function OpenURL(arg1) {
   return window['go']['system']['SystemService']['OpenURL'](arg1);
 }
 
+export function PathJoin(arg1) {
+  return window['go']['system']['SystemService']['PathJoin'](arg1);
+}
+
 export function SelectDir(arg1) {
   return window['go']['system']['SystemService']['SelectDir'](arg1);
+}
+
+export function SelectFile(arg1, arg2) {
+  return window['go']['system']['SystemService']['SelectFile'](arg1, arg2);
 }

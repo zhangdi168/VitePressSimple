@@ -52,6 +52,7 @@ export const useVpconfigStore = defineStore("vpconfig", {
       this.checkConfigKey("map", false); //项目的构建输出位置，相对于项目根目录
       this.checkConfigKey("cleanUrls", false); //项目的构建输出位置，相对于项目根目录
       this.checkConfigKey2("themeConfig", "logo", ""); //站点图标
+      this.checkConfigKey2("themeConfig", "nav", []); //站点图标
       this.checkConfigKey2("themeConfig", "siteTitle", "VitePressSimple"); //站点名称
       this.checkConfigKey("rewrites", {
         "packages/pkg-a/src/pkg-a-docs.md": "pkg-a/index.md",

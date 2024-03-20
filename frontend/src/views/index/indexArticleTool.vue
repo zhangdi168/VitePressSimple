@@ -91,7 +91,7 @@ const createDir = () => {
   refModalCreateDir.value.showModal("");
 };
 const onSubmitInputModalCreateDir = async (value: string) => {
-  let fullDir = storeVpConfig.FullSrcDir + "/" + value;
+  let fullDir = storeVpConfig.fullSrcDir + "/" + value;
   console.log(fullDir, "-----fullDir value");
   let res = await CreateDir(fullDir);
   if (ToastCheck(res, "文件夹创建完成")) await storeIndex.loadTreeData();
@@ -103,7 +103,7 @@ const createFile = async () => {
   refModalCreateFile.value.showModal("");
 };
 const onSubmitInputModalCreateFile = async (value: string) => {
-  let fullFile = storeVpConfig.FullSrcDir + "/" + value;
+  let fullFile = storeVpConfig.fullSrcDir + "/" + value;
   console.log(fullFile, "-----fullFile value");
   let res = await CreateFile(fullFile);
   if (ToastCheck(res, "文件创建完成")) await storeIndex.loadTreeData();

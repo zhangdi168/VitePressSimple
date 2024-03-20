@@ -1,5 +1,66 @@
 // 工具类
 import { DataNode } from "ant-design-vue/es/tree";
+
+export interface VpNav {
+  link: string;
+  text: string;
+  items?: VpNav[];
+}
+
+// 将VpNav类型数组转换为DataNode类型数组
+export function convertVpNavArrayToDataNode(vpNavArray: VpNav[]): DataNode[] {
+  return vpNavArray.map((vpNav) => ({
+    key: vpNav.link ?? "",
+    title: vpNav.text ?? "",
+    children: vpNav.items ? vpNav.items.map(convertVpNavToDataNode) : undefined,
+  }));
+}
+
+// 将VpNav类型转换为DataNode类型
+function convertVpNavToDataNode(vpNav: VpNav): DataNode {
+  return {
+    key: vpNav.link ?? "",
+    title: vpNav.text ?? "",
+    children: vpNav.items ? vpNav.items.map(convertVpNavToDataNode) : undefined,
+  };
+}
+
+// 将DataNode类型数组转换为VpNav类型数组
+export function convertDataNodeArrayToVpNav(dataNodeArray: DataNode[]): any[] {
+  return dataNodeArray.map((dataNode) => {
+    if (!dataNode.children) {
+      // 如果没有children，则只返回text和link部分
+      return {
+        text: dataNode.title ?? "",
+        link: dataNode.key,
+      };
+    } else {
+      // 如果有children，则只返回text和link部分
+      return {
+        text: dataNode.title ?? "",
+        items: dataNode.children.map(convertDataNodeToVpNav),
+      };
+    }
+  });
+}
+
+// 将DataNode类型转换为VpNav类型
+function convertDataNodeToVpNav(dataNode: DataNode): any {
+  if (!dataNode.children) {
+    // 如果没有children，则只返回text和link部分
+    return {
+      text: dataNode.title ?? "",
+      link: dataNode.key,
+    };
+  } else {
+    // 如果有children，则只返回text和link部分
+    return {
+      text: dataNode.title ?? "",
+      items: dataNode.children.map(convertDataNodeToVpNav),
+    };
+  }
+}
+
 // 删除节点
 // TreeUtil.deleteNodeByKey(data, 'someKey');
 //

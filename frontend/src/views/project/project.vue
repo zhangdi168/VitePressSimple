@@ -27,14 +27,9 @@
           <a-tab-pane key="1-1" tab="基础设置">
             <setting-base></setting-base>
           </a-tab-pane>
-          <!--        <a-tab-pane key="1-2" tab="head">-->
-          <!--          <dy-add-k-v-->
-          <!--            add-btn-text="添加路由重写规则"-->
-          <!--            key-placeholder="文件路径"-->
-          <!--            value-placeholder="路由路径"-->
-          <!--            v-model:obj="storeConfig.configData['rewrites']"-->
-          <!--          ></dy-add-k-v>-->
-          <!--        </a-tab-pane>-->
+          <a-tab-pane key="1-2" tab="多语言">
+            <setting-lang></setting-lang>
+          </a-tab-pane>
           <a-tab-pane key="1-3" tab="路由重写">
             <dy-add-k-v
               add-btn-text="添加路由重写规则"
@@ -42,23 +37,26 @@
               value-placeholder="路由路径"
               v-model:obj="storeConfig.configData['rewrites']"
             ></dy-add-k-v>
+            <hr class="my-2" />
+            <div class="flex justify-center">
+              <a-button
+                @click="savePageConfig"
+                class="bg-blue-600 hover:bg-blue-500 text-white flex justify-center items-center"
+              >
+                <icon-park
+                  class="mr-1"
+                  strokeLinejoin="bevel"
+                  theme="outline"
+                  type="save"
+                />
+                保存配置
+              </a-button>
+            </div>
+          </a-tab-pane>
+          <a-tab-pane key="1-4" tab="社交帐户">
+            <setting-social></setting-social>
           </a-tab-pane>
         </a-tabs>
-        <hr class="my-2" />
-        <div class="flex justify-center">
-          <a-button
-            @click="savePageConfig"
-            class="bg-blue-600 hover:bg-blue-500 text-white flex justify-center items-center"
-          >
-            <icon-park
-              class="mr-1"
-              strokeLinejoin="bevel"
-              theme="outline"
-              type="save"
-            />
-            保存配置
-          </a-button>
-        </div>
       </div>
     </div>
     <div v-if="activeKey1 === '2'">
@@ -75,6 +73,11 @@ import { useVpconfigStore } from "@/store/vpconfig";
 import { IconPark } from "@icon-park/vue-next/es/all";
 import DyAddKV from "@/components/dyAddKV.vue";
 import SettingNav from "@/views/project/settingNav.vue";
+
+import { ToastError, ToastInfo, ToastSuccess } from "@/utils/Toast";
+import SimInput from "@/components/simInput.vue";
+import SettingLang from "@/views/project/settingLang.vue";
+import SettingSocial from "@/views/project/settingSocial.vue";
 
 const activeKey1 = ref("1");
 const activeKey2 = ref("1-1");

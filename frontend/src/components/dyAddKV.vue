@@ -57,7 +57,7 @@ const obj = defineModel<any>("obj");
 const arrayObject = defineModel<any>("arrayObject");
 const inputs = ref<InputItem[]>([]);
 watch(inputs.value, (newVal, oVal) => {
-  arr.value = getArray(); //[{},{}]
+  arr.value = getArray(); //[{k:inpu1,v:val1},{}]
   obj.value = getObject(); //{name1:vale1,name2:value2}
   //数组第一个值是outKeyName,第二个值是Object。很奇葩的格式。。。
   arrayObject.value = getArrayObject(); //[outKeyName, {keyName1:input1,keyName2:input2}]
@@ -78,13 +78,7 @@ const props = defineProps<dyAddKvProps>();
 onMounted(() => {
   //判断props.defaultValue是数组还是对象
   if (arr.value) {
-    //遍历数组 依次将defaultValue的props.keyName和 props.valueName赋值给inuts
-    for (let i = 0; i < arr.value.length; i++) {
-      inputs.value.push({
-        key: arr.value[i][props.keyName ?? "key"],
-        value: arr.value[i][props.valueName ?? "value"],
-      });
-    }
+    setArrayValue(arr.value);
   } else {
     //遍历对象 依次将key 赋值key和value
     for (const key in obj.value) {
@@ -100,6 +94,17 @@ interface InputItem {
   key: string;
   value: string;
 }
+
+//传入一个数组 转换并设置inputs的值
+const setArrayValue = (arrData: any[]) => {
+  //遍历数组 依次将defaultValue的props.keyName和 props.valueName赋值给inuts
+  for (let i = 0; i < arrData.length; i++) {
+    inputs.value.push({
+      key: arrData[i][props.keyName ?? "key"],
+      value: arrData[i][props.valueName ?? "value"],
+    });
+  }
+};
 
 // Method to add a new set of inputs
 const addInput = () => {
@@ -152,5 +157,5 @@ const getArrayObject = () => {
   }
   return result;
 };
-defineExpose({ getArray, getObject });
+defineExpose({ getArray, getObject, setArrayValue });
 </script>

@@ -43,6 +43,16 @@ export const useVpconfigStore = defineStore("vpconfig", {
     },
     setDefaultValue() {
       this.checkConfigKey("srcDir", "./");
+      this.checkConfigKey("locales", {
+        zh: {
+          label: "简体中文",
+          lang: "zh",
+        },
+        en: {
+          label: "English",
+          lang: "en",
+        },
+      });
       this.checkConfigKey("cacheDir", "./.vitepress/cache");
       this.checkConfigKey("title", "VitePressSimple");
       this.checkConfigKey("titleTemplate", "| simple config vitepress"); //标题后缀      this.checkConfigKey("description", ""); //标题后缀
@@ -51,13 +61,18 @@ export const useVpconfigStore = defineStore("vpconfig", {
       this.checkConfigKey("outDir", "./.vitepress/dist"); //项目的构建输出位置，相对于项目根目录
       this.checkConfigKey("map", false); //项目的构建输出位置，相对于项目根目录
       this.checkConfigKey("cleanUrls", false); //项目的构建输出位置，相对于项目根目录
+      this.checkConfigKey("socialLinks", []); //项目的构建输出位置，相对于项目根目录
       this.checkConfigKey2("themeConfig", "logo", ""); //站点图标
+      this.checkConfigKey2("themeConfig", "i18nRouting ", false); //多语言
       this.checkConfigKey2("themeConfig", "nav", []); //站点图标
       this.checkConfigKey2("themeConfig", "siteTitle", "VitePressSimple"); //站点名称
       this.checkConfigKey("rewrites", {
         "packages/pkg-a/src/pkg-a-docs.md": "pkg-a/index.md",
         "packages/pkg-b/src/pkg-b-docs.md": "pkg-b/index.md",
       }); //路由重写
+      //页脚
+      this.checkConfigKey3("themeConfig", "footer", "message", ""); //站点图标
+      this.checkConfigKey3("themeConfig", "footer", "copyright", ""); //站点图标
     },
     //检查配置key是否存在，不存在则设置默认值
     checkConfigKey(key: string, defaultValue: any) {
@@ -74,6 +89,18 @@ export const useVpconfigStore = defineStore("vpconfig", {
       }
       if (IsEmptyValue(this.configData[key1][key2])) {
         this.configData[key1][key2] = defaultValue;
+      }
+    },
+    checkConfigKey3(
+      key1: string,
+      key2: string,
+      key3: string,
+      defaultValue: any,
+    ) {
+      this.checkConfigKey(key1, {});
+      this.checkConfigKey2(key1, key2, {});
+      if (IsEmptyValue(this.configData[key1][key2][key3])) {
+        this.configData[key1][key2][key3] = defaultValue;
       }
     },
     //保存配置

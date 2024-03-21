@@ -15,9 +15,11 @@ import {
   Menu,
   message,
   Modal,
+  Popconfirm,
   Radio,
   Switch,
   Tabs,
+  Tag,
   Tooltip,
   Tree,
 } from "ant-design-vue";
@@ -52,6 +54,8 @@ app
   .use(Menu)
   .use(Empty)
   .use(Alert)
+  .use(Tag)
+  .use(Popconfirm)
   .use(Tooltip);
 
 app.use(InstallCodemirro);

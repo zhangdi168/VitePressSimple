@@ -54,26 +54,27 @@
             {{ isExpand(index) ? "收起" : "展开" }}
           </a-button>
         </div>
-        <div class="flex items-center mt-1">
-          <a-button
-            :disabled="!hasChildren(index)"
-            type="dashed"
-            @click="toggleIndex(index)"
-          >
-            <icon-park
-              v-if="isExpand(index)"
-              class="mr-1"
-              theme="outline"
-              type="expand-up"
-            />
-            <icon-park
-              v-if="!isExpand(index)"
-              class="mr-1"
-              theme="outline"
-              type="expand-down"
-            />
-            移动
-          </a-button>
+        <div class="flex items-center mt-1 mx-1">
+          <a-dropdown>
+            <a-button type="dashed">
+              <icon-park class="mr-1" theme="outline" type="move-one" />
+              移动
+            </a-button>
+            <template #overlay>
+              <a-menu>
+                <a-menu-item>
+                  <a href="javascript:;" @click="moveNav(index, 'forward')"
+                    >↑上移</a
+                  >
+                </a-menu-item>
+                <a-menu-item>
+                  <a href="javascript:;" @click="moveNav(index, 'backward')"
+                    >↓下移</a
+                  >
+                </a-menu-item>
+              </a-menu>
+            </template>
+          </a-dropdown>
         </div>
 
         <div class="mt-1 px-1">
@@ -88,9 +89,19 @@
           </a-tooltip>
         </div>
         <div class="mt-1 px-1">
-          <a-button type="primary" danger ghost @click="removeNav(index)"
-            >删除
-          </a-button>
+          <a-popconfirm
+            title="将删除当前导航以及子导航，是否继续？"
+            ok-text="Yes"
+            cancel-text="No"
+            :ok-button-props="{ danger: true }"
+            ok-type="default"
+            @confirm="confirmRemove"
+            @cancel="cancel"
+          >
+            <a-button type="primary" @click="setCurrIndex(index)" danger ghost
+              >删除
+            </a-button>
+          </a-popconfirm>
         </div>
       </div>
       <div
@@ -112,6 +123,7 @@
 import { IconPark } from "@icon-park/vue-next/es/all";
 import { computed, ref } from "vue";
 import { VpNav } from "@/utils/tree";
+import { ToastInfo } from "@/utils/Toast";
 
 interface Prop {
   level: number;
@@ -153,12 +165,51 @@ const removeNav = (index: number) => {
 };
 
 const addSubNav = (index: number) => {
-  if (!NavArray.value[index].items) {
+  isShowChildren.value[index] = true; //将当前父级展开
+  if (!hasChildren(index)) {
     NavArray.value[index].items = [{ text: "", link: "" }];
   } else {
     NavArray.value[index].items?.push({ text: "", link: "" });
   }
 };
+
+const currentIndex = ref<number>(0);
+const setCurrIndex = (index: number) => {
+  currentIndex.value = index;
+};
+const confirmRemove = (e: MouseEvent) => {
+  removeNav(currentIndex.value);
+};
+
+const cancel = (e: MouseEvent) => {
+  console.log(e);
+};
+
+function moveNav(index: number, direction: "forward" | "backward") {
+  // 检查索引和方向的合法性
+  if (
+    index < 0 ||
+    index >= NavArray.value.length ||
+    (direction !== "forward" && direction !== "backward")
+  ) {
+    return; // 不进行操作
+  }
+
+  let newIndex =
+    direction === "forward"
+      ? index === 0
+        ? NavArray.value.length - 1
+        : index - 1
+      : index === NavArray.value.length - 1
+        ? 0
+        : index + 1;
+
+  // 使用解构赋值交换两个元素的位置
+  [NavArray.value[index], NavArray.value[newIndex]] = [
+    NavArray.value[newIndex],
+    NavArray.value[index],
+  ];
+}
 </script>
 
 <style scoped></style>

@@ -48,7 +48,20 @@
       v-model="storeConfig.configData['lang']"
       tooltip="站点的 lang 属性。这将呈现为页面 HTML 中的 <html lang='en-US'> 标签"
       placeholder="请输入项目标题后缀"
-      label="语言"
+      label="html语言"
+    ></sim-input>
+
+    <sim-input
+      v-model="storeConfig.configData['themeConfig']['footer']['message']"
+      tooltip="由于设计原因，仅当页面不包含侧边栏时才会显示页脚。"
+      placeholder="请输入页脚提示信息"
+      label="页脚信息"
+    ></sim-input>
+    <sim-input
+      v-model="storeConfig.configData['themeConfig']['footer']['copyright']"
+      tooltip="由于设计原因，仅当页面不包含侧边栏时才会显示页脚。"
+      placeholder="请输入页脚版权信息"
+      label="页脚版权"
     ></sim-input>
     <sim-input
       v-model="storeConfig.configData['srcDir']"
@@ -89,6 +102,21 @@
       tooltip="设置为 true 时，生产应用程序将在 MPA 模式下构建。MPA 模式默认提供 零 JavaScript 支持，代价是禁用客户端导航，并且需要明确选择加入才能进行交互。"
       label="map模式"
     ></sim-switch>
+    <hr class="my-2" />
+    <div class="flex justify-center">
+      <a-button
+        @click="saveBaseConfig"
+        class="bg-blue-600 hover:bg-blue-500 text-white flex justify-center items-center"
+      >
+        <icon-park
+          class="mr-1"
+          strokeLinejoin="bevel"
+          theme="outline"
+          type="save"
+        />
+        保存配置
+      </a-button>
+    </div>
   </div>
 </template>
 <script setup lang="ts">
@@ -104,10 +132,13 @@ import {
 } from "../../../wailsjs/go/system/SystemService";
 import { ToastCheck, ToastError } from "@/utils/Toast";
 import { useIndexStore } from "@/store";
+import { IconPark } from "@icon-park/vue-next/es/all";
 
 const storeConfig = useVpconfigStore();
 const storeIndex = useIndexStore();
-
+const saveBaseConfig = () => {
+  storeConfig.saveConfig();
+};
 const selectLogo = async () => {
   let oriImagePath = await SelectFile("选择主页图片", "");
   console.log(oriImagePath, "filePath -- console.log");

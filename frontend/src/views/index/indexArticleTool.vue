@@ -2,7 +2,7 @@
   <!-- 头部-添加文章等 -->
   <div class="px-2 py-2 border-b">
     <div class="flex items-center justify-start" style="overflow-y: hidden">
-      <div @click="createDir" class="mx-1 cursor-pointer">
+      <div class="mx-1 cursor-pointer">
         <!--        <q-tooltip>新建文件(根目录)</q-tooltip>-->
         <a-dropdown arrow>
           <a class="ant-dropdown-link" @click.prevent>

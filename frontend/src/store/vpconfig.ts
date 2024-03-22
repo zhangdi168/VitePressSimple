@@ -43,6 +43,16 @@ export const useVpconfigStore = defineStore("vpconfig", {
     },
     setDefaultValue() {
       this.checkConfigKey("srcDir", "./");
+      this.checkConfigKey("assetsDir", "static");
+
+      this.checkConfigKey("darkModeSwitchLabel", "Appearance");
+      this.checkConfigKey("lightModeSwitchTitle", "Switch to light theme");
+      this.checkConfigKey("darkModeSwitchTitle", "Switch to dark theme");
+      this.checkConfigKey("sidebarMenuLabel", "Menu");
+      this.checkConfigKey("returnToTopLabel", "Return to top");
+      this.checkConfigKey("langMenuLabel", "Change language");
+      this.checkConfigKey("externalLinkIcon", false);
+
       this.checkConfigKey("locales", {
         zh: {
           label: "简体中文",
@@ -55,6 +65,10 @@ export const useVpconfigStore = defineStore("vpconfig", {
       });
       this.checkConfigKey("cacheDir", "./.vitepress/cache");
       this.checkConfigKey("title", "VitePressSimple");
+      this.checkConfigKey2("themeConfig", "docFooter", {
+        prev: "Previous page",
+        next: "Next Page",
+      });
       this.checkConfigKey("titleTemplate", "| simple config vitepress"); //标题后缀      this.checkConfigKey("description", ""); //标题后缀
       this.checkConfigKey("lang", "en-US"); //标题后缀      this.checkConfigKey("description", ""); //标题后缀
       this.checkConfigKey("base", "/"); //站点将部署到的 base URL。如果计划在子路径例如 GitHub 页面）下部署站点，则需要设置此项
@@ -62,8 +76,14 @@ export const useVpconfigStore = defineStore("vpconfig", {
       this.checkConfigKey("map", false); //项目的构建输出位置，相对于项目根目录
       this.checkConfigKey("cleanUrls", false); //项目的构建输出位置，相对于项目根目录
       this.checkConfigKey("socialLinks", []); //项目的构建输出位置，相对于项目根目录
+      this.checkConfigKey2("themeConfig", "editLink", {
+        text: "Edit this page on GitHub",
+        pattern:
+          "https://github.com/zhangdi168/VitePressSimple/edit/main/docs/:path",
+      }); //站点图标
+
       this.checkConfigKey2("themeConfig", "logo", ""); //站点图标
-      this.checkConfigKey2("themeConfig", "i18nRouting ", false); //多语言
+      this.checkConfigKey2("themeConfig", "i18nRouting", false); //多语言
       this.checkConfigKey2("themeConfig", "nav", []); //站点图标
       this.checkConfigKey2("themeConfig", "siteTitle", "VitePressSimple"); //站点名称
       this.checkConfigKey("rewrites", {

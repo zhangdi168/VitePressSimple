@@ -1,5 +1,5 @@
 <template>
-  <div class="mx-3 my-3" :class="props.isFullWidth ? 'w-full' : 'w-1/3'">
+  <div class="pl-3 my-3" :class="props.isFullWidth ? 'w-full' : 'w-1/3'">
     <div class="flex items-center justify-start">
       <div>
         <q-toggle

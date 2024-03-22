@@ -7,6 +7,7 @@ import i18n from "./i18n";
 import {
   Alert,
   Button,
+  Divider,
   Dropdown,
   Empty,
   Form,
@@ -55,6 +56,7 @@ app
   .use(Empty)
   .use(Alert)
   .use(Tag)
+  .use(Divider)
   .use(Popconfirm)
   .use(Tooltip);
 

@@ -3,6 +3,7 @@
     <a-input
       :auto-size="{ minRows: 1, maxRows: 3 }"
       v-model:value="model"
+      :disabled="props.disabled"
       :placeholder="props.placeholder ?? ''"
       class="w-full"
     >
@@ -26,6 +27,7 @@ interface Props {
   tooltip: string;
   label: string;
   isFullWidth?: boolean;
+  disabled?: boolean;
 }
 
 const props = defineProps<Props>();

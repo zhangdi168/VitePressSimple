@@ -44,13 +44,61 @@
       placeholder="请输入项目标题后缀"
       label="标题后缀"
     ></sim-input>
+
+    <!--    切换日/夜间文字- -->
+
+    <sim-input
+      v-model="storeConfig.configData['lightModeSwitchTitle']"
+      tooltip="自定义[悬停时]显示的浅色模式开关标题"
+      placeholder=""
+      label="悬停时浅色模式标题"
+    ></sim-input>
+    <sim-input
+      v-model="storeConfig.configData['darkModeSwitchTitle']"
+      tooltip="自定义[悬停时]显示的深色模式开关标题"
+      placeholder=""
+      label="悬停时深色模式标题"
+    ></sim-input>
+    <!--    仅手机端生效-->
+    <sim-input
+      v-model="storeConfig.configData['darkModeSwitchLabel']"
+      tooltip="自定义深色模式开关标签，该标签仅在移动端视图中显示"
+      placeholder=""
+      label="深色模式开关标签"
+    ></sim-input>
+    <sim-input
+      v-model="storeConfig.configData['sidebarMenuLabel']"
+      tooltip="自定义侧边栏菜单标签，该标签仅在移动端视图中显示"
+      placeholder=""
+      label="自定义侧边栏菜单标签"
+    ></sim-input>
+    <sim-input
+      v-model="storeConfig.configData['returnToTopLabel']"
+      tooltip="自定义返回顶部按钮的标签，该标签仅在移动端视图中显示"
+      placeholder=""
+      label="返回顶部按钮的标签"
+    ></sim-input>
+
+    <!--    多语言-->
     <sim-input
       v-model="storeConfig.configData['lang']"
       tooltip="站点的 lang 属性。这将呈现为页面 HTML 中的 <html lang='en-US'> 标签"
       placeholder="请输入项目标题后缀"
       label="html语言"
     ></sim-input>
+    <sim-input
+      v-model="storeConfig.configData['langMenuLabel']"
+      tooltip="自定义导航栏中语言切换按钮的 aria-label，仅当使用 i18n 时才使用此选项签"
+      placeholder="请输入项目标题后缀"
+      label="语言切换label"
+    ></sim-input>
 
+    <sim-switch
+      v-model="storeConfig.configData['externalLinkIcon']"
+      tooltip="是否在 markdown 中的外部链接旁显示外部链接图标"
+      placeholder="请输入项目标题后缀"
+      label="外部链接旁显示图标"
+    ></sim-switch>
     <sim-input
       v-model="storeConfig.configData['themeConfig']['footer']['message']"
       tooltip="由于设计原因，仅当页面不包含侧边栏时才会显示页脚。"
@@ -61,8 +109,38 @@
       v-model="storeConfig.configData['themeConfig']['footer']['copyright']"
       tooltip="由于设计原因，仅当页面不包含侧边栏时才会显示页脚。"
       placeholder="请输入页脚版权信息"
-      label="页脚版权"
+      label="页脚版权信息"
     ></sim-input>
+    <sim-input
+      v-model="storeConfig.configData['themeConfig']['editLink']['text']"
+      tooltip="编辑链接可让显示链接以编辑 Git 管理服务 (例如 GitHub 或 GitLab) 上的页面"
+      placeholder=""
+      label="编辑链接文本"
+    ></sim-input>
+    <sim-input
+      v-model="storeConfig.configData['themeConfig']['editLink']['pattern']"
+      tooltip="编辑链接可让显示链接以编辑 Git 管理服务 (例如 GitHub 或 GitLab) 上的页面"
+      placeholder=""
+      label="编辑链接地址"
+    ></sim-input>
+
+    <hr class="my-1 w-full" />
+    <sim-bool-input
+      class="w-full"
+      v-model="storeConfig.configData['themeConfig']['docFooter']['prev']"
+      input-label="上一页文本"
+      bool-tooltip="用于全局启用或禁用上一页链接"
+      bool-label="是否启用上一页连接"
+      input-tooltip="用于自定义出现在上一页链接上方的文本"
+    ></sim-bool-input>
+    <sim-bool-input
+      class="w-full"
+      v-model="storeConfig.configData['themeConfig']['docFooter']['next']"
+      input-label="下一页文本"
+      bool-tooltip="用于全局启用或禁用下一页链接"
+      bool-label="是否启用下一页连接"
+      input-tooltip="用于自定义出现在下一页链接上方的文本"
+    ></sim-bool-input>
     <sim-input
       v-model="storeConfig.configData['srcDir']"
       tooltip="markdown 页面的目录，相对于项目根目录"
@@ -83,8 +161,8 @@
 
     <sim-input
       v-model="storeConfig.configData['assetsDir']"
-      tooltip="指定放置生成的静态资源的目录。该路径应位于 outDir 内，并相对于它进行解析。"
-      label="生成静态路径"
+      tooltip="指定放置生成的静态资源的目录。该路径应位于构建路径内，并相对于它进行解析。"
+      label="生成静态目录"
     ></sim-input>
 
     <sim-input
@@ -102,21 +180,21 @@
       tooltip="设置为 true 时，生产应用程序将在 MPA 模式下构建。MPA 模式默认提供 零 JavaScript 支持，代价是禁用客户端导航，并且需要明确选择加入才能进行交互。"
       label="map模式"
     ></sim-switch>
-    <hr class="my-2" />
-    <div class="flex justify-center">
-      <a-button
-        @click="saveBaseConfig"
-        class="bg-blue-600 hover:bg-blue-500 text-white flex justify-center items-center"
-      >
-        <icon-park
-          class="mr-1"
-          strokeLinejoin="bevel"
-          theme="outline"
-          type="save"
-        />
-        保存配置
-      </a-button>
-    </div>
+  </div>
+  <hr class="my-2" />
+  <div class="flex justify-center">
+    <a-button
+      @click="saveBaseConfig"
+      class="bg-blue-600 hover:bg-blue-500 text-white flex justify-center items-center"
+    >
+      <icon-park
+        class="mr-1"
+        strokeLinejoin="bevel"
+        theme="outline"
+        type="save"
+      />
+      保存配置
+    </a-button>
   </div>
 </template>
 <script setup lang="ts">
@@ -133,9 +211,16 @@ import {
 import { ToastCheck, ToastError } from "@/utils/Toast";
 import { useIndexStore } from "@/store";
 import { IconPark } from "@icon-park/vue-next/es/all";
+import { onMounted, ref } from "vue";
+import SimBoolInput from "@/components/simBoolInput.vue";
 
 const storeConfig = useVpconfigStore();
 const storeIndex = useIndexStore();
+const isUsePrev = ref(false);
+const isUseNext = ref(false);
+const prevText = ref("");
+const nextText = ref("");
+onMounted(() => {});
 const saveBaseConfig = () => {
   storeConfig.saveConfig();
 };

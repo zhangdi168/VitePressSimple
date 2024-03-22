@@ -41,6 +41,7 @@ import { useVpconfigStore } from "@/store/vpconfig";
 import { IconPark } from "@icon-park/vue-next/es/all";
 import SimSwitch from "@/components/simSwitch .vue";
 import { onMounted, ref } from "vue";
+import { IsEmptyValue } from "@/utils/utils";
 
 const storeConfig = useVpconfigStore();
 const inputLangArray = ref<any[]>([]);
@@ -61,13 +62,19 @@ onMounted(() => {
 });
 const saveLangConfig = () => {
   //将数据转换成vitepress所需要的格式
-  let resultData: any = {};
+  // let resultData: any = {};
+  let resultData = storeConfig.configData["locales"];
   for (let i = 0; i < inputLangArray.value.length; i++) {
     let item = inputLangArray.value[i];
-    resultData[item.lang] = {
-      label: item.label,
-      lang: item.lang,
-    };
+    if (IsEmptyValue(resultData[item.lang])) {
+      resultData[item.lang] = {
+        label: item.label,
+        lang: item.lang,
+      };
+    } else {
+      resultData[item.lang].label = item.label;
+      resultData[item.lang].lang = item.lang;
+    }
   }
   storeConfig.configData["locales"] = resultData;
   // console.log(inputLangArray.value, "inputLangArray.value -- console.log");

@@ -75,6 +75,8 @@ export interface dyAddKvProps {
 }
 
 const props = defineProps<dyAddKvProps>();
+const emits = defineEmits(["removeItem"]);
+
 onMounted(() => {
   //判断props.defaultValue是数组还是对象
   if (arr.value) {
@@ -113,6 +115,12 @@ const addInput = () => {
 
 // Method to remove a set of inputs
 const removeInput = (index: number) => {
+  emits(
+    "removeItem",
+    inputs.value[index].key,
+    inputs.value[index].value,
+    index,
+  );
   inputs.value.splice(index, 1);
 };
 

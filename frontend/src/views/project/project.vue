@@ -64,6 +64,11 @@
         <setting-nav></setting-nav>
       </div>
     </div>
+    <div v-if="activeKey1 === '3'">
+      <div class="mt-1">
+        <setting-sidebar></setting-sidebar>
+      </div>
+    </div>
   </div>
 </template>
 <script setup lang="ts">
@@ -78,12 +83,13 @@ import { ToastError, ToastInfo, ToastSuccess } from "@/utils/Toast";
 import SimInput from "@/components/simInput.vue";
 import SettingLang from "@/views/project/settingLang.vue";
 import SettingSocial from "@/views/project/settingSocial.vue";
+import SettingSidebar from "@/views/project/settingSidebar.vue";
 
 const activeKey1 = ref("1");
 const activeKey2 = ref("1-1");
 const storeConfig = useVpconfigStore();
 onMounted(() => {
-  storeConfig.getConfigFileContent();
+  storeConfig.readVpConfig();
 });
 //保存配置
 const savePageConfig = () => {

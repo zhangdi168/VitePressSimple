@@ -7,6 +7,12 @@ export interface VpNav {
   items?: VpNav[];
 }
 
+export interface VpSidebar {
+  link: string;
+  text: string;
+  items?: VpSidebar[];
+}
+
 // 将VpNav类型数组转换为DataNode类型数组
 export function convertVpNavArrayToDataNode(vpNavArray: VpNav[]): DataNode[] {
   return vpNavArray.map((vpNav) => ({

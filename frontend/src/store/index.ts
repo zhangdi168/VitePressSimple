@@ -7,17 +7,14 @@ import {
 } from "../../wailsjs/go/services/ArticleTreeData";
 import { dto } from "../../wailsjs/go/models";
 import { getDirectoryPath } from "@/utils/file";
-import {
-  ConfigGet,
-  ConfigSet,
-  SelectDir,
-} from "../../wailsjs/go/system/SystemService";
+import { ConfigSet, SelectDir } from "../../wailsjs/go/system/SystemService";
 import { ConfigKeyProjectDir } from "@/constant/keys/config";
 import { useVpconfigStore } from "@/store/vpconfig";
 import { getFileNameFromPath, IsEmptyValue } from "@/utils/utils";
 import { useLayoutStore } from "@/store/layout";
 import { VitePressHome } from "@/types/home";
 import { moveTo } from "@/utils/system";
+import { defaultFrontMatter } from "@/configs/defaultFrontMatter";
 
 //定义首页的数据类型
 export interface indexStore {
@@ -55,7 +52,7 @@ export const useIndexStore = defineStore("index", {
   actions: {
     async loadTreeData() {
       const cfg = useVpconfigStore();
-      await cfg.getConfigFileContent();
+      await cfg.readVpConfig();
       //这里只需要传入相对路径即可
       this.articleTreeData = await ParseTreeData(cfg.srcDir);
     },
@@ -87,14 +84,6 @@ export const useIndexStore = defineStore("index", {
       this.currVueCode = "";
       this.currArticleFrontMatter = {};
     },
-    loadCurrProjectFromConfig() {
-      ConfigGet(ConfigKeyProjectDir).then((dir) => {
-        if (dir != "") {
-          this.currDocDir = dir;
-          this.loadTreeData();
-        }
-      });
-    },
     selectProjectDir() {
       SelectDir("请选择项目目录").then((dir) => {
         if (dir === "") {
@@ -110,19 +99,9 @@ export const useIndexStore = defineStore("index", {
       if (this.vditor) {
         const storeLayout = useLayoutStore();
         const content = this.vditor.getValue();
-        // this.currArticleFrontMatter["custom"] =
-        //   storeLayout.componentDyAddCustomFrontMatter.getObject();
-        // this.currArticleFrontMatter["head"]["meta"] =
-        //   storeLayout.componentDyAddHeader.getArray();
         const fontMatterStr = JSON.stringify(this.currArticleFrontMatter);
         const fullContent = `---\n${fontMatterStr}\n---\n${this.currVueCode}\n${content}`;
         //获取动态新增的数据
-
-        // metas
-        // console.log(
-        //
-        //   "storeLayout.refDyAddHeader.getArray() -- console.log",
-        // );
         WriteFileContent(this.currArticlePath, fullContent).then(() => {
           ToastInfo("已提交保存");
         });
@@ -140,47 +119,21 @@ export const useIndexStore = defineStore("index", {
     },
     //设置当前文章front matter
     setCurrArticleFrontMatter(frontMatter: any) {
+      for (const key in defaultFrontMatter) {
+        if (IsEmptyValue(frontMatter[key])) {
+          frontMatter[key] = defaultFrontMatter[key];
+        }
+      }
+      if (frontMatter["title"] == "")
+        frontMatter["title"] = this.CurrArticleTitle;
       this.currArticleFrontMatter = frontMatter;
-      this.checkFrontMatterKey("title", this.CurrArticleTitle);
-      this.checkFrontMatterKey("description", "");
-      this.checkFrontMatterKey("navbar", true); //是否显示导航
-      this.checkFrontMatterKey("sideBar", true); //是否显示侧栏
-      this.checkFrontMatterKey("footer", false); //是否显示页脚
-      this.checkFrontMatterKey("outline", 2); //是否显示页脚
-      this.checkFrontMatterKey("editLink", false); //是否显示编辑链接
-      this.checkFrontMatterKey("lastUpdated", true); //是否显示页脚更新时间
-      this.checkFrontMatterKey("aside", "left"); //侧边栏位置
-      this.checkFrontMatterKey("layout", "doc"); //页面类型
-      this.checkFrontMatterKey("custom", {}); //用户自定义变量
-      this.checkFrontMatterKey("hero", {}); //用户自定义变量
-      this.checkFrontMatterKey("features", []); //功能列表
-      this.checkFrontMatterKey2("head", "meta", []); //页面类型
-      this.checkFrontMatterKey2("hero", "image", {}); //页面类型
-      this.checkFrontMatterKey2("hero", "actions", []); //页面类型
+
       //当前页面是主页
-      if (this.currArticleFrontMatter["layout"] == "home") {
-        this.currHomeConfig = this.currArticleFrontMatter[
-          "hero"
-        ] as VitePressHome;
-      }
-      // console.log(frontMatter, "frontMatter -- console.log");
-    },
-    //判断front matter的key是否存在,不存在则设置默认值
-    checkFrontMatterKey(key: string, defaultValue: any) {
-      if (IsEmptyValue(this.currArticleFrontMatter[key])) {
-        this.currArticleFrontMatter[key] = defaultValue;
-      }
-    },
-    //判断front matter的key是否存在,不存在则设置默认值
-    checkFrontMatterKey2(key1: string, key2: string, defaultValue: any) {
-      if (IsEmptyValue(this.currArticleFrontMatter[key1])) {
-        this.currArticleFrontMatter[key1] = {};
-        this.currArticleFrontMatter[key1][key2] = defaultValue;
-        return;
-      }
-      if (IsEmptyValue(this.currArticleFrontMatter[key1][key2])) {
-        this.currArticleFrontMatter[key1][key2] = defaultValue;
-      }
+      // if (this.currArticleFrontMatter["layout"] == "home") {
+      //   this.currHomeConfig = this.currArticleFrontMatter[
+      //     "hero"
+      //   ] as VitePressHome;
+      // }
     },
   },
   getters: {
@@ -189,12 +142,20 @@ export const useIndexStore = defineStore("index", {
     ExpandKeys: (state) => state.expandKeys,
     SelectKeys: (state) => state.selectKeys,
     CurrCutPath: (state) => state.currCutPath,
-    getCurrVueCode: (state) => state.currVueCode,
+    // getCurrVueCode: (state) => state.currVueCode,
     CurrArticlePath: (state) => state.currArticlePath,
     CurrArticleFrontMatter: (state) => state.currArticleFrontMatter,
     Vditor: (state) => state.vditor,
     CurrProjectDir: (state) => state.currProjectDir,
-    CurrDocDir: (state) => state.currDocDir,
+    GetCurrDocDir: (state) => {
+      const cfg = useVpconfigStore();
+      const resultDir = state.currDocDir + cfg.srcDir;
+      if (cfg.IsI18nRouting) {
+        //如果设置了多语言 则文档的起始目录为 {源目录}/{lang}
+        return resultDir + "/" + cfg.currSettingLang;
+      }
+      return resultDir;
+    },
     CurrArticleTitle: (state) =>
       getFileNameFromPath(state.currArticlePath).replaceAll(".md", ""),
     GetArticleFrontMatter: (state) => state.currArticleFrontMatter,

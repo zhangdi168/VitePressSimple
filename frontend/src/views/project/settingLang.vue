@@ -1,23 +1,40 @@
 <template>
-  <div>
+  <div class="flex justify-start items-center">
     <sim-switch
       v-model="storeConfig.configData['themeConfig']['i18nRouting']"
       tooltip="将本地语言更改为 zh 会将 URL 从 /foo（或 /en/foo/）更改为 /zh/foo。可以通过将 themeConfig.i18nRouting 设置为 false 来禁用此行为"
       label="启用多语言"
     ></sim-switch>
   </div>
+
   <dy-add-k-v
+    v-if="storeConfig.IsI18nRouting"
     add-btn-text="添加语言类型"
-    key-placeholder="语言label"
-    value-placeholder="语言目录"
+    key-placeholder="语言目录"
+    value-placeholder="语言label"
     key-name="lang"
     value-name="label"
     ref="refAddLang"
+    @remove-item="removeLangItem"
     v-model:arr="inputLangArray"
   >
   </dy-add-k-v>
 
   <hr class="my-2" />
+  <div
+    class="flex justify-start items-center ml-2"
+    v-if="storeConfig.IsI18nRouting"
+  >
+    选择当前操作的语言：
+    <a-radio-group v-model:value="storeConfig.currSettingLang">
+      <a-radio-button
+        v-for="(item, index) in storeConfig.GetLangArray"
+        :key="index"
+        :value="item"
+        >{{ item }}
+      </a-radio-button>
+    </a-radio-group>
+  </div>
 
   <div class="flex justify-center">
     <a-button
@@ -39,7 +56,7 @@ import DyAddKV from "@/components/dyAddKV.vue";
 import SimInput from "@/components/simInput.vue";
 import { useVpconfigStore } from "@/store/vpconfig";
 import { IconPark } from "@icon-park/vue-next/es/all";
-import SimSwitch from "@/components/simSwitch .vue";
+import SimSwitch from "@/components/simSwitch.vue";
 import { onMounted, ref } from "vue";
 import { IsEmptyValue } from "@/utils/utils";
 
@@ -79,6 +96,11 @@ const saveLangConfig = () => {
   storeConfig.configData["locales"] = resultData;
   // console.log(inputLangArray.value, "inputLangArray.value -- console.log");
   storeConfig.saveConfig();
+};
+//移除一个元素后 刷新数据
+const removeLangItem = (k: string, v: string, removeIndex: number) => {
+  delete storeConfig.configData["locales"][k];
+  //storeConfig.configData["locales"][k] = undefined;
 };
 </script>
 

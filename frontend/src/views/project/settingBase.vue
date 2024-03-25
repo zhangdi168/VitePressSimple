@@ -200,7 +200,7 @@
 <script setup lang="ts">
 import { useVpconfigStore } from "@/store/vpconfig";
 import SimInput from "@/components/simInput.vue";
-import SimSwitch from "@/components/simSwitch .vue";
+import SimSwitch from "@/components/simSwitch.vue";
 import {
   CopyPath,
   GetPathExt,

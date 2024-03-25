@@ -15,7 +15,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import SimSwitch from "@/components/simSwitch .vue";
+import SimSwitch from "@/components/simSwitch.vue";
 import SimInput from "@/components/simInput.vue";
 import { onMounted, ref, watch } from "vue";
 

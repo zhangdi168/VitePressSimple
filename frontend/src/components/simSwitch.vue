@@ -9,6 +9,7 @@
           v-model="model"
         ></q-toggle>
       </div>
+
       <div>
         <a-tooltip :title="props.tooltip">
           <info-circle-outlined style="color: rgba(0, 0, 0, 0.45)" />

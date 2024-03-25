@@ -21,21 +21,7 @@
   </dy-add-k-v>
 
   <hr class="my-2" />
-  <div
-    class="flex justify-start items-center ml-2"
-    v-if="storeConfig.IsI18nRouting"
-  >
-    选择当前操作的语言：
-    <a-radio-group v-model:value="storeConfig.currSettingLang">
-      <a-radio-button
-        v-for="(item, index) in storeConfig.GetLangArray"
-        :key="index"
-        :value="item"
-        >{{ item }}
-      </a-radio-button>
-    </a-radio-group>
-  </div>
-
+  <change-language></change-language>
   <div class="flex justify-center">
     <a-button
       @click="saveLangConfig"
@@ -59,6 +45,7 @@ import { IconPark } from "@icon-park/vue-next/es/all";
 import SimSwitch from "@/components/simSwitch.vue";
 import { onMounted, ref } from "vue";
 import { IsEmptyValue } from "@/utils/utils";
+import ChangeLanguage from "@/components/changeLanguage.vue";
 
 const storeConfig = useVpconfigStore();
 const inputLangArray = ref<any[]>([]);

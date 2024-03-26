@@ -11,7 +11,9 @@
     add-btn-text="添加社交账户"
     key-placeholder="图标标识"
     value-placeholder="跳转链接"
-    v-model:obj="storeConfig.configData['socialLinks']"
+    key-name="icon"
+    value-name="link"
+    v-model:objs="storeConfig.configData['themeConfig']['socialLinks']"
   ></dy-add-k-v>
 
   <hr class="my-2" />
@@ -38,9 +40,10 @@ import { IconPark } from "@icon-park/vue-next/es/all";
 
 const storeConfig = useVpconfigStore();
 const soList = [
+  "github",
   "discord",
   "facebook",
-  "github",
+  "youtube",
   "instagram",
   "linkedin",
   "mastodon",
@@ -48,7 +51,6 @@ const soList = [
   "slack",
   "twitter",
   "x",
-  "youtube",
 ];
 const CopyText = async (text: string) => {
   try {

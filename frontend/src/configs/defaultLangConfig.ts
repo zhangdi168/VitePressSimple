@@ -1,4 +1,10 @@
 export const defaultThemeConfig: any = {
+  langMenuLabel: "多语言",
+  returnToTopLabel: "回到顶部",
+  sidebarMenuLabel: "菜单",
+  darkModeSwitchLabel: "主题",
+  lightModeSwitchTitle: "切换到浅色模式",
+  darkModeSwitchTitle: "切换到深色模式",
   //编辑链接
   editLink: {
     text: "Edit this page on GitHub",
@@ -10,7 +16,6 @@ export const defaultThemeConfig: any = {
     prev: "Previous page",
     next: "Next Page",
   },
-  i18nRouting: false,
   nav: [], //导航
   //侧边栏
   sidebar: {},
@@ -25,13 +30,5 @@ export const defaultThemeConfig: any = {
 };
 
 export const defaultLangConfig: any = {
-  lang: "zh",
-  description: "由 Vite 和 Vue 驱动的静态站点生成器",
-  langMenuLabel: "多语言",
-  returnToTopLabel: "回到顶部",
-  sidebarMenuLabel: "菜单",
-  darkModeSwitchLabel: "主题",
-  lightModeSwitchTitle: "切换到浅色模式",
-  darkModeSwitchTitle: "切换到深色模式",
   themeConfig: defaultThemeConfig,
 };

@@ -12,6 +12,7 @@ import {
   defaultLangConfig,
   defaultThemeConfig,
 } from "@/configs/defaultLangConfig";
+import { StringGlobalLang } from "@/configs/cnts";
 //这是一个简单的推荐store案例，可以在这里定义你的状态
 //新建pinia时把vpconfig全局替换成你的store名字
 export interface vpconfigStore {
@@ -22,6 +23,7 @@ export interface vpconfigStore {
   configData: any;
   currLangConfig: Record<string, any>;
   currSettingLang: string; //当前正在设置的语言
+  currLangConfigIsUseRootConfig: boolean; //当前语言配置是否指向根目录
 }
 
 export const useVpconfigStore = defineStore("vpconfig", {
@@ -33,6 +35,7 @@ export const useVpconfigStore = defineStore("vpconfig", {
     configData: {}, //所有语言的公共配置
     currLangConfig: {}, //当前编辑的语言的主题配置
     currSettingLang: "",
+    currLangConfigIsUseRootConfig: false, //当前语言配置是否指向根目录
   }),
   actions: {
     async initConfig() {
@@ -51,44 +54,51 @@ export const useVpconfigStore = defineStore("vpconfig", {
       this.fullSrcDir = await PathJoin([this.baseDir, this.srcDir]);
     },
     changeCurrLangConfig(lang: string) {
-      if (!this.IsI18nRouting) {
-        //没有启用多语言
-        this.currSettingLang = "";
-        this.currLangConfig = this.configData;
+      if (!this.IsUseI18n || lang === StringGlobalLang) {
+        this.currLangConfigUseRootConfig(); //当前语言配置指向根目录
         return;
       }
-
-      this.currSettingLang = lang;
+      this.currSettingLang = lang == "" ? this.getFirstLang() : lang;
       if (this.currSettingLang == "") {
-        const keys = Object.keys(this.configData["locales"] ?? []);
-        if (keys.length == 0) {
-          //没有配置多语言
-          this.currSettingLang = "";
-          this.currLangConfig = this.configData;
-          return;
-        } else {
-          this.currSettingLang = keys[0];
-        }
+        this.currLangConfigUseRootConfig(); //当前语言配置指向根目录
+        return;
+      }
+      const config = this.configData["locales"][this.currSettingLang];
+      this.currLangConfig = IsEmptyValue(config) ? defaultLangConfig : config;
+      this.checkCurrLangConfig(); //默认值检测
+      this.currLangConfigIsUseRootConfig = false;
+    },
+    //设置当前语言配置指向根目录
+    currLangConfigUseRootConfig() {
+      this.currSettingLang = StringGlobalLang;
+      this.currLangConfig = this.configData;
+      this.currLangConfigIsUseRootConfig = true;
+    },
+    getFirstLang() {
+      const keys = Object.keys(this.configData["locales"] ?? []);
+      if (keys.length == 0) {
+        //没有配置多语言
+        return "";
       } else {
-        const config = (this.currLangConfig =
-          this.configData["locales"][this.currSettingLang]);
-        if (IsEmptyValue(config)) {
-          this.currLangConfig = defaultLangConfig;
-        } else {
-          this.currLangConfig = config;
-        }
+        return keys[0];
       }
     },
-
     setDefaultValue() {
+      this.checkRootConfig();
+      //初始化当前的语言 使用第一个语言作为当前语言，如果没使用多语言，则currLangConfig指向默认配置
+      this.changeCurrLangConfig(StringGlobalLang);
+      this.checkCurrLangConfig();
+    },
+    checkRootConfig() {
       //设置 共享配置的默认值
       for (const key in defaultShareConfigValue) {
         if (IsEmptyValue(this.configData[key])) {
           this.configData[key] = defaultShareConfigValue[key];
         }
       }
-      //初始化当前的语言 使用第一个语言作为当前语言，如果没使用多语言，则currLangConfig指向默认配置
-      this.changeCurrLangConfig("");
+    },
+    //检查当前语言配置,如果不存在key则使用默认值
+    checkCurrLangConfig() {
       for (const key in defaultLangConfig) {
         if (IsEmptyValue(this.currLangConfig[key])) {
           this.currLangConfig[key] = defaultLangConfig[key];
@@ -103,21 +113,22 @@ export const useVpconfigStore = defineStore("vpconfig", {
         }
       }
     },
-
     //保存配置
     async saveConfig() {
-      if (this.currSettingLang == "") {
-        const res = await SaveConfig(JSON.stringify(this.configData));
-        ToastCheck(res);
-      }
+      console.log("saveConfig -- console.log");
+      const res = await SaveConfig(JSON.stringify(this.configData));
+      ToastCheck(res);
     },
   },
   getters: {
     //相对路径
     SrcDir: (state) => state.srcDir,
     //是否使用多语言
-    IsI18nRouting: (state) => {
-      return !!state.configData.themeConfig.i18nRouting;
+    IsUseI18n: (state) => {
+      return (
+        !IsEmptyValue(state.configData.locales) &&
+        Object.keys(state.configData.locales).length > 0
+      );
     },
     GetLangArray(state) {
       const langArray = [];

@@ -185,6 +185,8 @@ const cancel = (e: MouseEvent) => {
   console.log(e);
 };
 
+defineExpose({ addTopNav, addSubNav, removeNav, moveNav });
+
 function moveNav(index: number, direction: "forward" | "backward") {
   // 检查索引和方向的合法性
   if (

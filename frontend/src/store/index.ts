@@ -150,7 +150,7 @@ export const useIndexStore = defineStore("index", {
     GetCurrDocDir: (state) => {
       const cfg = useVpconfigStore();
       const resultDir = state.currDocDir + cfg.srcDir;
-      if (cfg.IsI18nRouting) {
+      if (cfg.IsUseI18n) {
         //如果设置了多语言 则文档的起始目录为 {源目录}/{lang}
         return resultDir + "/" + cfg.currSettingLang;
       }

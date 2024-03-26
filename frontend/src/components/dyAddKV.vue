@@ -54,11 +54,13 @@ import { IconPark } from "@icon-park/vue-next/es/all";
 //双向绑定的数据
 const arr = defineModel<Array<any>>("arr");
 const obj = defineModel<any>("obj");
+const objs = defineModel<any>("objs");
 const arrayObject = defineModel<any>("arrayObject");
 const inputs = ref<InputItem[]>([]);
 watch(inputs.value, (newVal, oVal) => {
-  arr.value = getArray(); //[{k:inpu1,v:val1},{}]
-  obj.value = getObject(); //{name1:vale1,name2:value2}
+  arr.value = getArray(); //[{key:inpu1,value:val1},{}]
+  obj.value = getObject(); //{propName1:vale1,propName2:value2}
+  objs.value = getObjects(); // [{propName1:val1,propName2:val1},{}]
   //数组第一个值是outKeyName,第二个值是Object。很奇葩的格式。。。
   arrayObject.value = getArrayObject(); //[outKeyName, {keyName1:input1,keyName2:input2}]
 });
@@ -150,6 +152,17 @@ const getObject = () => {
   }
   return result;
 };
+const getObjects = () => {
+  let result: any[] = [];
+  for (let i = 0; i < inputs.value.length; i++) {
+    let item: any = {};
+    item[props.keyName ?? "key"] = inputs.value[i].key;
+    item[props.valueName ?? "value"] = inputs.value[i].value;
+    result.push(item);
+  }
+  return result;
+};
+
 const getArrayObject = () => {
   let keyName = props.keyName || "key";
   let valueName = props.valueName || "value";

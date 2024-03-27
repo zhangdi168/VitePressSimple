@@ -9,13 +9,13 @@
       v-model:value="storeConfig.currSettingLang"
     >
       <a-radio-button :value="StringGlobalLang"
-        >{{ StringGlobalLang }}
+      >{{ StringGlobalLang }}
       </a-radio-button>
       <a-radio-button
         v-for="(item, index) in storeConfig.GetLangArray"
         :key="index"
         :value="item"
-        >{{ item }}
+      >{{ item }}
       </a-radio-button>
     </a-radio-group>
   </div>

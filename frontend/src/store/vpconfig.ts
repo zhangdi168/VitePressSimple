@@ -1,22 +1,16 @@
 import { defineStore } from "pinia";
-import {
-  GetVpConfigData,
-  SaveConfig,
-} from "../../wailsjs/go/vpsimpler/VpConfig";
+import { GetVpConfigData, SaveConfig } from "../../wailsjs/go/vpsimpler/VpConfig";
 import { IsEmptyValue, parseJsObject } from "@/utils/utils";
 import { ConfigGet, PathJoin } from "../../wailsjs/go/system/SystemService";
 import { ConfigKeyProjectDir } from "@/constant/keys/config";
 import { ToastCheck } from "@/utils/Toast";
 import { defaultShareConfigValue } from "@/configs/defaultShareConfig";
-import {
-  defaultLangConfig,
-  defaultThemeConfig,
-} from "@/configs/defaultLangConfig";
-import { StringGlobalLang } from "@/configs/cnts";
+import { defaultLangConfig, defaultThemeConfig } from "@/configs/defaultLangConfig";
+import { StringGlobalLang, StringRootLang } from "@/configs/cnts";
 //这是一个简单的推荐store案例，可以在这里定义你的状态
 //新建pinia时把vpconfig全局替换成你的store名字
 export interface vpconfigStore {
-  srcDir: string;
+  srcDir: string;//相对路径
   fullSrcDir: string;
   baseDir: string;
   isInstall: boolean;
@@ -28,14 +22,14 @@ export interface vpconfigStore {
 
 export const useVpconfigStore = defineStore("vpconfig", {
   state: (): vpconfigStore => ({
-    srcDir: "./",
-    fullSrcDir: "", //完整的doc文档原目录（绝对路径）
-    baseDir: "", //绝对路径
+    srcDir: "./",//doc目录（相对路径），取自配置文件
+    baseDir: "", //根目录（绝对路径，已经过join）
+    fullSrcDir: "", //doc目录（绝对路径,已经过join）
     isInstall: false,
     configData: {}, //所有语言的公共配置
     currLangConfig: {}, //当前编辑的语言的主题配置
     currSettingLang: "",
-    currLangConfigIsUseRootConfig: false, //当前语言配置是否指向根目录
+    currLangConfigIsUseRootConfig: false //当前语言配置是否指向根目录
   }),
   actions: {
     async initConfig() {
@@ -118,11 +112,26 @@ export const useVpconfigStore = defineStore("vpconfig", {
       console.log("saveConfig -- console.log");
       const res = await SaveConfig(JSON.stringify(this.configData));
       ToastCheck(res);
-    },
+    }
   },
   getters: {
     //相对路径
-    SrcDir: (state) => state.srcDir,
+    // SrcDir: (state) => state.srcDir,
+    //基于语言的相对路径
+    SrcLangDir: (state) => {
+      if (state.currSettingLang == StringGlobalLang || state.currSettingLang == StringRootLang) {
+        return state.srcDir;
+      } else {
+        return state.srcDir + "/" + state.currSettingLang;
+      }
+    },
+    FullSrcLangDir: (state) => {
+      if (state.currSettingLang == StringGlobalLang || state.currSettingLang == StringRootLang) {
+        return state.fullSrcDir;
+      } else {
+        return state.fullSrcDir + "/" + state.currSettingLang;
+      }
+    },
     //是否使用多语言
     IsUseI18n: (state) => {
       return (
@@ -130,12 +139,13 @@ export const useVpconfigStore = defineStore("vpconfig", {
         Object.keys(state.configData.locales).length > 0
       );
     },
+
     GetLangArray(state) {
       const langArray = [];
       for (const key in state.configData.locales) {
         langArray.push(key);
       }
       return langArray;
-    },
-  },
+    }
+  }
 });

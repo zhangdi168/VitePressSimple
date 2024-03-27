@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="showAddTopNav" class="flex justify-center ml-5">
+    <div v-if="showAddTopSidebar" class="flex justify-center ml-5">
       <a-button
         class="bg-blue-200 flex justify-center items-center hover:bg-blue-100"
         @click="addTopNav"
@@ -14,14 +14,14 @@
         新增顶级导航
       </a-button>
     </div>
-    <div v-for="(item, index) in NavArray" :key="index">
+    <div v-for="(item, index) in SidebarArray" :key="index">
       <div class="flex mt-1 justify-center items-center" :style="marginLeft">
         <div class="mt-1 px-1 w-1/5">
           <a-input
             :class="hasChildren(index) ? '' : 'text-blue-600'"
             placeholder="导航文本"
             class="w-full"
-            v-model:value="NavArray[index].text"
+            v-model:value="SidebarArray[index].text"
           />
         </div>
         <div class="mt-1 px-1 w-1/5">
@@ -30,7 +30,7 @@
             placeholder="跳转链接"
             :disabled="hasChildren(index)"
             class="w-full"
-            v-model:value="NavArray[index].link"
+            v-model:value="SidebarArray[index].link"
           ></a-input>
         </div>
         <div class="flex items-center mt-1">
@@ -64,12 +64,12 @@
               <a-menu>
                 <a-menu-item>
                   <a href="javascript:;" @click="moveNav(index, 'forward')"
-                    >↑上移</a
+                  >↑上移</a
                   >
                 </a-menu-item>
                 <a-menu-item>
                   <a href="javascript:;" @click="moveNav(index, 'backward')"
-                    >↓下移</a
+                  >↓下移</a
                   >
                 </a-menu-item>
               </a-menu>
@@ -84,7 +84,7 @@
               type="primary"
               ghost
               @click="addSubNav(index)"
-              >添加子级
+            >添加子级
             </a-button>
           </a-tooltip>
         </div>
@@ -99,22 +99,22 @@
             @cancel="cancel"
           >
             <a-button type="primary" @click="setCurrIndex(index)" danger ghost
-              >删除
+            >删除
             </a-button>
           </a-popconfirm>
         </div>
       </div>
       <div
         v-if="
-          NavArray[index].items &&
-          NavArray[index].items.length > 0 &&
+          SidebarArray[index].items &&
+          SidebarArray[index].items.length > 0 &&
           isExpand(index)
         "
       >
-        <dy-add-nav
+        <dy-add-sidebar
           :level="props.level + 1"
-          v-model:nav-array="NavArray[index].items"
-        ></dy-add-nav>
+          v-model:sidebar-array="SidebarArray[index].items"
+        ></dy-add-sidebar>
       </div>
     </div>
   </div>
@@ -123,11 +123,10 @@
 import { IconPark } from "@icon-park/vue-next/es/all";
 import { computed, ref } from "vue";
 import { VpNav } from "@/utils/tree";
-import { ToastInfo } from "@/utils/Toast";
 
 interface Prop {
   level: number;
-  showAddTopNav?: boolean;
+  showAddTopSidebar?: boolean;
 }
 
 const isShowChildren = ref<Record<number, boolean>>({});
@@ -144,32 +143,32 @@ const toggleIndex = (index: number) => {
 };
 //是否存在子导航(不存在说明是链接)
 const hasChildren = (index: number) => {
-  if (!NavArray.value[index]) return false;
-  if (!NavArray.value[index].items) return false;
-  if (!NavArray.value[index].items?.length) return false;
+  if (!SidebarArray.value[index]) return false;
+  if (!SidebarArray.value[index].items) return false;
+  if (!SidebarArray.value[index].items?.length) return false;
   return true;
 };
 const props = defineProps<Prop>();
-const NavArray = defineModel<VpNav[]>("navArray", {
-  required: true,
+const SidebarArray = defineModel<any[]>("sidebarArray", {
+  required: true
 });
 const marginLeft = computed(() => {
   return `margin-left:${(props.level - 1) * 30}px`;
 });
 //新增顶级导航
 const addTopNav = () => {
-  NavArray.value.push({ text: "", link: "", items: [] });
+  SidebarArray.value.push({ text: "", link: "", items: [] });
 };
 const removeNav = (index: number) => {
-  NavArray.value.splice(index, 1);
+  SidebarArray.value.splice(index, 1);
 };
 
 const addSubNav = (index: number) => {
   isShowChildren.value[index] = true; //将当前父级展开
   if (!hasChildren(index)) {
-    NavArray.value[index].items = [{ text: "", link: "" }];
+    SidebarArray.value[index].items = [{ text: "", link: "" }];
   } else {
-    NavArray.value[index].items?.push({ text: "", link: "" });
+    SidebarArray.value[index].items?.push({ text: "", link: "" });
   }
 };
 
@@ -191,7 +190,7 @@ function moveNav(index: number, direction: "forward" | "backward") {
   // 检查索引和方向的合法性
   if (
     index < 0 ||
-    index >= NavArray.value.length ||
+    index >= SidebarArray.value.length ||
     (direction !== "forward" && direction !== "backward")
   ) {
     return; // 不进行操作
@@ -200,16 +199,16 @@ function moveNav(index: number, direction: "forward" | "backward") {
   let newIndex =
     direction === "forward"
       ? index === 0
-        ? NavArray.value.length - 1
+        ? SidebarArray.value.length - 1
         : index - 1
-      : index === NavArray.value.length - 1
+      : index === SidebarArray.value.length - 1
         ? 0
         : index + 1;
 
   // 使用解构赋值交换两个元素的位置
-  [NavArray.value[index], NavArray.value[newIndex]] = [
-    NavArray.value[newIndex],
-    NavArray.value[index],
+  [SidebarArray.value[index], SidebarArray.value[newIndex]] = [
+    SidebarArray.value[newIndex],
+    SidebarArray.value[index]
   ];
 }
 </script>

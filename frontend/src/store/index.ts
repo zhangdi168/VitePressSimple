@@ -1,10 +1,7 @@
 import { defineStore } from "pinia";
 import Vditor from "vditor";
 import { ToastError, ToastInfo } from "@/utils/Toast";
-import {
-  ParseTreeData,
-  WriteFileContent,
-} from "../../wailsjs/go/services/ArticleTreeData";
+import { ParseTreeData, WriteFileContent } from "../../wailsjs/go/services/ArticleTreeData";
 import { dto } from "../../wailsjs/go/models";
 import { getDirectoryPath } from "@/utils/file";
 import { ConfigSet, SelectDir } from "../../wailsjs/go/system/SystemService";
@@ -46,7 +43,7 @@ export const useIndexStore = defineStore("index", {
     currStyleContent: "", //当前css代码
     currVueCode: "", //当前vue代码 js+css
     currArticleFrontMatter: {}, //当前文章front matter
-    currCutPath: "", //当前剪切路径
+    currCutPath: "" //当前剪切路径
   }),
   //定义actions
   actions: {
@@ -134,7 +131,7 @@ export const useIndexStore = defineStore("index", {
       //     "hero"
       //   ] as VitePressHome;
       // }
-    },
+    }
   },
   getters: {
     //大驼峰命名法
@@ -147,17 +144,17 @@ export const useIndexStore = defineStore("index", {
     CurrArticleFrontMatter: (state) => state.currArticleFrontMatter,
     Vditor: (state) => state.vditor,
     CurrProjectDir: (state) => state.currProjectDir,
-    GetCurrDocDir: (state) => {
-      const cfg = useVpconfigStore();
-      const resultDir = state.currDocDir + cfg.srcDir;
-      if (cfg.IsUseI18n) {
-        //如果设置了多语言 则文档的起始目录为 {源目录}/{lang}
-        return resultDir + "/" + cfg.currSettingLang;
-      }
-      return resultDir;
-    },
+    // GetCurrDocDir: (state) => {
+    //   const cfg = useVpconfigStore();
+    //   const resultDir = state.currDocDir + cfg.srcDir;
+    //   if (cfg.IsUseI18n) {
+    //     //如果设置了多语言 则文档的起始目录为 {源目录}/{lang}
+    //     return resultDir + "/" + cfg.currSettingLang;
+    //   }
+    //   return resultDir;
+    // },
     CurrArticleTitle: (state) =>
       getFileNameFromPath(state.currArticlePath).replaceAll(".md", ""),
-    GetArticleFrontMatter: (state) => state.currArticleFrontMatter,
-  },
+    GetArticleFrontMatter: (state) => state.currArticleFrontMatter
+  }
 });

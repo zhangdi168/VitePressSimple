@@ -19,7 +19,7 @@ export const defaultThemeConfig: any = {
   nav: [], //导航
   //侧边栏
   sidebar: {},
-
+  i18nRouting: true,
   //站点标题
   siteTitle: "VitePressSimple",
   //页脚配置

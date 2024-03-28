@@ -15,6 +15,11 @@
   <hr class="my-2" />
   <select-setting-lang></select-setting-lang>
   <div class="flex justify-start items-center my-2 mx-8">
+    <sim-switch
+      v-model="storeConfig.currLangConfig['themeConfig']['i18nRouting']"
+      tooltip="启用时路由会自动加上目录名，如将本地语言更改为zh时会把URL从/foo（或/en/foo/）更改为 /zh/foo"
+      label="启用i18n目录路由"
+    ></sim-switch>
     <sim-input
       v-model="storeConfig.currLangConfig['themeConfig']['siteTitle']"
       tooltip="即themeConfig.siteTitle 站点的标题，在logo后显示"
@@ -125,6 +130,7 @@ import { onMounted, ref } from "vue";
 import { IsEmptyValue } from "@/utils/utils";
 import SelectSettingLang from "@/components/selectSettingLang.vue";
 import SimBoolInput from "@/components/simBoolInput.vue";
+import SimSwitch from "@/components/simSwitch.vue";
 
 const storeConfig = useVpconfigStore();
 const inputLangArray = ref<any[]>([]);

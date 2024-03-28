@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="showAddTopSidebar" class="flex justify-center ml-5">
+    <div v-if="showAddTopSidebar" class="flex justify-start ml-5">
       <a-button
         class="bg-blue-200 flex justify-center items-center hover:bg-blue-100"
         @click="addTopNav"
@@ -11,15 +11,15 @@
           theme="outline"
           type="add-one"
         />
-        新增顶级导航
+        新增顶级侧栏
       </a-button>
     </div>
     <div v-for="(item, index) in SidebarArray" :key="index">
-      <div class="flex mt-1 justify-center items-center" :style="marginLeft">
+      <div class="flex mt-1 justify-start items-center" :style="marginLeft">
         <div class="mt-1 px-1 w-1/5">
           <a-input
             :class="hasChildren(index) ? '' : 'text-blue-600'"
-            placeholder="导航文本"
+            placeholder="侧栏文本"
             class="w-full"
             v-model:value="SidebarArray[index].text"
           />
@@ -78,7 +78,7 @@
         </div>
 
         <div class="mt-1 px-1">
-          <a-tooltip title="目前最高支持到第三级导航">
+          <a-tooltip title="目前最高支持到第三级侧栏">
             <a-button
               :disabled="props.level == 3"
               type="primary"
@@ -90,7 +90,7 @@
         </div>
         <div class="mt-1 px-1">
           <a-popconfirm
-            title="将删除当前导航以及子导航，是否继续？"
+            title="将删除当前侧栏以及子侧栏，是否继续？"
             ok-text="Yes"
             cancel-text="No"
             :ok-button-props="{ danger: true }"
@@ -141,7 +141,7 @@ const toggleIndex = (index: number) => {
     isShowChildren.value[index] = true;
   }
 };
-//是否存在子导航(不存在说明是链接)
+//是否存在子侧栏(不存在说明是链接)
 const hasChildren = (index: number) => {
   if (!SidebarArray.value[index]) return false;
   if (!SidebarArray.value[index].items) return false;
@@ -155,7 +155,7 @@ const SidebarArray = defineModel<any[]>("sidebarArray", {
 const marginLeft = computed(() => {
   return `margin-left:${(props.level - 1) * 30}px`;
 });
-//新增顶级导航
+//新增顶级侧栏
 const addTopNav = () => {
   SidebarArray.value.push({ text: "", link: "", items: [] });
 };

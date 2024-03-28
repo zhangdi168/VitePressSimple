@@ -51,11 +51,7 @@
     <!--    仅手机端生效-->
 
     <!--    多语言-->
-    <sim-switch
-      v-model="storeConfig.currLangConfig['themeConfig']['i18nRouting']"
-      tooltip="启用时路由会自动加上目录名，如将本地语言更改为zh时会把URL从/foo（或/en/foo/）更改为 /zh/foo"
-      label="启用i18n目录路由"
-    ></sim-switch>
+
     <sim-switch
       v-model="storeConfig.configData['themeConfig']['externalLinkIcon']"
       tooltip="是否在 markdown 中的外部链接旁显示外部链接图标"

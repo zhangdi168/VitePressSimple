@@ -16,11 +16,20 @@
           <q-list dense style="min-width: 100px">
             <q-item
               v-if="!title.endsWith('.md')"
-              @click="showPopCreate(treeKey)"
+              @click="showPopCreate(treeKey,'file')"
               clickable
               v-close-popup
             >
               <q-item-section>新建文章</q-item-section>
+            </q-item>
+            <q-separator />
+            <q-item
+              v-if="!title.endsWith('.md')"
+              @click="showPopCreate(treeKey,'dir')"
+              clickable
+              v-close-popup
+            >
+              <q-item-section>新建目录</q-item-section>
             </q-item>
             <q-separator />
             <q-item
@@ -72,6 +81,11 @@
       @submit-input-modal="onSubmitInputModalCreate"
     ></input-model>
     <input-model
+      ref="refModalCreateDir"
+      placeholder="请输入文件夹名称"
+      @submit-input-modal="onSubmitInputModalCreateDir"
+    ></input-model>
+    <input-model
       ref="refModalRename"
       placeholder="请输入新名称"
       @submit-input-modal="onSubmitInputModalRename"
@@ -84,21 +98,22 @@ import InputModel from "../../components/inputModel.vue";
 import {
   FileTextOutlined,
   DownOutlined,
-  ExclamationCircleOutlined,
+  ExclamationCircleOutlined
 } from "@ant-design/icons-vue";
 
 import matter from "gray-matter";
 import { IconPark } from "@icon-park/vue-next/es/all";
 import {
   AntTreeNodeDragEnterEvent,
-  AntTreeNodeDropEvent,
+  AntTreeNodeDropEvent
 } from "ant-design-vue/es/tree";
 import { useIndexStore } from "@/store";
 import {
+  CreateDir,
   CreateFile,
   DeletePath,
   ReadFileContent,
-  Rename,
+  Rename
 } from "../../../wailsjs/go/services/ArticleTreeData";
 import { getParentDirectory, removeMdExtension } from "@/utils/file";
 import { ToastCheck, ToastError, ToastInfo } from "@/utils/Toast";
@@ -140,7 +155,7 @@ const deletePath = (key: string) => {
     cancelText: "取消",
     onCancel() {
       Modal.destroyAll();
-    },
+    }
   });
 };
 
@@ -161,11 +176,11 @@ const handleClick = (key: string) => {
       let matterData = matter(content);
       let matchScriptArray = parseTagContent(
         matterData.content ?? "",
-        regexScript,
+        regexScript
       );
       let matchStyleArray = parseTagContent(
         matterData.content ?? "",
-        regexStyle,
+        regexStyle
       );
       let scriptContent = matchScriptArray[0] ?? "";
       let styleContent = matchStyleArray[0] ?? "";
@@ -195,15 +210,25 @@ const selectKeys = ref<string[]>([]);
 //弹出层回调 新建
 const refModalCreate = ref();
 const currentCreateParentPath = ref<string>();
-const showPopCreate = (path_: string) => {
-  refModalCreate.value.showModal("");
+const showPopCreate = (path_: string, typ: string) => {
   currentCreateParentPath.value = path_;
+  if (typ == "dir") {
+    refModalCreateDir.value.showModal("");
+  } else if (typ == "file") {
+    refModalCreate.value.showModal("");
+  }
 };
 const onSubmitInputModalCreate = async (value: string) => {
   let fullFile = currentCreateParentPath.value + "/" + value + ".md";
-  console.log(fullFile, "-----fullFile value");
   let res = await CreateFile(fullFile);
   if (ToastCheck(res, "文件创建完成")) await storeIndex.loadTreeData();
+};
+
+//创建子文件夹
+const refModalCreateDir = ref();
+const onSubmitInputModalCreateDir = async (value: string) => {
+  let res = await CreateDir(currentCreateParentPath.value + "/" + value);
+  if (ToastCheck(res, "文件夹创建完成")) await storeIndex.loadTreeData();
 };
 
 //弹出层回调 重命名

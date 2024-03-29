@@ -37,11 +37,27 @@
       </div>
       <div class="mt-1 px-1">
         <a-button
-          v-if="inputs.length > 0"
+          v-if="inputs.length > 0 && !props.removeConfirm"
           type="dashed"
           @click="removeInput(index)"
           >移除
         </a-button>
+        <a-popconfirm
+          v-if="props.removeConfirm"
+          class="ml-3 pt-1"
+          :title="props.removeConfirmText"
+          ok-text="确认移除"
+          cancel-text="算了"
+          :ok-button-props="{ class: 'bg-blue-6 00 text-white' }"
+          @confirm="removeInput(index)"
+        >
+          <a-button
+            v-if="inputs.length > 0"
+            type="dashed"
+            @click="removeInput(index)"
+            >移除
+          </a-button>
+        </a-popconfirm>
       </div>
     </div>
   </div>
@@ -61,6 +77,7 @@ watch(inputs.value, (newVal, oVal) => {
   arr.value = getArray(); //[{key:inpu1,value:val1},{}]
   obj.value = getObject(); //{propName1:vale1,propName2:value2}
   objs.value = getObjects(); // [{propName1:val1,propName2:val1},{}]
+
   //数组第一个值是outKeyName,第二个值是Object。很奇葩的格式。。。
   arrayObject.value = getArrayObject(); //[outKeyName, {keyName1:input1,keyName2:input2}]
 });
@@ -74,6 +91,8 @@ export interface dyAddKvProps {
   outKeyName?: string; //数组外层键名
   keyName?: string; //键名 默认key 仅对getArray有效
   valueName?: string; //值名 默认为value
+  removeConfirm?: boolean; //是否需要确认删除
+  removeConfirmText?: string; //确认删除文本
 }
 
 const props = defineProps<dyAddKvProps>();
@@ -117,18 +136,16 @@ const addInput = () => {
 
 // Method to remove a set of inputs
 const removeInput = (index: number) => {
-  emits(
-    "removeItem",
-    inputs.value[index].key,
-    inputs.value[index].value,
-    index,
-  );
+  let k = inputs.value[index].key;
+  let v = inputs.value[index].value;
   inputs.value.splice(index, 1);
+  emits("removeItem", k, v, index);
 };
 
 // Expose a method 返回数组
 //数组中对象key和value可以通过props.keyName和props.valueName来修改，默认为key和value
 const getArray = () => {
+  if (!inputs.value || inputs.value.length == 0) return [];
   let keyName = props.keyName || "key";
   let valueName = props.valueName || "value";
   let result = [];
@@ -141,11 +158,13 @@ const getArray = () => {
   result = result.filter((item) => {
     return item[keyName] !== "" && item[valueName] !== "";
   });
+
   return result;
 };
 
 // Get the inputs as an object 返回一个对象key是输入的key,value是输入的value
 const getObject = () => {
+  if (!inputs.value || inputs.value.length == 0) return {};
   let result: any = {};
   for (let i = 0; i < inputs.value.length; i++) {
     result[inputs.value[i].key] = inputs.value[i].value;
@@ -153,6 +172,7 @@ const getObject = () => {
   return result;
 };
 const getObjects = () => {
+  if (!inputs.value || inputs.value.length == 0) return [];
   let result: any[] = [];
   for (let i = 0; i < inputs.value.length; i++) {
     let item: any = {};

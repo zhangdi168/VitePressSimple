@@ -25,6 +25,8 @@ export function OpenFileBrowser(arg1:string):Promise<void>;
 
 export function OpenURL(arg1:string):Promise<void>;
 
+export function PathExists(arg1:string):Promise<boolean>;
+
 export function PathJoin(arg1:Array<string>):Promise<string>;
 
 export function SelectDir(arg1:string):Promise<string>;

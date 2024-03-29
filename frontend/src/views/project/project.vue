@@ -12,11 +12,11 @@
         <a-radio-button value="1">基础配置</a-radio-button>
         <a-radio-button value="2">导航管理</a-radio-button>
         <a-radio-button value="3">侧栏管理</a-radio-button>
-        <a-radio-button value="4">构建相关</a-radio-button>
+        <!--        <a-radio-button value="4">构建相关</a-radio-button>-->
       </a-radio-group>
     </div>
     <div v-if="activeKey1 === '1'">
-      <div class="mt-1">
+      <div class="mt-1 select-none">
         <a-tabs
           style="min-height: 55vh"
           v-model:activeKey="activeKey2"

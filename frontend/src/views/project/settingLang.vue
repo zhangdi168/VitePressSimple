@@ -1,12 +1,21 @@
 <template>
+  <div class="m-3">
+    <a-alert
+      type="success"
+      closable
+      :show-icon="false"
+      description="[语言列表不为空时则表示启用多语言],多语言环境下，每个语言都有独立的导航、侧边栏等配置。建议项目确定是否需要启用多语言，请勿随意删除语言，删除语言会同步删除该语言的导航、侧栏、多语言等配置。"
+    ></a-alert>
+  </div>
   <dy-add-k-v
-    v-if="storeConfig.IsUseI18n"
     add-btn-text="添加语言类型"
     key-placeholder="语言目录"
     value-placeholder="语言label"
     key-name="lang"
     value-name="label"
     ref="refAddLang"
+    :remove-confirm="true"
+    remove-confirm-text="将同步删除该语言配置、导航、侧栏等所有数据"
     @remove-item="removeLangItem"
     v-model:arr="inputLangArray"
   >
@@ -147,7 +156,6 @@ onMounted(() => {
     arrData.push(item);
   }
   refAddLang.value.setArrayValue(arrData);
-  // console.log(inputLangArray.value, "inputLangArray -- console.log");
 });
 const saveLangConfig = () => {
   //将数据转换成vitepress所需要的格式
@@ -166,12 +174,12 @@ const saveLangConfig = () => {
     }
   }
   storeConfig.configData["locales"] = resultData;
-  // console.log(inputLangArray.value, "inputLangArray.value -- console.log");
   storeConfig.saveConfig();
 };
 //移除一个元素后 刷新数据
 const removeLangItem = (k: string, v: string, removeIndex: number) => {
   delete storeConfig.configData["locales"][k];
+
   //storeConfig.configData["locales"][k] = undefined;
 };
 </script>

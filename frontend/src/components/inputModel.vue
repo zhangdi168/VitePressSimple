@@ -3,18 +3,19 @@
     <a-modal
       v-model:open="modalVisible"
       :closable="true"
-      :title="props.placeholder"
+      :title="props.title ? props.title : props.placeholder"
       centered
       okType="default"
       :ok-button-props="{
-        shape: 'round',
-        class: 'bg-green-600',
+        shape: '',
+        class: 'bg-blue-600 text-white',
       }"
       :cancel-button-props="{ ghost: true }"
       @ok="hideModal"
     >
       <div class="mt-4 mb-2">
         <a-textarea
+          ref="refInput"
           @keydown.prevent.enter="hideModal"
           v-model:value="val"
           :placeholder="props.placeholder"
@@ -25,7 +26,7 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { onMounted, ref } from "vue";
+import { nextTick, onMounted, ref } from "vue";
 
 interface inputModelProps {
   defaultValue?: string;
@@ -46,12 +47,13 @@ onMounted(() => {
 
 const modalVisible = ref<boolean>(false);
 const val = ref();
-
+const refInput = ref();
 const showModal = (val_: string = "") => {
-  if (val_ != "") {
-    val.value = val_;
-  }
+  val.value = val_;
   modalVisible.value = true;
+  nextTick(() => {
+    refInput.value.focus();
+  });
 };
 
 //隐藏弹出层并返回输入的值

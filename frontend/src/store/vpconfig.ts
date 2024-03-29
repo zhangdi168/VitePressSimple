@@ -6,7 +6,7 @@ import {
 import { IsEmptyValue, parseJsObject } from "@/utils/utils";
 import { ConfigGet, PathJoin } from "../../wailsjs/go/system/SystemService";
 import { ConfigKeyProjectDir } from "@/constant/keys/config";
-import { ToastCheck } from "@/utils/Toast";
+import { ToastCheck, ToastError } from "@/utils/Toast";
 import { defaultShareConfigValue } from "@/configs/defaultShareConfig";
 import {
   defaultLangConfig,
@@ -45,13 +45,18 @@ export const useVpconfigStore = defineStore("vpconfig", {
     async readVpConfig() {
       //获取项目根目录(绝对路径)
       this.baseDir = await PathJoin([await ConfigGet(ConfigKeyProjectDir)]);
-      const content = await GetVpConfigData();
-      const configData = parseJsObject(content);
-      if (configData == null) return;
+      const content = await GetVpConfigData(); //获取config.mts文件内容
+      if (content == "") {
+        ToastError("获取到的配置文件内容为空");
+        return false;
+      }
+      const configData = parseJsObject(content); //解析config.mts文件内容
+      if (IsEmptyValue(configData)) return false; //配置文件为空
       this.configData = configData ?? {};
       this.setDefaultValue(); //设置默认值
       this.srcDir = configData["srcDir"];
       this.fullSrcDir = await PathJoin([this.baseDir, this.srcDir]);
+      return true;
     },
     changeCurrLangConfig(lang: string) {
       if (!this.IsUseI18n || lang === StringGlobalLang) {

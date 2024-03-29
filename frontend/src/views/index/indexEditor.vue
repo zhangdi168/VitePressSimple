@@ -17,7 +17,7 @@ const storeLayout = useLayoutStore();
   <div style="height: 100vh; overflow-y: hidden">
     <!--    顶部工具栏-->
     <index-editor-tool
-      class="sticky z-10 top-0 py-1.5 border-b w-full"
+      class="sticky z-10 top-0 py-2 px-2 border-b w-full"
     ></index-editor-tool>
 
     <!--    编辑器写作和预览区-->

@@ -20,11 +20,6 @@
     v-show="isEmptyArray(storeIndex.articleTreeData)"
   >
     <a-empty description="先创建或者打开一个项目吧">
-      <!--      <template #description>-->
-      <!--        <span>-->
-      <!--          <a href="#api">Description</a>-->
-      <!--        </span>-->
-      <!--      </template>-->
       <a-button @click="createProject" class="bg-green-300" type="default"
         >新建项目
       </a-button>

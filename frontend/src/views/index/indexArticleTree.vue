@@ -16,20 +16,22 @@
           <q-list dense style="min-width: 100px">
             <q-item
               v-if="!title.endsWith('.md')"
-              @click="showPopCreate(treeKey,'file')"
+              @click="showPopCreate(treeKey, 'file')"
               clickable
               v-close-popup
             >
-              <q-item-section>新建文章</q-item-section>
+              <q-item-section>
+                <menu-item title="新建文章" icon="newlybuild"></menu-item>
+              </q-item-section>
             </q-item>
             <q-separator />
             <q-item
               v-if="!title.endsWith('.md')"
-              @click="showPopCreate(treeKey,'dir')"
+              @click="showPopCreate(treeKey, 'dir')"
               clickable
               v-close-popup
             >
-              <q-item-section>新建目录</q-item-section>
+              <menu-item title="新建目录" icon="folder-plus"></menu-item>
             </q-item>
             <q-separator />
             <q-item
@@ -37,19 +39,29 @@
               @click="showPopRename(title, treeKey)"
               v-close-popup
             >
-              <q-item-section>重命名</q-item-section>
+              <menu-item title="重命名" icon="file-editing"></menu-item>
             </q-item>
             <q-separator />
-            <!--            <q-item clickable v-close-popup>-->
-            <!--              <q-item-section>移到根目录</q-item-section>-->
-            <!--            </q-item>-->
+            <q-item clickable @click="copyPath(treeKey)" v-close-popup>
+              <menu-item title="复制" icon="copy-one"></menu-item>
+            </q-item>
+            <q-separator />
+            <q-item
+              v-if="!title.endsWith('.md') && storeIndex.currCopyPath != ''"
+              clickable
+              @click="pastePath(treeKey)"
+              v-close-popup
+            >
+              <menu-item title="粘贴" icon="intersection"></menu-item>
+            </q-item>
             <q-separator />
             <q-item clickable @click="deletePath(treeKey)" v-close-popup>
-              <q-item-section>删除</q-item-section>
+              <menu-item title="删除" icon="delete-five"></menu-item>
             </q-item>
           </q-list>
         </q-menu>
         <div
+          style="font-size: 1rem"
           class="tree-node-wrapper flex items-start space-x-2"
           @click.prevent="handleClick(treeKey)"
         >
@@ -64,9 +76,6 @@
           </div>
         </div>
       </template>
-      <!--      <template #switcherIcon="{ switcherCls }">-->
-      <!--        <down-outlined :class="switcherCls" />-->
-      <!--      </template>-->
 
       <template #icon="{ key }">
         <template v-if="key.endsWith('.md')">
@@ -77,8 +86,9 @@
 
     <input-model
       ref="refModalCreate"
-      placeholder="请输入文章标题"
-      @submit-input-modal="onSubmitInputModalCreate"
+      placeholder="请输入不带.md后缀的文章标题"
+      title="请输入文章标题"
+      @submit-input-modal="onSubmitInputModalCreateFile"
     ></input-model>
     <input-model
       ref="refModalCreateDir"
@@ -90,6 +100,12 @@
       placeholder="请输入新名称"
       @submit-input-modal="onSubmitInputModalRename"
     ></input-model>
+    <input-model
+      ref="refPasteName"
+      title="请确认新路径"
+      placeholder="请确认或修改新路径"
+      @submit-input-modal="onSubmitInputModalPasteName"
+    ></input-model>
   </div>
 </template>
 <script lang="ts" setup>
@@ -98,14 +114,14 @@ import InputModel from "../../components/inputModel.vue";
 import {
   FileTextOutlined,
   DownOutlined,
-  ExclamationCircleOutlined
+  ExclamationCircleOutlined,
 } from "@ant-design/icons-vue";
 
 import matter from "gray-matter";
 import { IconPark } from "@icon-park/vue-next/es/all";
 import {
   AntTreeNodeDragEnterEvent,
-  AntTreeNodeDropEvent
+  AntTreeNodeDropEvent,
 } from "ant-design-vue/es/tree";
 import { useIndexStore } from "@/store";
 import {
@@ -113,7 +129,7 @@ import {
   CreateFile,
   DeletePath,
   ReadFileContent,
-  Rename
+  Rename,
 } from "../../../wailsjs/go/services/ArticleTreeData";
 import { getParentDirectory, removeMdExtension } from "@/utils/file";
 import { ToastCheck, ToastError, ToastInfo } from "@/utils/Toast";
@@ -121,6 +137,15 @@ import { Modal } from "ant-design-vue";
 import { isEmptyArray } from "@/utils/array";
 import { useVpconfigStore } from "@/store/vpconfig";
 import { parseTagContent, regexScript, regexStyle } from "@/utils/parse";
+import {
+  CopyPath,
+  GetPathDir,
+  GetPathFileName,
+  PathExists,
+  PathJoin,
+} from "../../../wailsjs/go/system/SystemService";
+import { IsEmptyValue } from "@/utils/utils";
+import MenuItem from "@/components/menuItem.vue";
 
 const storeIndex = useIndexStore();
 const moreIconShownKeys = ref<string[]>([]);
@@ -155,8 +180,38 @@ const deletePath = (key: string) => {
     cancelText: "取消",
     onCancel() {
       Modal.destroyAll();
-    }
+    },
   });
+};
+//复制一个路径
+const copyPath = (path: string) => {
+  storeIndex.currCopyPath = path;
+  ToastInfo("路径：‘" + path + "’已经复制");
+};
+//粘贴路径
+const refPasteName = ref();
+const pastePath = async (baseDir: string) => {
+  if (storeIndex.currCopyPath == "") {
+    ToastError("没有复制路径");
+    return;
+  }
+  let oldName = await GetPathFileName(storeIndex.currCopyPath);
+  let fullPath = await PathJoin([baseDir, oldName]);
+  refPasteName.value.showModal(fullPath);
+};
+//提交粘贴新路径
+const onSubmitInputModalPasteName = async (fullPath: string) => {
+  let isExists = await PathExists(fullPath);
+  let isDir = !fullPath.endsWith(".md");
+  if (isExists) {
+    ToastError(`${isDir ? "目录" : "文章"}路径已存在：${fullPath}`);
+    return;
+  }
+  let res = await CopyPath(storeIndex.currCopyPath, fullPath, isDir);
+  if (ToastCheck(res, "已成功复制")) {
+    storeIndex.currCopyPath = "";
+    await storeIndex.loadTreeData();
+  }
 };
 
 //双击标题展开菜单
@@ -176,11 +231,11 @@ const handleClick = (key: string) => {
       let matterData = matter(content);
       let matchScriptArray = parseTagContent(
         matterData.content ?? "",
-        regexScript
+        regexScript,
       );
       let matchStyleArray = parseTagContent(
         matterData.content ?? "",
-        regexStyle
+        regexStyle,
       );
       let scriptContent = matchScriptArray[0] ?? "";
       let styleContent = matchStyleArray[0] ?? "";
@@ -218,7 +273,7 @@ const showPopCreate = (path_: string, typ: string) => {
     refModalCreate.value.showModal("");
   }
 };
-const onSubmitInputModalCreate = async (value: string) => {
+const onSubmitInputModalCreateFile = async (value: string) => {
   let fullFile = currentCreateParentPath.value + "/" + value + ".md";
   let res = await CreateFile(fullFile);
   if (ToastCheck(res, "文件创建完成")) await storeIndex.loadTreeData();

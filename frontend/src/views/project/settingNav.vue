@@ -5,6 +5,7 @@
       <select-setting-lang></select-setting-lang>
     </div>
     <a-button
+      v-if="storeConfig.IsUseI18n"
       class="bg-blue-100 mx-2 flex justify-center items-center hover:bg-blue-100"
       @click="copyNav()"
     >
@@ -19,6 +20,7 @@
       导航数据到剪贴板
     </a-button>
     <a-button
+      v-if="storeConfig.IsUseI18n"
       class="bg-green-200 mx-2 flex justify-center items-center hover:bg-blue-100"
       :disabled="!copyNavData"
       @click="cuttingNav()"
@@ -31,7 +33,7 @@
         type="cutting-one"
       />
       粘贴<span class="text-red">{{ copyNavLang }}</span
-    >到当前导航
+      >到当前导航
     </a-button>
     <!--    保存导航-->
     <div class="flex justify-end">
@@ -60,8 +62,6 @@
         />
         保存当前导航
       </a-button>
-
-
     </div>
   </div>
 
@@ -103,7 +103,7 @@ const copyNavLang = ref("");
 const copyNav = () => {
   copyNavLang.value = storeConfig.currSettingLang;
   copyNavData.value = DeepClone(
-    storeConfig.currLangConfig["themeConfig"]["nav"]
+    storeConfig.currLangConfig["themeConfig"]["nav"],
   );
 };
 //粘贴导航
@@ -122,7 +122,7 @@ const formatNavData = (data: VpNav[]) => {
         text: subItem.text,
         link: subItem.items?.length ? undefined : subItem.link,
         // Recursive call to handle nested items
-        items: subItem.items?.length ? formatNavData(subItem.items) : undefined
+        items: subItem.items?.length ? formatNavData(subItem.items) : undefined,
       }));
     } else {
       // If 'items' doesn't exist or its length is 0
@@ -134,7 +134,7 @@ const formatNavData = (data: VpNav[]) => {
 };
 const saveNav = () => {
   const formatData: VpNav[] = formatNavData(
-    storeConfig.currLangConfig["themeConfig"]["nav"]
+    storeConfig.currLangConfig["themeConfig"]["nav"],
   );
   console.log(formatData, "formatData -- console.log");
   storeConfig.currLangConfig["themeConfig"]["nav"] = formatData;

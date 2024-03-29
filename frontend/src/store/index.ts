@@ -1,7 +1,10 @@
 import { defineStore } from "pinia";
 import Vditor from "vditor";
 import { ToastError, ToastInfo } from "@/utils/Toast";
-import { ParseTreeData, WriteFileContent } from "../../wailsjs/go/services/ArticleTreeData";
+import {
+  ParseTreeData,
+  WriteFileContent,
+} from "../../wailsjs/go/services/ArticleTreeData";
 import { dto } from "../../wailsjs/go/models";
 import { getDirectoryPath } from "@/utils/file";
 import { ConfigSet, SelectDir } from "../../wailsjs/go/system/SystemService";
@@ -12,6 +15,7 @@ import { useLayoutStore } from "@/store/layout";
 import { VitePressHome } from "@/types/home";
 import { moveTo } from "@/utils/system";
 import { defaultFrontMatter } from "@/configs/defaultFrontMatter";
+import { HistoryProject } from "@/utils/historyProject";
 
 //定义首页的数据类型
 export interface indexStore {
@@ -20,7 +24,8 @@ export interface indexStore {
   expandKeys: string[];
   selectKeys: string[];
   currArticlePath: string; //当前文章路径
-  currCutPath: string;
+  currCopyPath: string;
+  searchValue: string; //搜索值
   currHomeConfig?: VitePressHome; //当前主页配置
   currScriptContent: string; //当前js代码
   currStyleContent: string; //当前css代码
@@ -38,22 +43,29 @@ export const useIndexStore = defineStore("index", {
     currDocDir: "",
     expandKeys: [],
     selectKeys: [],
+    searchValue: "", //搜索值
     currArticlePath: "", //当前文章路径
     currScriptContent: "", //当前js代码
     currStyleContent: "", //当前css代码
     currVueCode: "", //当前vue代码 js+css
     currArticleFrontMatter: {}, //当前文章front matter
-    currCutPath: "" //当前剪切路径
+    currCopyPath: "", //当前剪切路径
   }),
   //定义actions
   actions: {
     async loadTreeData() {
       const cfg = useVpconfigStore();
-      await cfg.readVpConfig();
-      //这里只需要传入相对路径即可
+      const isReadCfgOk = await cfg.readVpConfig();
       this.articleTreeData = await ParseTreeData(cfg.srcDir);
     },
-
+    //切换项目
+    changeProject(dir: string) {
+      this.currProjectDir = dir;
+      HistoryProject.add(dir); //加入到历史数据中
+      ConfigSet(ConfigKeyProjectDir, dir).then(() => {
+        this.loadTreeData();
+      });
+    },
     //设置编辑器的实例
     async setVditorInstance(vditor_: Vditor | null) {
       this.vditor = vditor_;
@@ -77,7 +89,7 @@ export const useIndexStore = defineStore("index", {
     },
     clearCurrData() {
       this.currArticlePath = "";
-      this.currCutPath = "";
+      this.currCopyPath = "";
       this.currVueCode = "";
       this.currArticleFrontMatter = {};
     },
@@ -109,7 +121,7 @@ export const useIndexStore = defineStore("index", {
       this.currArticlePath = path;
     },
     setCurrCutPath(path: string) {
-      this.currCutPath = path;
+      this.currCopyPath = path;
     },
     setCurrVueCode(code: string) {
       this.currVueCode = code;
@@ -131,14 +143,14 @@ export const useIndexStore = defineStore("index", {
       //     "hero"
       //   ] as VitePressHome;
       // }
-    }
+    },
   },
   getters: {
     //大驼峰命名法
     ArticleTreeData: (state) => state.articleTreeData,
     ExpandKeys: (state) => state.expandKeys,
     SelectKeys: (state) => state.selectKeys,
-    CurrCutPath: (state) => state.currCutPath,
+    CurrCutPath: (state) => state.currCopyPath,
     // getCurrVueCode: (state) => state.currVueCode,
     CurrArticlePath: (state) => state.currArticlePath,
     CurrArticleFrontMatter: (state) => state.currArticleFrontMatter,
@@ -155,6 +167,6 @@ export const useIndexStore = defineStore("index", {
     // },
     CurrArticleTitle: (state) =>
       getFileNameFromPath(state.currArticlePath).replaceAll(".md", ""),
-    GetArticleFrontMatter: (state) => state.currArticleFrontMatter
-  }
+    GetArticleFrontMatter: (state) => state.currArticleFrontMatter,
+  },
 });

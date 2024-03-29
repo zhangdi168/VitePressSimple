@@ -22,12 +22,12 @@ func NewVpManager(fs_ embed.FS) *VpManager {
 
 func (s *VpManager) CreateProject(title, description, dir string) string {
 	//1.检查node环境
-	if !NodejsIsInstall() {
-		return "环境监测不通过：nodejs is not install"
-	}
-	if !NpmIsInstall() {
-		return "环境监测不通过：npm is not install"
-	}
+	//if !NodejsIsInstall() {
+	//	return "环境监测不通过：nodejs is not install"
+	//}
+	//if !NpmIsInstall() {
+	//	return "环境监测不通过：npm is not install"
+	//}
 
 	//2.获取node版本
 	if !strings.Contains(GetNodeVersion(), "v18") {

@@ -148,7 +148,7 @@ func (s *ArticleTreeData) CreateFile(fullPath string) string {
 	}
 	defer file.Close() // 在函数结束时确保关闭文件
 	// 写入内容到文件（如果需要的话）
-	content := []byte("# Hello vitrpress <br /> > this is a  demo file created by vitepress simple!")
+	content := []byte("# Hello VitePressSimple")
 	if _, err := file.Write(content); err != nil {
 		return "Error writing to file:" + err.Error()
 	}

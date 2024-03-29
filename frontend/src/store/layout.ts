@@ -11,7 +11,7 @@ export interface layoutStore {
 export const useLayoutStore = defineStore("layout", {
   state: (): layoutStore => ({
     showEditorView: true,
-    editorToolIconSize: 26,
+    editorToolIconSize: 24,
     componentDyAddHeader: null,
     componentDyAddCustomFrontMatter: null,
   }),

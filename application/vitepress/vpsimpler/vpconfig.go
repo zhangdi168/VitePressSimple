@@ -11,7 +11,7 @@ import (
 	"wailstemplate/application/vitepress/tsparser"
 )
 
-var ConfigNames = []string{"config.mts", "config.ts", "config.js"}
+var ConfigNames = []string{"config.mts", "config.ts", "config.js", "index.js", "index.ts", "index.mts"}
 var defaultFileName = "config.mts"
 
 // VpConfig 操作配置文件相关的类
@@ -26,6 +26,7 @@ func NewVpConfig() *VpConfig {
 func (s *VpConfig) GetVpConfigData() string {
 	path, err := s.GetConfigPath()
 	if err != nil {
+		mylog.Error("获取vitepress配置文件路径异常" + err.Error())
 		return ""
 	}
 	content, err := filehelper.ReadContent(path)

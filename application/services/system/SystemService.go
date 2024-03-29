@@ -103,6 +103,11 @@ func (s *SystemService) CheckNetConnect() string {
 	return ""
 }
 
+// PathExists 监测一个路径是否存在
+func (s *SystemService) PathExists(path string) bool {
+	return filehelper.FileExists(path)
+}
+
 // SelectDir 选择一个文件夹
 func (s *SystemService) SelectDir(title string) string {
 	ctx := wailshelper.GetCtx()

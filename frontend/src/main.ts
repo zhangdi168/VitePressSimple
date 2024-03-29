@@ -13,6 +13,7 @@ import {
   Form,
   Input,
   InputNumber,
+  List,
   Menu,
   message,
   Modal,
@@ -47,6 +48,7 @@ app
   .use(Input)
   .use(Form)
   .use(Tabs)
+  .use(List)
   .use(Switch)
   .use(InputNumber)
   .use(Radio)

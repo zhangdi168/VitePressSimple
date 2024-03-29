@@ -18,7 +18,8 @@
       </div>
       <div class="mt-2">
         <a-alert
-          description="基于VitePress1.0.0-rc.45创建,创建前请确保已经安装nodejs和npm"
+          closable
+          description="基于VitePress1.0.1创建,创建前请确保已经安装nodejs和npm"
           type="success"
         />
       </div>
@@ -106,6 +107,7 @@ import { InfoCircleOutlined, FileOutlined } from "@ant-design/icons-vue";
 import { SelectDir } from "../../../wailsjs/go/system/SystemService";
 import { CreateProject } from "../../../wailsjs/go/vpsimpler/VpManager";
 import { ToastError, ToastInfo } from "@/utils/Toast";
+import { HistoryProject } from "@/utils/historyProject";
 
 const formData = ref<ProjectCreate>({
   title: "我的vitepress站点",
@@ -129,6 +131,7 @@ const Create = () => {
       ToastError(res);
     } else {
       ToastInfo("创建完成");
+      HistoryProject.add(formData.value.dir); //添加到历史记录
     }
   });
 };

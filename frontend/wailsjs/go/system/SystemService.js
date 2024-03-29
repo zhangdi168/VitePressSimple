@@ -50,6 +50,10 @@ export function OpenURL(arg1) {
   return window['go']['system']['SystemService']['OpenURL'](arg1);
 }
 
+export function PathExists(arg1) {
+  return window['go']['system']['SystemService']['PathExists'](arg1);
+}
+
 export function PathJoin(arg1) {
   return window['go']['system']['SystemService']['PathJoin'](arg1);
 }

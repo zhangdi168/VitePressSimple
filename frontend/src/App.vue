@@ -13,13 +13,15 @@ import { ConfigGet } from "../wailsjs/go/system/SystemService";
 import { ConfigKeyProjectDir } from "@/constant/keys/config";
 import { useIndexStore } from "@/store";
 import { HistoryProject } from "@/utils/historyProject";
+import { useHistoryStore } from "@/store/history";
 //在这里可以设置默认的模板
 const useTemplateIndex = ref(2);
 const storeIndex = useIndexStore();
 const vpConfig = useVpconfigStore();
 onMounted(async () => {
-  await HistoryProject.initList(); //初始化历史数据
-  await vpConfig.initConfig();
+  // await HistoryProject.initList(); //初始化历史数据
+  // await vpConfig.initConfig();
+  await useHistoryStore().initList();
 });
 </script>
 <style lang="scss"></style>

@@ -7,7 +7,11 @@ import {
 } from "../../wailsjs/go/services/ArticleTreeData";
 import { dto } from "../../wailsjs/go/models";
 import { getDirectoryPath } from "@/utils/file";
-import { ConfigSet, SelectDir } from "../../wailsjs/go/system/SystemService";
+import {
+  ConfigSet,
+  PathExists,
+  SelectDir,
+} from "../../wailsjs/go/system/SystemService";
 import { ConfigKeyProjectDir } from "@/constant/keys/config";
 import { useVpconfigStore } from "@/store/vpconfig";
 import { getFileNameFromPath, IsEmptyValue } from "@/utils/utils";
@@ -16,6 +20,7 @@ import { VitePressHome } from "@/types/home";
 import { moveTo } from "@/utils/system";
 import { defaultFrontMatter } from "@/configs/defaultFrontMatter";
 import { HistoryProject } from "@/utils/historyProject";
+import { useHistoryStore } from "@/store/history";
 
 //定义首页的数据类型
 export interface indexStore {
@@ -55,14 +60,26 @@ export const useIndexStore = defineStore("index", {
   actions: {
     async loadTreeData() {
       const cfg = useVpconfigStore();
-      const isReadCfgOk = await cfg.readVpConfig();
-      this.articleTreeData = await ParseTreeData(cfg.srcDir);
+      if (await cfg.ExistsProjectDir()) {
+        await cfg.readVpConfig(); //读取配置 以及组装路径
+        this.articleTreeData = await ParseTreeData(cfg.srcDir);
+      }
     },
     //切换项目
-    changeProject(dir: string) {
-      this.currProjectDir = dir;
-      HistoryProject.add(dir); //加入到历史数据中
+    async changeProject(dir: string) {
+      if (dir == "") {
+        ToastError("不能切换为空路径项目");
+        return;
+      }
+      const isExists = await PathExists(dir);
+      if (!isExists) {
+        ToastError("项目路径不存在:" + dir);
+        useHistoryStore().remove(dir);
+        return;
+      }
+      HistoryProject.add(dir); //加入到历史项目数据中
       ConfigSet(ConfigKeyProjectDir, dir).then(() => {
+        this.clearCurrData();
         this.loadTreeData();
       });
     },

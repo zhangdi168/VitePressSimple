@@ -13,10 +13,10 @@
       :cancel-button-props="{ ghost: true }"
       @ok="OpenDir"
     >
-      <div class="mx-5 my-2">
+      <div class="mr-4 my-2">
         <a-alert
           closable
-          description="目前仅支持打开由VitePressSimple创建的项目,如果不是，您可以新建项目后手动将文档目录迁移到新项目目录下"
+          description="若项目不是由VPSimple创建，配置文件可能读取失败"
           type="success"
         />
       </div>
@@ -30,7 +30,11 @@
             <template #renderItem="{ item }">
               <a-list-item>
                 <template #actions>
-                  <a-button class="bg-blue-500 text-white">打开</a-button>
+                  <a-button
+                    @click="openProject(item.title)"
+                    class="bg-blue-500 text-white"
+                    >打开</a-button
+                  >
                 </template>
                 <a-list-item-meta>
                   <template #title>
@@ -52,10 +56,14 @@
 import { SelectDir } from "../../../wailsjs/go/system/SystemService";
 import { onMounted, ref } from "vue";
 import { HistoryProject } from "@/utils/historyProject";
+import { useIndexStore } from "@/store";
+import { useHistoryStore } from "@/store/history";
 
 const OpenDir = () => {
   SelectDir("请选择项目存放目录").then((res: string) => {
-    console.log(res, "-----res value");
+    if (res != "") {
+      openProject(res);
+    }
   });
 };
 
@@ -64,18 +72,21 @@ interface DataItem {
 }
 
 const data = ref<DataItem[]>([]);
+const storeHistory = useHistoryStore();
 onMounted(() => {
-  console.log(
-    HistoryProject.currentList,
-    "HistoryProject.currentList.length -- console.log",
-  );
-  for (let i = 0; i < HistoryProject.currentList.length; i++) {
+  for (let i = 0; i < storeHistory.currentList.length; i++) {
     data.value.push({
-      title: HistoryProject.currentList[i],
+      title: storeHistory.currentList[i],
     });
   }
 });
 
+//切换项目
+const openProject = (dir: string) => {
+  useIndexStore().changeProject(dir);
+  useHistoryStore().add(dir);
+  modalVisible.value = false; //弹窗关闭
+};
 interface inputModelProps {
   defaultValue?: string;
   placeholder?: string;

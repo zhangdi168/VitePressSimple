@@ -4,15 +4,21 @@ import {
   SaveConfig,
 } from "../../wailsjs/go/vpsimpler/VpConfig";
 import { IsEmptyValue, parseJsObject } from "@/utils/utils";
-import { ConfigGet, PathJoin } from "../../wailsjs/go/system/SystemService";
+import {
+  ConfigGet,
+  CopyPath,
+  PathExists,
+  PathJoin,
+} from "../../wailsjs/go/system/SystemService";
 import { ConfigKeyProjectDir } from "@/constant/keys/config";
-import { ToastCheck, ToastError } from "@/utils/Toast";
+import { ToastCheck, ToastError, ToastInfo } from "@/utils/Toast";
 import { defaultShareConfigValue } from "@/configs/defaultShareConfig";
 import {
   defaultLangConfig,
   defaultThemeConfig,
 } from "@/configs/defaultLangConfig";
 import { StringGlobalLang, StringRootLang } from "@/configs/cnts";
+import { ParseTreeData } from "../../wailsjs/go/services/ArticleTreeData";
 //这是一个简单的推荐store案例，可以在这里定义你的状态
 //新建pinia时把vpconfig全局替换成你的store名字
 export interface vpconfigStore {
@@ -38,25 +44,46 @@ export const useVpconfigStore = defineStore("vpconfig", {
     currLangConfigIsUseRootConfig: false, //当前语言配置是否指向根目录
   }),
   actions: {
-    async initConfig() {
-      await this.readVpConfig();
+    async formatPath() {
+      this.baseDir = await PathJoin([await ConfigGet(ConfigKeyProjectDir)]);
     },
     //获取config.mts文件内容
     async readVpConfig() {
       //获取项目根目录(绝对路径)
-      this.baseDir = await PathJoin([await ConfigGet(ConfigKeyProjectDir)]);
+      await this.formatPath();
+      await this.backupConfigFile(); //如果是首次则备份文件夹，放在 this.baseDir后面
       const content = await GetVpConfigData(); //获取config.mts文件内容
+      let configData: any = {};
       if (content == "") {
-        ToastError("获取到的配置文件内容为空");
-        return false;
+        ToastInfo("获取到的配置文件内容为空，使用默认配置");
+      } else {
+        configData = parseJsObject(content); //解析config.mts文件内容
       }
-      const configData = parseJsObject(content); //解析config.mts文件内容
-      if (IsEmptyValue(configData)) return false; //配置文件为空
       this.configData = configData ?? {};
       this.setDefaultValue(); //设置默认值
       this.srcDir = configData["srcDir"];
       this.fullSrcDir = await PathJoin([this.baseDir, this.srcDir]);
-      return true;
+    },
+    async ExistsProjectDir() {
+      await this.formatPath();
+      const isExists = await PathExists(this.baseDir);
+      if (isExists) {
+        return true;
+      } else {
+        ToastError("项目目录不存在:" + this.baseDir);
+        return false;
+      }
+    },
+    //备份原来的配置文件，（仅仅备份一次）如果已经存在则不再进行备份
+    async backupConfigFile() {
+      const originDir = await PathJoin([this.baseDir, ".vitepress"]);
+      const backupDir = await PathJoin([this.baseDir, ".vitepressBak"]);
+      const isExistsOriginDir = await PathExists(originDir);
+      const isExistsBackupDir = await PathExists(backupDir);
+      if (isExistsOriginDir && !isExistsBackupDir) {
+        await CopyPath(originDir, backupDir, true);
+        // ToastCheck(res, "备份配置文件成功");
+      }
     },
     changeCurrLangConfig(lang: string) {
       if (!this.IsUseI18n || lang === StringGlobalLang) {

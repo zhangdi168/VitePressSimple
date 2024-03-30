@@ -3,33 +3,6 @@
   <div class="px-2 py-2 border-b">
     <div class="flex items-center justify-start" style="overflow-y: hidden">
       <div class="mx-1 cursor-pointer">
-        <a-dropdown arrow>
-          <a class="ant-dropdown-link" @click.prevent>
-            <icon-park
-              :size="iconSize"
-              fill="#333"
-              strokeLinejoin="bevel"
-              theme="outline"
-              type="layers"
-            />
-          </a>
-          <template #overlay>
-            <a-menu>
-              <a-menu-item @click="createProject()">
-                <a href="javascript:;">新建项目</a>
-              </a-menu-item>
-              <a-menu-item @click="openProject()">
-                <a href="javascript:;">打开现有项目</a>
-              </a-menu-item>
-              <!--              <a-menu-item @click="">-->
-              <!--                <a href="javascript:;">在文件夹中打开</a>-->
-              <!--              </a-menu-item>-->
-            </a-menu>
-          </template>
-        </a-dropdown>
-      </div>
-
-      <div class="mx-1 cursor-pointer">
         <!--        <q-tooltip>新建文件(根目录)</q-tooltip>-->
         <a-dropdown arrow>
           <a class="ant-dropdown-link" @click.prevent>
@@ -49,11 +22,25 @@
               <a-menu-item @click="createDir()">
                 <a href="javascript:;">新建目录</a>
               </a-menu-item>
+              <a-menu-item @click="createProject()">
+                <a href="javascript:;">新建项目</a>
+              </a-menu-item>
             </a-menu>
           </template>
         </a-dropdown>
       </div>
-
+      <div class="mx-1 cursor-pointer" @click="openProject()">
+        <q-tooltip>打开现有项目</q-tooltip>
+        <a class="ant-dropdown-link" @click.prevent>
+          <icon-park
+            :size="iconSize"
+            fill="#333"
+            strokeLinejoin="bevel"
+            theme="outline"
+            type="layers"
+          />
+        </a>
+      </div>
       <div
         class="mx-1 cursor-pointer"
         @click="OpenFileBrowser(storeVpConfig.fullSrcDir)"

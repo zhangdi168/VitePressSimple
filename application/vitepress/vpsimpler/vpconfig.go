@@ -69,6 +69,11 @@ func (s *VpConfig) SaveConfig(configContentJson string) string {
 	return ""
 }
 
+// BackupOriginConfig 备份原来的配置文件
+//func (s *VpConfig) BackupOriginConfig() {
+//	filehelper.CopyFolder()
+//}
+
 // RenameConfigName 重命名配置文件的后缀名称 默认使用config.mts后缀
 func (s *VpConfig) RenameConfigName(currPath string) error {
 	//名字一样则不修改

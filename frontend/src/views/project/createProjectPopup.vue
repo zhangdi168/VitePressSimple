@@ -108,6 +108,7 @@ import { SelectDir } from "../../../wailsjs/go/system/SystemService";
 import { CreateProject } from "../../../wailsjs/go/vpsimpler/VpManager";
 import { ToastError, ToastInfo } from "@/utils/Toast";
 import { HistoryProject } from "@/utils/historyProject";
+import { useHistoryStore } from "@/store/history";
 
 const formData = ref<ProjectCreate>({
   title: "我的vitepress站点",
@@ -131,7 +132,7 @@ const Create = () => {
       ToastError(res);
     } else {
       ToastInfo("创建完成");
-      HistoryProject.add(formData.value.dir); //添加到历史记录
+      useHistoryStore().add(formData.value.dir); //添加到历史记录
     }
   });
 };

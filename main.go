@@ -46,7 +46,7 @@ func main() {
 	// Create application with options
 	// 使用选项创建应用
 	err := wails.Run(&options.App{
-		Title:  "wails2快速开发模板 " + setting.Version,
+		Title:  "VitePressSimple " + setting.Version,
 		Width:  1080,
 		Height: 720,
 		//MinWidth:  900,

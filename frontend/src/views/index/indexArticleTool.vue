@@ -1,6 +1,6 @@
 <template>
   <!-- 头部-添加文章等 -->
-  <div class="px-2 py-2 border-b">
+  <div class="px-2 py-2 border-b" v-show="!storeIndex.IsEmptyProject">
     <div class="flex items-center justify-start" style="overflow-y: hidden">
       <div class="mx-1 cursor-pointer">
         <!--        <q-tooltip>新建文件(根目录)</q-tooltip>-->
@@ -8,7 +8,7 @@
           <a class="ant-dropdown-link" @click.prevent>
             <icon-park
               :size="iconSize"
-              fill="#333"
+              fill="black"
               strokeLinejoin="bevel"
               theme="outline"
               type="add"

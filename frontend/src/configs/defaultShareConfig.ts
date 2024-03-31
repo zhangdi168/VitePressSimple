@@ -18,14 +18,14 @@ export const defaultShareConfigValue: any = {
     ],
   },
   locales: {
-    zh: {
-      label: "简体中文",
-      lang: "zh",
-    },
-    en: {
-      label: "English",
-      lang: "en",
-    },
+    // zh: {
+    //   label: "简体中文",
+    //   lang: "zh",
+    // },
+    // en: {
+    //   label: "English",
+    //   lang: "en",
+    // },
   },
   cacheDir: "./.vitepress/cache",
   title: "VitePressSimple",

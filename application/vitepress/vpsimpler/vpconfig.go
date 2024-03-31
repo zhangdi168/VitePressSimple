@@ -101,6 +101,11 @@ func (s *VpConfig) ReplaceDefaultConfigContent(title string, description string)
 	return newContent
 }
 
+// ExistsVitepressDir 判断是否存在.vitepress目录
+func (s *VpConfig) ExistsVitepressDir(dir string) bool {
+	path := filepath.Join(dir, ".vitepress")
+	return filehelper.FileExists(path)
+}
 func (s *VpConfig) GetConfigPath() (string, error) {
 	baseDir := cfg.GetString(keys.ConfigKeyProjectDir)
 	if baseDir == "" {
@@ -113,4 +118,9 @@ func (s *VpConfig) GetConfigPath() (string, error) {
 		}
 	}
 	return "", fmt.Errorf("配置文件不存在config.js/config.ts/config.mts")
+	//path := filepath.Join(baseDir, ".vitepress", defaultFileName)
+	//if !filehelper.FileExists(path) { //文件不存在会先创建
+	//	filehelper.CreateFile(path)
+	//}
+	//return filepath.Join(baseDir, ".vitepress", defaultFileName), nil
 }

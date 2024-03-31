@@ -18,7 +18,10 @@ import {
   defaultThemeConfig,
 } from "@/configs/defaultLangConfig";
 import { StringGlobalLang, StringRootLang } from "@/configs/cnts";
-import { ParseTreeData } from "../../wailsjs/go/services/ArticleTreeData";
+import {
+  CreateDir,
+  ParseTreeData,
+} from "../../wailsjs/go/services/ArticleTreeData";
 //这是一个简单的推荐store案例，可以在这里定义你的状态
 //新建pinia时把vpconfig全局替换成你的store名字
 export interface vpconfigStore {
@@ -55,14 +58,19 @@ export const useVpconfigStore = defineStore("vpconfig", {
       const content = await GetVpConfigData(); //获取config.mts文件内容
       let configData: any = {};
       if (content == "") {
-        ToastInfo("获取到的配置文件内容为空，使用默认配置");
+        ToastInfo("读取配置文件内容为空");
       } else {
         configData = parseJsObject(content); //解析config.mts文件内容
       }
       this.configData = configData ?? {};
-      this.setDefaultValue(); //设置默认值
+      this.setDefaultValue(); //检测key不存在则使用默认值
       this.srcDir = configData["srcDir"];
       this.fullSrcDir = await PathJoin([this.baseDir, this.srcDir]);
+      //判断如果原目录不存在则自动创建
+      if (!(await PathExists(this.fullSrcDir))) {
+        await CreateDir(this.fullSrcDir);
+        ToastInfo(`检测到源目录不存在，已自动创建源目录:${this.fullSrcDir}`);
+      }
     },
     async ExistsProjectDir() {
       await this.formatPath();
@@ -70,7 +78,7 @@ export const useVpconfigStore = defineStore("vpconfig", {
       if (isExists) {
         return true;
       } else {
-        ToastError("项目目录不存在:" + this.baseDir);
+        // ToastError("项目目录不存在:" + this.baseDir);
         return false;
       }
     },

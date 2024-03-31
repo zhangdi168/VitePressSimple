@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import Vditor from "vditor";
-import { ToastError, ToastInfo } from "@/utils/Toast";
+import { ToastCheck, ToastError, ToastInfo, ToastSuccess } from "@/utils/Toast";
 import {
   ParseTreeData,
   WriteFileContent,
@@ -10,6 +10,7 @@ import { getDirectoryPath } from "@/utils/file";
 import {
   ConfigSet,
   PathExists,
+  PathJoin,
   SelectDir,
 } from "../../wailsjs/go/system/SystemService";
 import { ConfigKeyProjectDir } from "@/constant/keys/config";
@@ -21,6 +22,7 @@ import { moveTo } from "@/utils/system";
 import { defaultFrontMatter } from "@/configs/defaultFrontMatter";
 import { HistoryProject } from "@/utils/historyProject";
 import { useHistoryStore } from "@/store/history";
+import { isEmptyArray } from "@/utils/array";
 
 //定义首页的数据类型
 export interface indexStore {
@@ -37,6 +39,7 @@ export interface indexStore {
   currVueCode: string; //当前vue代码 css+js
   currProjectDir: string; //当前项目的根目录
   currDocDir: string; //文档所在目录
+  IsEmptyProject: boolean; //是否为空项目
   currArticleFrontMatter: Record<string, any>; //当前文章front matter
 }
 
@@ -48,6 +51,7 @@ export const useIndexStore = defineStore("index", {
     currDocDir: "",
     expandKeys: [],
     selectKeys: [],
+    IsEmptyProject: true, //是否为空项目
     searchValue: "", //搜索值
     currArticlePath: "", //当前文章路径
     currScriptContent: "", //当前js代码
@@ -65,23 +69,40 @@ export const useIndexStore = defineStore("index", {
         this.articleTreeData = await ParseTreeData(cfg.srcDir);
       }
     },
-    //切换项目
-    async changeProject(dir: string) {
+
+    async checkProjectDir(dir: string): Promise<string> {
+      //判空
       if (dir == "") {
-        ToastError("不能切换为空路径项目");
-        return;
+        return "不能切换为空路径项目";
       }
+      //判断兖是否存在
       const isExists = await PathExists(dir);
       if (!isExists) {
-        ToastError("项目路径不存在:" + dir);
         useHistoryStore().remove(dir);
+        return "项目路径不存在:" + dir;
+      }
+      //判断是否是.vitepress目录
+      const vitePressDir = await PathJoin([dir, ".vitepress"]);
+      const isExistsVpDir = await PathExists(vitePressDir);
+      if (!isExistsVpDir) {
+        return `切换失败，所选路径${dir}不存在“.vitepress”文件夹`;
+      }
+      return "";
+    },
+    //切换项目
+    async changeProject(dir: string) {
+      //先检查传入的项目目录是否合法
+      const checkString = await this.checkProjectDir(dir);
+      if (checkString != "") {
+        ToastError(checkString);
         return;
       }
-      HistoryProject.add(dir); //加入到历史项目数据中
-      ConfigSet(ConfigKeyProjectDir, dir).then(() => {
-        this.clearCurrData();
-        this.loadTreeData();
-      });
+      this.IsEmptyProject = false; //设置为非空项目
+      useHistoryStore().add(dir); //加入到历史项目数据中
+      //设置当前的项目路径
+      await ConfigSet(ConfigKeyProjectDir, dir);
+      this.clearCurrData();
+      await this.loadTreeData();
     },
     //设置编辑器的实例
     async setVditorInstance(vditor_: Vditor | null) {
@@ -110,16 +131,7 @@ export const useIndexStore = defineStore("index", {
       this.currVueCode = "";
       this.currArticleFrontMatter = {};
     },
-    selectProjectDir() {
-      SelectDir("请选择项目目录").then((dir) => {
-        if (dir === "") {
-          return ToastError("取消选择目录");
-        }
-        this.currProjectDir = dir;
-        ConfigSet(ConfigKeyProjectDir, dir);
-        this.loadTreeData();
-      });
-    },
+
     //保存文章
     async saveCurrArticle() {
       if (this.vditor) {
@@ -173,15 +185,8 @@ export const useIndexStore = defineStore("index", {
     CurrArticleFrontMatter: (state) => state.currArticleFrontMatter,
     Vditor: (state) => state.vditor,
     CurrProjectDir: (state) => state.currProjectDir,
-    // GetCurrDocDir: (state) => {
-    //   const cfg = useVpconfigStore();
-    //   const resultDir = state.currDocDir + cfg.srcDir;
-    //   if (cfg.IsUseI18n) {
-    //     //如果设置了多语言 则文档的起始目录为 {源目录}/{lang}
-    //     return resultDir + "/" + cfg.currSettingLang;
-    //   }
-    //   return resultDir;
-    // },
+    // IsEmptyProject: (state) => isEmptyArray(state.articleTreeData),
+    IsEmptyTreeData: (state) => isEmptyArray(state.articleTreeData),
     CurrArticleTitle: (state) =>
       getFileNameFromPath(state.currArticlePath).replaceAll(".md", ""),
     GetArticleFrontMatter: (state) => state.currArticleFrontMatter,

@@ -1,5 +1,5 @@
 <template>
-  <div style="overflow-y: auto">
+  <div v-if="!storeIndex.IsEmptyProject" style="overflow-y: auto">
     <div class="flex justify-center items-center">
       <a-radio-group
         animated
@@ -70,6 +70,7 @@
       </div>
     </div>
   </div>
+  <empty-project></empty-project>
 </template>
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
@@ -84,10 +85,13 @@ import SimInput from "@/components/simInput.vue";
 import SettingLang from "@/views/project/settingLang.vue";
 import SettingSocial from "@/views/project/settingSocial.vue";
 import SettingSidebar from "@/views/project/settingSidebar.vue";
+import { useIndexStore } from "@/store";
+import EmptyProject from "@/components/emptyProject.vue";
 
 const activeKey1 = ref<string>("1");
 const activeKey2 = ref("1-1");
 const storeConfig = useVpconfigStore();
+const storeIndex = useIndexStore();
 onMounted(() => {
   storeConfig.readVpConfig();
 });

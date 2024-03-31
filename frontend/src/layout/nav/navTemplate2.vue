@@ -32,7 +32,7 @@ const routerClick = (path: string, name: string) => {
         class="flex flex-col items-center justify-center border-gray-300"
       >
         <router-link
-          :class="navStore.ActiveName === item.name && 'bg-gray-400'"
+          :class="navStore.ActiveName === item.name ? 'bg-blue-200' : ''"
           :to="item.path"
           class="flex items-center w-12 h-12 justify-center rounded hover:bg-gray-300"
           href="#"

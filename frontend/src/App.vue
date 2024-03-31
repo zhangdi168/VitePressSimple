@@ -7,7 +7,7 @@
 <script lang="ts" setup>
 import NavTemplate1 from "@/layout/nav/navTemplate1.vue";
 import NavTemplate2 from "@/layout/nav/navTemplate2.vue";
-import { onMounted, ref } from "vue";
+import { nextTick, onMounted, ref } from "vue";
 import { useVpconfigStore } from "@/store/vpconfig";
 import { ConfigGet } from "../wailsjs/go/system/SystemService";
 import { ConfigKeyProjectDir } from "@/constant/keys/config";
@@ -21,7 +21,9 @@ const vpConfig = useVpconfigStore();
 onMounted(async () => {
   // await HistoryProject.initList(); //初始化历史数据
   // await vpConfig.initConfig();
-  await useHistoryStore().initList();
+  //设定初始项目
+  let dir = await ConfigGet(ConfigKeyProjectDir);
+  await storeIndex.changeProject(dir);
 });
 </script>
 <style lang="scss"></style>

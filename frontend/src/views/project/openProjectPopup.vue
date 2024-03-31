@@ -53,11 +53,16 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { SelectDir } from "../../../wailsjs/go/system/SystemService";
-import { onMounted, ref } from "vue";
+import {
+  PathExists,
+  PathJoin,
+  SelectDir,
+} from "../../../wailsjs/go/system/SystemService";
+import { nextTick, onMounted, ref } from "vue";
 import { HistoryProject } from "@/utils/historyProject";
 import { useIndexStore } from "@/store";
 import { useHistoryStore } from "@/store/history";
+import { ToastError, ToastSuccess } from "@/utils/Toast";
 
 const OpenDir = () => {
   SelectDir("请选择项目存放目录").then((res: string) => {
@@ -73,7 +78,8 @@ interface DataItem {
 
 const data = ref<DataItem[]>([]);
 const storeHistory = useHistoryStore();
-onMounted(() => {
+onMounted(async () => {
+  await useHistoryStore().initList();
   for (let i = 0; i < storeHistory.currentList.length; i++) {
     data.value.push({
       title: storeHistory.currentList[i],
@@ -82,9 +88,8 @@ onMounted(() => {
 });
 
 //切换项目
-const openProject = (dir: string) => {
-  useIndexStore().changeProject(dir);
-  useHistoryStore().add(dir);
+const openProject = async (dir: string) => {
+  await useIndexStore().changeProject(dir);
   modalVisible.value = false; //弹窗关闭
 };
 interface inputModelProps {

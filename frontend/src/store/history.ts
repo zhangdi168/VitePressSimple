@@ -21,8 +21,11 @@ export const useHistoryStore = defineStore("historyProjects", {
       }
     },
     add(dir: string) {
+      if (dir === "") return;
       // 从当前列表中移除指定目录，确保后续添加不会重复
-      this.currentList = this.currentList.filter((item) => item !== dir);
+      this.currentList = this.currentList.filter(
+        (item) => item !== dir && item !== "",
+      );
 
       // 将指定目录添加到列表的开头
       this.currentList.unshift(dir);

@@ -11,17 +11,14 @@ import {
   PathJoin,
 } from "../../wailsjs/go/system/SystemService";
 import { ConfigKeyProjectDir } from "@/constant/keys/config";
-import { ToastCheck, ToastError, ToastInfo } from "@/utils/Toast";
+import { ToastCheck, ToastInfo } from "@/utils/Toast";
 import { defaultShareConfigValue } from "@/configs/defaultShareConfig";
 import {
   defaultLangConfig,
   defaultThemeConfig,
 } from "@/configs/defaultLangConfig";
 import { StringGlobalLang, StringRootLang } from "@/configs/cnts";
-import {
-  CreateDir,
-  ParseTreeData,
-} from "../../wailsjs/go/services/ArticleTreeData";
+import { CreateDir } from "../../wailsjs/go/services/ArticleTreeData";
 //这是一个简单的推荐store案例，可以在这里定义你的状态
 //新建pinia时把vpconfig全局替换成你的store名字
 export interface vpconfigStore {
@@ -160,7 +157,6 @@ export const useVpconfigStore = defineStore("vpconfig", {
     },
     //保存配置
     async saveConfig() {
-      console.log("saveConfig -- console.log");
       const res = await SaveConfig(JSON.stringify(this.configData));
       ToastCheck(res);
     },

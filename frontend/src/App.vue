@@ -7,7 +7,7 @@
 <script lang="ts" setup>
 import NavTemplate1 from "@/layout/nav/navTemplate1.vue";
 import NavTemplate2 from "@/layout/nav/navTemplate2.vue";
-import { nextTick, onMounted, ref } from "vue";
+import { nextTick, onBeforeUnmount, onMounted, onUnmounted, ref } from "vue";
 import { useVpconfigStore } from "@/store/vpconfig";
 import { ConfigGet } from "../wailsjs/go/system/SystemService";
 import { ConfigKeyProjectDir } from "@/constant/keys/config";
@@ -24,6 +24,20 @@ onMounted(async () => {
   //设定初始项目
   let dir = await ConfigGet(ConfigKeyProjectDir);
   await storeIndex.changeProject(dir);
+  //监听快捷键
+  window.addEventListener("keydown", handleKeyDown);
 });
+onBeforeUnmount(() => {
+  // 不要忘记在组件卸载时移除事件监听器，防止内存泄漏
+  window.removeEventListener("keydown", handleKeyDown);
+});
+
+function handleKeyDown(event: KeyboardEvent) {
+  // 监听Ctrl + S快捷键
+  if (event.ctrlKey && event.key === "s") {
+    console.log("快捷键被按下 -- console.log");
+    storeIndex.saveCurrArticle();
+  }
+}
 </script>
 <style lang="scss"></style>

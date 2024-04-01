@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import Vditor from "vditor";
-import { ToastCheck, ToastError, ToastInfo, ToastSuccess } from "@/utils/Toast";
+import { ToastError, ToastInfo, ToastSuccess } from "@/utils/Toast";
 import {
   ParseTreeData,
   WriteFileContent,
@@ -11,7 +11,6 @@ import {
   ConfigSet,
   PathExists,
   PathJoin,
-  SelectDir,
 } from "../../wailsjs/go/system/SystemService";
 import { ConfigKeyProjectDir } from "@/constant/keys/config";
 import { useVpconfigStore } from "@/store/vpconfig";
@@ -20,7 +19,6 @@ import { useLayoutStore } from "@/store/layout";
 import { VitePressHome } from "@/types/home";
 import { moveTo } from "@/utils/system";
 import { defaultFrontMatter } from "@/configs/defaultFrontMatter";
-import { HistoryProject } from "@/utils/historyProject";
 import { useHistoryStore } from "@/store/history";
 import { isEmptyArray } from "@/utils/array";
 
@@ -97,8 +95,9 @@ export const useIndexStore = defineStore("index", {
         ToastError(checkString);
         return;
       }
+      ToastSuccess(`当前打开项目：“${dir}”`);
       this.IsEmptyProject = false; //设置为非空项目
-      useHistoryStore().add(dir); //加入到历史项目数据中
+      await useHistoryStore().add(dir); //加入到历史项目数据中
       //设置当前的项目路径
       await ConfigSet(ConfigKeyProjectDir, dir);
       this.clearCurrData();
@@ -133,15 +132,17 @@ export const useIndexStore = defineStore("index", {
     },
 
     //保存文章
-    async saveCurrArticle() {
-      if (this.vditor) {
+    async saveCurrArticle(showToast = true) {
+      if (this.vditor && this.currArticlePath != "") {
         const storeLayout = useLayoutStore();
         const content = this.vditor.getValue();
+
         const fontMatterStr = JSON.stringify(this.currArticleFrontMatter);
         const fullContent = `---\n${fontMatterStr}\n---\n${this.currVueCode}\n${content}`;
+
         //获取动态新增的数据
         WriteFileContent(this.currArticlePath, fullContent).then(() => {
-          ToastInfo("已提交保存");
+          if (showToast) ToastInfo("已保存");
         });
       }
     },
@@ -162,10 +163,10 @@ export const useIndexStore = defineStore("index", {
           frontMatter[key] = defaultFrontMatter[key];
         }
       }
-      if (frontMatter["title"] == "")
-        frontMatter["title"] = this.CurrArticleTitle;
-      this.currArticleFrontMatter = frontMatter;
 
+      this.currArticleFrontMatter = frontMatter;
+      if (this.currArticleFrontMatter["title"] == "")
+        frontMatter["title"] = this.CurrArticleTitle;
       //当前页面是主页
       // if (this.currArticleFrontMatter["layout"] == "home") {
       //   this.currHomeConfig = this.currArticleFrontMatter[

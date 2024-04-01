@@ -20,7 +20,6 @@
   </div>
 </template>
 <script lang="ts" setup>
-import IndexBar from "./indexNav.vue";
 import { ref } from "vue";
 import IndexEditor from "./indexEditor.vue";
 import IndexArticle from "./indexArticle.vue";

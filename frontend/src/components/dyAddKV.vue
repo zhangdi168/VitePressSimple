@@ -105,10 +105,17 @@ onMounted(() => {
   } else {
     //遍历对象 依次将key 赋值key和value
     for (const key in obj.value) {
-      inputs.value.push({
-        key: key,
-        value: obj.value[key],
-      });
+      if (obj && obj.value && key in obj.value) {
+        inputs.value.push({
+          key: key,
+          value: obj.value[key],
+        });
+      } else {
+        inputs.value.push({
+          key: key,
+          value: "",
+        });
+      }
     }
   }
 });

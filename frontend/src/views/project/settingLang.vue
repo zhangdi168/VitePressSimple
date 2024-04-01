@@ -140,6 +140,7 @@ import { IsEmptyValue } from "@/utils/utils";
 import SelectSettingLang from "@/components/selectSettingLang.vue";
 import SimBoolInput from "@/components/simBoolInput.vue";
 import SimSwitch from "@/components/simSwitch.vue";
+import { StringGlobalLang } from "@/configs/cnts";
 
 const storeConfig = useVpconfigStore();
 const inputLangArray = ref<any[]>([]);
@@ -174,6 +175,14 @@ const saveLangConfig = () => {
     }
   }
   storeConfig.configData["locales"] = resultData;
+  if (storeConfig.IsUseI18n) {
+    if (
+      storeConfig.currSettingLang == "" ||
+      storeConfig.currSettingLang == StringGlobalLang
+    ) {
+      storeConfig.currSettingLang = inputLangArray.value[0]["lang"];
+    }
+  }
   storeConfig.saveConfig();
 };
 //移除一个元素后 刷新数据

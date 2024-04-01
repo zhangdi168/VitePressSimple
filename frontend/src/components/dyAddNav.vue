@@ -104,13 +104,7 @@
           </a-popconfirm>
         </div>
       </div>
-      <div
-        v-if="
-          NavArray[index].items &&
-          NavArray[index].items.length > 0 &&
-          isExpand(index)
-        "
-      >
+      <div v-if="hasChildren(index) && isExpand(index)">
         <dy-add-nav
           :level="props.level + 1"
           v-model:nav-array="NavArray[index].items"
@@ -146,8 +140,7 @@ const toggleIndex = (index: number) => {
 const hasChildren = (index: number) => {
   if (!NavArray.value[index]) return false;
   if (!NavArray.value[index].items) return false;
-  if (!NavArray.value[index].items?.length) return false;
-  return true;
+  return NavArray.value[index].items?.length;
 };
 const props = defineProps<Prop>();
 const NavArray = defineModel<VpNav[]>("navArray", {

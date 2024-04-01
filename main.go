@@ -36,9 +36,10 @@ func main() {
 	// 创建一个App结构体实例
 	app := NewApp()
 
-	first.InitConfig() //初始化配置文件
-	//first.InitDb()     //初始化数据库
-	first.InitLog() //初始化日志
+	first.InitConfig()        //初始化配置文件
+	first.InitDefaultConfig() //初始化默认配置
+	first.InitLog()           //初始化日志
+
 	//first.InitTask()   //初始化定时任务
 	//静态文件服务器,如果需要请取消注释 localhost:9875/images/icon.pmh
 	//mystatic.StartStaticServer("9874", resource, "resources")
@@ -66,7 +67,7 @@ func main() {
 		OnDomReady:        app.domReady,
 		OnBeforeClose:     app.beforeClose,
 		OnShutdown:        app.shutdown,
-		WindowStartState:  options.Normal,
+		WindowStartState:  options.Maximised,
 		AssetServer: &assetserver.Options{
 			Assets:     assets,
 			Handler:    nil,

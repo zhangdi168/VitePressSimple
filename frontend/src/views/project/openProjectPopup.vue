@@ -33,8 +33,8 @@
                   <a-button
                     @click="openProject(item.title)"
                     class="bg-blue-500 text-white"
-                    >打开</a-button
-                  >
+                    >打开
+                  </a-button>
                 </template>
                 <a-list-item-meta>
                   <template #title>
@@ -58,11 +58,11 @@ import {
   PathJoin,
   SelectDir,
 } from "../../../wailsjs/go/system/SystemService";
-import { nextTick, onMounted, ref } from "vue";
+import { nextTick, onMounted, ref, watch } from "vue";
 import { HistoryProject } from "@/utils/historyProject";
 import { useIndexStore } from "@/store";
 import { useHistoryStore } from "@/store/history";
-import { ToastError, ToastSuccess } from "@/utils/Toast";
+import { ToastError, ToastInfo, ToastSuccess } from "@/utils/Toast";
 
 const OpenDir = () => {
   SelectDir("请选择项目存放目录").then((res: string) => {
@@ -79,12 +79,7 @@ interface DataItem {
 const data = ref<DataItem[]>([]);
 const storeHistory = useHistoryStore();
 onMounted(async () => {
-  await useHistoryStore().initList();
-  for (let i = 0; i < storeHistory.currentList.length; i++) {
-    data.value.push({
-      title: storeHistory.currentList[i],
-    });
-  }
+  // await loadHistoryList();
 });
 
 //切换项目
@@ -92,6 +87,7 @@ const openProject = async (dir: string) => {
   await useIndexStore().changeProject(dir);
   modalVisible.value = false; //弹窗关闭
 };
+
 interface inputModelProps {
   defaultValue?: string;
   placeholder?: string;
@@ -99,6 +95,21 @@ interface inputModelProps {
 
 const modalVisible = ref(false);
 const props = defineProps<inputModelProps>();
+watch(modalVisible, async (newVal: boolean) => {
+  console.log(newVal, "newVal -- console.log");
+  if (newVal) {
+    await loadHistoryList();
+  }
+});
+const loadHistoryList = async () => {
+  await useHistoryStore().initList();
+  data.value = [];
+  for (let i = 0; i < storeHistory.currentList.length; i++) {
+    data.value.push({
+      title: storeHistory.currentList[i],
+    });
+  }
+};
 const showModal = () => {
   modalVisible.value = true;
 };

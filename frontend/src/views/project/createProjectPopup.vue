@@ -132,6 +132,7 @@ const Create = () => {
       ToastError(res);
     } else {
       ToastInfo("创建完成");
+      modalVisible.value = false;
       useHistoryStore().add(formData.value.dir); //添加到历史记录
     }
   });

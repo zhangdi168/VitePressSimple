@@ -12,11 +12,18 @@ export const defaultFrontMatter: any = {
   custom: {}, //用户自定义变量
   //主页
   hero: {
-    image: {},
+    image: {
+      src: "",
+      alt: "",
+      width: "",
+      height: "",
+    },
+    name: "VitePressSimple",
+    text: "quick to config vitePress",
+    description: "",
+    tagline: "", //下方标语
     actions: [],
+    features: [], //功能列表
+    head: [], //页面类型
   }, //用户自定义变量
-  features: [], //功能列表
-  head: [], //页面类型
-  heroImage: {}, //页面类型
-  heroActions: [], //页面类型
 };

@@ -100,7 +100,7 @@
 <script setup lang="ts">
 import { useIndexStore } from "@/store";
 import IndexPopAddFeatures from "@/views/index/indexPopAddFeatures.vue";
-import { ref } from "vue";
+import { onBeforeMount, onMounted, ref } from "vue";
 import DyAddKV from "@/components/dyAddKV.vue";
 import {
   CopyPath,
@@ -111,10 +111,28 @@ import {
 } from "../../../wailsjs/go/system/SystemService";
 import { ToastCheck, ToastError } from "@/utils/Toast";
 import { useVpconfigStore } from "@/store/vpconfig";
+import { defaultFrontMatter } from "@/configs/defaultFrontMatter";
+import { IsEmptyValue } from "@/utils/utils";
 
 const storeIndex = useIndexStore();
 const storeVpConfig = useVpconfigStore();
-
+onBeforeMount(() => {
+  //初始化hero的默认值
+  if (IsEmptyValue(storeIndex.currArticleFrontMatter["hero"])) {
+    storeIndex.currArticleFrontMatter["hero"] = defaultFrontMatter.hero;
+    return;
+  }
+  for (const key in defaultFrontMatter.hero) {
+    if (IsEmptyValue(storeIndex.currArticleFrontMatter["hero"][key])) {
+      storeIndex.currArticleFrontMatter["hero"][key] =
+        defaultFrontMatter.hero[key];
+    }
+  }
+  if (IsEmptyValue(storeIndex.currArticleFrontMatter["hero"]["image"]["src"]))
+    storeIndex.currArticleFrontMatter["hero"]["image"]["src"] = "";
+  if (IsEmptyValue(storeIndex.currArticleFrontMatter["hero"]["image"]["alt"]))
+    storeIndex.currArticleFrontMatter["hero"]["image"]["alt"] = "";
+});
 const selectLogo = async () => {
   let oriImagePath = await SelectFile("选择主页图片", "");
   console.log(oriImagePath, "filePath -- console.log");
@@ -141,6 +159,9 @@ const selectLogo = async () => {
     newImagePath.replaceAll(publicDir, "");
 };
 
+const changeHome = () => {
+  console.log(111, "111 -- console.log");
+};
 const refPopShowFeatures = ref();
 const setFeatures = () => {
   refPopShowFeatures.value.showModal();

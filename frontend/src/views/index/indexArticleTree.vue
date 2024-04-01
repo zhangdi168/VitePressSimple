@@ -1,8 +1,8 @@
 <template>
   <div v-if="!isEmptyArray(storeIndex.articleTreeData)" class="mt-1">
     <a-tree
-      v-model:expandedKeys="expandedKeys"
-      v-model:selected-keys="selectKeys"
+      v-model:expandedKeys="storeIndex.expandKeys"
+      v-model:selected-keys="storeIndex.selectKeys"
       :tree-data="storeIndex.ArticleTreeData"
       block-node
       class="text-blue text-center items-center"
@@ -153,6 +153,10 @@ const storeVpConfig = useVpconfigStore();
 onMounted(async () => {
   nextTick(async () => {
     await storeIndex.loadTreeData();
+    //打开
+    if (storeIndex.selectKeys && storeIndex.selectKeys.length > 0) {
+      openArticle(storeIndex.selectKeys[0]);
+    }
   });
 });
 
@@ -217,50 +221,51 @@ const onSubmitInputModalPasteName = async (fullPath: string) => {
 //双击标题展开菜单
 const handleClick = (key: string) => {
   if (isDir(key)) {
-    if (expandedKeys.value.includes(key)) {
+    if (storeIndex.expandKeys.includes(key)) {
       //删除
-      expandedKeys.value = expandedKeys.value.filter((s) => s !== key);
+      storeIndex.expandKeys = storeIndex.expandKeys.filter((s) => s !== key);
     } else {
       //删除
-      expandedKeys.value.push(key); // 或者添加逻辑来控制是否展开/收起
+      storeIndex.expandKeys.push(key); // 或者添加逻辑来控制是否展开/收起
     }
   } else {
     //文件
-    ReadFileContent(key).then((content: string) => {
-      // console.log(content, "读取文件内容成功")
-      let matterData = matter(content);
-      let matchScriptArray = parseTagContent(
-        matterData.content ?? "",
-        regexScript,
-      );
-      let matchStyleArray = parseTagContent(
-        matterData.content ?? "",
-        regexStyle,
-      );
-      let scriptContent = matchScriptArray[0] ?? "";
-      let styleContent = matchStyleArray[0] ?? "";
-      storeIndex.setCurrScriptContent(scriptContent);
-      storeIndex.setCurrStyleContent(styleContent);
-      storeIndex.setCurrArticlePath(key);
-      // //matter字符串
-      storeIndex.setCurrArticleFrontMatter(matterData.data);
-
-      let vditorContent = (matterData.content ?? "")
-        .replace(scriptContent, "")
-        .replace(styleContent, "");
-      let val = vditorContent ? vditorContent : "# hello vitePress client";
-      // console.log("val:" + val);
-      storeIndex.Vditor?.setValue(val); //设置编辑器的值
-    });
+    openArticle(key);
   }
 };
 
+const openArticle = (path: string) => {
+  ReadFileContent(path).then((content: string) => {
+    storeIndex.saveCurrArticle(false); //先保存
+    // console.log(content, "读取文件内容成功")
+    let matterData = matter(content);
+    let matchScriptArray = parseTagContent(
+      matterData.content ?? "",
+      regexScript,
+    );
+    let matchStyleArray = parseTagContent(matterData.content ?? "", regexStyle);
+    let scriptContent = matchScriptArray[0] ?? "";
+    let styleContent = matchStyleArray[0] ?? "";
+    storeIndex.setCurrScriptContent(scriptContent);
+    storeIndex.setCurrStyleContent(styleContent);
+    storeIndex.setCurrArticlePath(path);
+    // //matter字符串
+    storeIndex.setCurrArticleFrontMatter(matterData.data);
+
+    let vditorContent = (matterData.content ?? "")
+      .replace(scriptContent, "")
+      .replace(styleContent, "");
+    let val = vditorContent ? vditorContent : "# hello vitePress client";
+    // console.log("val:" + val);
+    storeIndex.Vditor?.setValue(val); //设置编辑器的值
+  });
+};
 const isDir = (key: string) => {
   return !key.includes(".md");
 };
 
-const expandedKeys = ref<string[]>([]);
-const selectKeys = ref<string[]>([]);
+// const expandedKeys = ref<string[]>([]);
+// const selectKeys = ref<string[]>([]);
 
 //弹出层回调 新建
 const refModalCreate = ref();

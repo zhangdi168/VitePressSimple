@@ -2,7 +2,7 @@
   <div>
     <div class="px-1 mb-2">
       <a-input
-        :value="storeIndex.GetArticleFrontMatter['title']"
+        v-model:value="storeIndex.currArticleFrontMatter['title']"
         placeholder="请输入文章标题"
         prefix=""
         suffix="标题"
@@ -12,14 +12,14 @@
     <div class="px-1 my-2">
       <a-textarea
         class="text-gray-500"
-        :value="storeIndex.GetArticleFrontMatter['description']"
+        v-model:value="storeIndex.currArticleFrontMatter['description']"
         :auto-size="{ minRows: 1 }"
         placeholder="请输入页面seo描述"
       ></a-textarea>
     </div>
     <div class="px-2 mb-2">
       <a-input
-        :value="storeIndex.GetArticleFrontMatter['outline']"
+        v-model:value="storeIndex.currArticleFrontMatter['outline']"
         placeholder="选填：1-6"
         class="text-gray-500"
         prefix=""
@@ -39,7 +39,7 @@
         <q-toggle
           label="是否显示导航:"
           left-label
-          v-model="storeIndex.GetArticleFrontMatter['navbar']"
+          v-model="storeIndex.currArticleFrontMatter['navbar']"
           color="blue"
         />
       </div>
@@ -47,7 +47,7 @@
         <q-toggle
           label="是否显示侧边栏:"
           left-label
-          v-model="storeIndex.GetArticleFrontMatter['sideBar']"
+          v-model="storeIndex.currArticleFrontMatter['sideBar']"
           color="blue"
         />
       </div>
@@ -55,7 +55,7 @@
         <q-toggle
           label="是否显示页脚:"
           left-label
-          v-model="storeIndex.GetArticleFrontMatter['footer']"
+          v-model="storeIndex.currArticleFrontMatter['footer']"
           color="blue"
         />
       </div>
@@ -64,7 +64,7 @@
         <q-toggle
           label="是否显示编辑链接:"
           left-label
-          v-model="storeIndex.GetArticleFrontMatter['editLink']"
+          v-model="storeIndex.currArticleFrontMatter['editLink']"
           color="blue"
         />
       </div>
@@ -72,14 +72,14 @@
         <q-toggle
           label="是否显示更新时间:"
           left-label
-          v-model="storeIndex.GetArticleFrontMatter['lastUpdated']"
+          v-model="storeIndex.currArticleFrontMatter['lastUpdated']"
           color="blue"
         />
       </div>
 
       <a-form-item label="侧边栏位置">
         <a-radio-group
-          v-model:value="storeIndex.GetArticleFrontMatter['aside']"
+          v-model:value="storeIndex.currArticleFrontMatter['aside']"
         >
           <a-radio value="left">左侧</a-radio>
           <a-radio value="right">右侧</a-radio>
@@ -91,7 +91,7 @@
 
   <div class="mt-3">
     <dy-add-head
-      v-model:arrayObject="storeIndex.GetArticleFrontMatter['head']"
+      v-model:arrayObject="storeIndex.currArticleFrontMatter['head']"
       ref="refDyAddHead"
       add-btn-text="新增meta"
       add-btn-class="bg-blue-500 text-white hover:bg-blue-600"
@@ -112,7 +112,7 @@
       title="变量数据存放于custom属性中，通过{frontmatter}.custom.{xx}进行访问"
     >
       <dy-add-head
-        v-model:obj="storeIndex.GetArticleFrontMatter['custom']"
+        v-model:obj="storeIndex.currArticleFrontMatter['custom']"
         ref="refDyAddFontMatter"
         add-btn-class="bg-blue-500 text-white hover:bg-blue-600"
         add-btn-text="新增自定义fontMatter"

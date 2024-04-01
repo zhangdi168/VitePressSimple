@@ -5,6 +5,8 @@ export const defaultThemeConfig: any = {
   darkModeSwitchLabel: "主题",
   lightModeSwitchTitle: "切换到浅色模式",
   darkModeSwitchTitle: "切换到深色模式",
+  externalLinkIcon: true, //外部连接显示图标
+
   //编辑链接
   editLink: {
     text: "Edit this page on GitHub",

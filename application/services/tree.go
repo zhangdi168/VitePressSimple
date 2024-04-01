@@ -13,6 +13,8 @@ import (
 	"wailstemplate/application/pkg/utils"
 )
 
+var ignoreDirs = []string{"public", ".vitepress", ".vitepressBak", "node_modules"}
+
 type ArticleTreeData struct {
 	currFilePath string //当前正在操作的文件
 }
@@ -42,7 +44,7 @@ func (s *ArticleTreeData) ParseTreeData(srcDoc string) []*dto.TreeNode {
 func DirToTreeNode(rootPath string) ([]*dto.TreeNode, error) {
 	// 定义递归构建树函数
 	var buildTree func(path string, parent *dto.TreeNode) error
-	var ignoreDirs = []string{"public"}
+	//var ignoreDirs = []string{"public"}
 	buildTree = func(path string, parent *dto.TreeNode) error {
 		// 读取目录内容
 		files, err := os.ReadDir(path)
@@ -59,6 +61,10 @@ func DirToTreeNode(rootPath string) ([]*dto.TreeNode, error) {
 
 		for _, entry := range files {
 			if utils.ArrContains(ignoreDirs, entry.Name()) {
+				continue
+			}
+			//过滤文件，仅支持 .md
+			if !entry.IsDir() && filepath.Ext(entry.Name()) != ".md" {
 				continue
 			}
 			// 创建子节点

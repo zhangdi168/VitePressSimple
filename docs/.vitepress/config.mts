@@ -32,7 +32,8 @@ export default defineConfig({
     "i18nRouting": true,
     "siteTitle": "VitePressSimple",
     "footer": { "message": "", "copyright": "" },
-    "logo": "\\images\\logo.png"
+    "logo": "\\images\\logo.png",
+    "outline": { "level": "deep", "label": "On this page" }
   },
   "assetsDir": "static",
   "locales": {

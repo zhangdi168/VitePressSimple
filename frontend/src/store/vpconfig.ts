@@ -137,6 +137,15 @@ export const useVpconfigStore = defineStore("vpconfig", {
         if (IsEmptyValue(this.configData[key])) {
           this.configData[key] = defaultShareConfigValue[key];
         }
+        if (key === "themeConfig") {
+          //主题配置
+          for (const key2 in defaultShareConfigValue.themeConfig) {
+            if (IsEmptyValue(this.configData[key][key2])) {
+              this.configData[key][key2] =
+                defaultShareConfigValue.themeConfig[key2];
+            }
+          }
+        }
       }
     },
     //检查当前语言配置,如果不存在key则使用默认值

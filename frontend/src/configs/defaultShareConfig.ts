@@ -1,7 +1,7 @@
 //公共配置的默认值
 export const defaultShareConfigValue: any = {
   srcDir: "./docs",
-  logo: "",
+  // logo: "",
   assetsDir: "static",
   // darkModeSwitchLabel: "Appearance",
   // lightModeSwitchTitle: "Switch to light theme",
@@ -16,6 +16,10 @@ export const defaultShareConfigValue: any = {
     socialLinks: [
       { icon: "github", link: "https://github.com/vuejs/vitepress" },
     ],
+    outline: {
+      level: 2,
+      label: "On this page",
+    },
   },
   locales: {
     // zh: {

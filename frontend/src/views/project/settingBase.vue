@@ -11,6 +11,7 @@
         >
         </a-input>
       </div>
+
       <div class="mx-2">
         <a-button class="bg-blue-200" @click="selectLogo">
           <q-tooltip anchor="bottom left" self="bottom right"
@@ -28,6 +29,18 @@
       label="页面标题"
     ></sim-input>
     <sim-input
+      v-model="storeConfig.configData['titleTemplate']"
+      tooltip="允许自定义每个页面的标题后缀或整个标题"
+      placeholder="请输入项目标题后缀"
+      label="标题后缀"
+    ></sim-input>
+    <sim-input
+      v-model="storeConfig.configData['themeConfig']['outline']['level']"
+      tooltip="大纲显示级别"
+      placeholder="请输入大纲显示级别"
+      label="大纲显示级别"
+    ></sim-input>
+    <sim-input
       v-model="storeConfig.configData['lang']"
       tooltip="站点的 lang 属性。这将呈现为页面 HTML 中的 <html lang='en-US'> 标签"
       placeholder="请输入项目标题后缀"
@@ -38,12 +51,6 @@
       tooltip="站点的描述。这将呈现为页面 HTML 中的 <meta> 标签"
       placeholder="请输入站点的描述"
       label="站点描述"
-    ></sim-input>
-    <sim-input
-      v-model="storeConfig.configData['titleTemplate']"
-      tooltip="允许自定义每个页面的标题后缀或整个标题"
-      placeholder="请输入项目标题后缀"
-      label="标题后缀"
     ></sim-input>
 
     <!--    切换日/夜间文字- -->
@@ -66,6 +73,7 @@
       tooltip="markdown 页面的目录，相对于项目根目录"
       label="文档路径"
     ></sim-input>
+
     <sim-input
       v-model="storeConfig.configData['base']"
       tooltip="站点将部署到的base URL。如果计划在子路径页面下部署站点，则需要设置此项"
@@ -131,16 +139,11 @@ import {
 import { ToastCheck, ToastError } from "@/utils/Toast";
 import { useIndexStore } from "@/store";
 import { IconPark } from "@icon-park/vue-next/es/all";
-import { onMounted, ref } from "vue";
-import SimBoolInput from "@/components/simBoolInput.vue";
+import { onBeforeMount, onMounted, ref } from "vue";
 
 const storeConfig = useVpconfigStore();
 const storeIndex = useIndexStore();
-const isUsePrev = ref(false);
-const isUseNext = ref(false);
-const prevText = ref("");
-const nextText = ref("");
-onMounted(() => {});
+onBeforeMount(() => {});
 const saveBaseConfig = () => {
   storeConfig.saveConfig();
 };

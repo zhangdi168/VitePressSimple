@@ -6,18 +6,18 @@
       <q-radio
         v-model="storeIndex.currArticleFrontMatter['layout']"
         val="doc"
-        label="文档"
+        label="doc文档"
       />
       <q-radio
         v-model="storeIndex.currArticleFrontMatter['layout']"
         val="home"
-        label="主页"
+        label="home主页"
       />
       <q-radio
         v-model="storeIndex.currArticleFrontMatter['layout']"
         disable
         val="page"
-        label="自定义"
+        label="page"
       />
     </div>
 

@@ -5,7 +5,6 @@ import (
 	"io/fs"
 	"os"
 	"path/filepath"
-	"strings"
 	"wailstemplate/application/constant/keys"
 	"wailstemplate/application/pkg/cfg"
 	"wailstemplate/application/pkg/filehelper"
@@ -30,9 +29,9 @@ func (s *VpManager) CreateProject(title, description, dir string) string {
 	//}
 
 	//2.获取node版本
-	if !strings.Contains(GetNodeVersion(), "v18") {
-		return "环境监测不通过：nodejs 版本必须是v18及以上版本"
-	}
+	//if !strings.Contains(GetNodeVersion(), "v18") {
+	//	return "环境监测不通过：nodejs 版本必须是v18及以上版本"
+	//}
 
 	//3.检查目录
 	if !filehelper.FileExists(dir) {

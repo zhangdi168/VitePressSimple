@@ -4,6 +4,7 @@ import { ref } from "vue";
 import { NavList } from "@/configs/navs";
 import { useNavStore } from "@/store/nav";
 import { useRouter } from "vue-router";
+import { OpenURL } from "../../../wailsjs/go/system/SystemService";
 
 const navStore = useNavStore();
 const iconSize = ref<number>(28);
@@ -55,18 +56,18 @@ const routerClick = (path: string, name: string) => {
           />
         </router-link>
       </div>
-      <a
-        class="flex items-center w-12 h-12 justify-center mt-auto bg-gray-200 hover:bg-gray-300"
-        href="#"
+      <span
+        class="flex cursor-pointer items-center w-12 h-12 justify-center mt-auto bg-gray-200 hover:bg-gray-300"
+        @click="OpenURL('https://github.com/zhangdi168')"
       >
         <icon-park
           :size="iconSize"
-          :type="'user'"
+          :type="'github'"
           fill="#333"
           strokeLinejoin="bevel"
           theme="outline"
         />
-      </a>
+      </span>
     </div>
     <!-- 左侧导航 End  -->
 

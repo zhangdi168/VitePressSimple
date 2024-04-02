@@ -79,6 +79,7 @@ func main() {
 			vpsimpler.NewVpManager(vpFs),
 			vpsimpler.NewVpConfig(),
 			system.NewSystemService(),
+			services.NewShellService(),
 		},
 		// Windows platform specific options
 		// Windows平台特定选项

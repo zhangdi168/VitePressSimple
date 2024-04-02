@@ -45,6 +45,14 @@
             <q-item clickable @click="copyPath(treeKey)" v-close-popup>
               <menu-item title="复制" icon="copy-one"></menu-item>
             </q-item>
+            <q-item
+              v-if="title.endsWith('.md')"
+              clickable
+              @click="copyRouter(treeKey)"
+              v-close-popup
+            >
+              <menu-item title="复制路由" icon="copy-link"></menu-item>
+            </q-item>
             <q-separator />
             <q-item
               v-if="!title.endsWith('.md') && storeIndex.currCopyPath != ''"
@@ -132,7 +140,7 @@ import {
   Rename,
 } from "../../../wailsjs/go/services/ArticleTreeData";
 import { getParentDirectory, removeMdExtension } from "@/utils/file";
-import { ToastCheck, ToastError, ToastInfo } from "@/utils/Toast";
+import { ToastCheck, ToastError, ToastInfo, ToastSuccess } from "@/utils/Toast";
 import { Modal } from "ant-design-vue";
 import { isEmptyArray } from "@/utils/array";
 import { useVpconfigStore } from "@/store/vpconfig";
@@ -297,6 +305,19 @@ const currentRenamePath = ref<string>();
 const showPopRename = (value: string, path_: string) => {
   refModalRename.value.showModal(removeMdExtension(value));
   currentRenamePath.value = path_;
+};
+
+const copyRouter = async (path: string) => {
+  try {
+    let router = path
+      .replaceAll(storeVpConfig.baseDir, "")
+      .replaceAll("\\", "/")
+      .replaceAll(".md", "");
+    await navigator.clipboard.writeText(router);
+    ToastSuccess("已复制：'" + router + "'");
+  } catch (err: any) {
+    ToastError("复制失败" + err.message);
+  }
 };
 const onSubmitInputModalRename = (value: string) => {
   let oldPath = currentRenamePath.value;

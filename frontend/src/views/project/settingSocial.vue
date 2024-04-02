@@ -13,6 +13,7 @@
     value-placeholder="跳转链接"
     key-name="icon"
     value-name="link"
+    ref="refDyAdd"
     v-model:objs="storeConfig.configData['themeConfig']['socialLinks']"
   ></dy-add-k-v>
 
@@ -37,7 +38,14 @@ import DyAddKV from "@/components/dyAddKV.vue";
 import { ToastError, ToastSuccess } from "@/utils/Toast";
 import { useVpconfigStore } from "@/store/vpconfig";
 import { IconPark } from "@icon-park/vue-next/es/all";
+import { onMounted, ref } from "vue";
 
+onMounted(() => {
+  console.log(
+    storeConfig.configData["themeConfig"]["socialLinks"],
+    " -- console.log",
+  );
+});
 const storeConfig = useVpconfigStore();
 const soList = [
   "github",
@@ -60,6 +68,7 @@ const CopyText = async (text: string) => {
     ToastError("复制失败" + err.message);
   }
 };
+const refDyAdd = ref();
 const saveSocialConfig = () => {
   storeConfig.saveConfig();
 };

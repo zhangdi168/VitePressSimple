@@ -25,13 +25,13 @@ export const NavList = (): navItem[] => {
       icon: "setting-config",
       borderTop: false,
     },
-    {
-      title: lang("nav.preview"),
-      name: "preview",
-      path: "/preview",
-      icon: "web-page",
-      borderTop: false,
-    },
+    // {
+    //   title: lang("nav.preview"),
+    //   name: "preview",
+    //   path: "/preview",
+    //   icon: "web-page",
+    //   borderTop: false,
+    // },
     {
       title: lang("nav.setting"),
       name: "setting",

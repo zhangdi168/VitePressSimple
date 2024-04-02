@@ -77,7 +77,7 @@
         />
       </div>
 
-      <a-form-item label="侧边栏位置">
+      <a-form-item label="大纲显示位置">
         <a-radio-group
           v-model:value="storeIndex.currArticleFrontMatter['aside']"
         >

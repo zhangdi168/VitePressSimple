@@ -56,6 +56,9 @@
           <a-tab-pane key="1-4" tab="社交帐户">
             <setting-social></setting-social>
           </a-tab-pane>
+          <a-tab-pane key="1-5" tab="搜索设置">
+            <setting-search></setting-search>
+          </a-tab-pane>
         </a-tabs>
       </div>
     </div>
@@ -87,6 +90,7 @@ import SettingSocial from "@/views/project/settingSocial.vue";
 import SettingSidebar from "@/views/project/settingSidebar.vue";
 import { useIndexStore } from "@/store";
 import EmptyProject from "@/components/emptyProject.vue";
+import SettingSearch from "@/views/project/settingSearch.vue";
 
 const activeKey1 = ref<string>("1");
 const activeKey2 = ref("1-1");

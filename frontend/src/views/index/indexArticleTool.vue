@@ -16,14 +16,14 @@
           </a>
           <template #overlay>
             <a-menu>
+              <a-menu-item @click="createProject()">
+                <a href="javascript:;">新建项目</a>
+              </a-menu-item>
               <a-menu-item @click="createFile()">
                 <a href="javascript:;">新建文章</a>
               </a-menu-item>
               <a-menu-item @click="createDir()">
                 <a href="javascript:;">新建目录</a>
-              </a-menu-item>
-              <a-menu-item @click="createProject()">
-                <a href="javascript:;">新建项目</a>
               </a-menu-item>
             </a-menu>
           </template>
@@ -94,20 +94,13 @@
 import { IconPark } from "@icon-park/vue-next/es/all";
 
 import { useIndexStore } from "@/store";
-import { nextTick, onMounted, ref } from "vue";
-import { FileSearchOutlined } from "@ant-design/icons-vue";
+import { ref } from "vue";
 import { useVpconfigStore } from "@/store/vpconfig";
-import {
-  ConfigGet,
-  OpenFileBrowser,
-} from "../../../wailsjs/go/system/SystemService";
-import { ConfigKeyProjectDir } from "@/constant/keys/config";
+import { OpenFileBrowser } from "../../../wailsjs/go/system/SystemService";
 import InputModel from "@/components/inputModel.vue";
-import { getParentDirectory } from "@/utils/file";
 import {
   CreateDir,
   CreateFile,
-  Rename,
 } from "../../../wailsjs/go/services/ArticleTreeData";
 import { ToastCheck } from "@/utils/Toast";
 import CreateProjectPopup from "@/views/project/createProjectPopup.vue";

@@ -7,7 +7,7 @@ export const defaultFrontMatter: any = {
   outline: 2, //是否显示页脚
   editLink: false, //是否显示编辑链接
   lastUpdated: true, //是否显示页脚更新时间
-  aside: "left", //侧边栏位置
+  aside: "right", //大纲显示位置--默认右边
   layout: "doc", //页面类型
   custom: {}, //用户自定义变量
   //主页
@@ -25,5 +25,7 @@ export const defaultFrontMatter: any = {
     actions: [],
     features: [], //功能列表
     head: [], //页面类型
+    // prev: "上一页",
+    // next: "",
   }, //用户自定义变量
 };

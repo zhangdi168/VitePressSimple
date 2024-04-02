@@ -7,6 +7,7 @@ import (
 
 func InitDefaultConfig() {
 	cfg.SetDefault(keys.ConfigKeyProjectDir, "")
+	cfg.SetDefault(keys.ConfigKeyIsStartup, "no")
 	cfg.SetDefault(keys.ConfigKeyHistoryProject, "[]")
 
 }

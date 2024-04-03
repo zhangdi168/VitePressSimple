@@ -73,6 +73,7 @@ const arr = defineModel<Array<any>>("arr");
 const obj = defineModel<any>("obj");
 const objs = defineModel<any>("objs");
 const arrayObject = defineModel<any>("arrayObject");
+
 const inputs = ref<InputItem[]>([]);
 watch(inputs.value, (newVal, oVal) => {
   arr.value = getArray(); //[{key:inpu1,value:val1},{}]
@@ -103,9 +104,12 @@ onMounted(() => {
   //判断props.defaultValue是数组还是对象
   if (arr.value) {
     setArrayValue(arr.value);
+    // console.log(arr.value, "arr.value -- console.log");
   } else if (objs.value) {
+    // console.log(objs.value, "objs.value -- console.log");
     setObjsValue(objs.value);
   } else if (obj.value) {
+    // console.log(obj.value, "obj.value -- console.log");
     setObjValue(obj.value);
   }
 });
@@ -115,14 +119,14 @@ interface InputItem {
   value: string;
 }
 
-//传入一个数组 转换并设置inputs的值
+//传入一个objs数组 转换并设置inputs的值
 const setArrayValue = (arrData: any[]) => {
   if (IsEmptyValue(arrData)) return;
   //遍历数组 依次将defaultValue的props.keyName和 props.valueName赋值给inuts
   for (let i = 0; i < arrData.length; i++) {
     let item: any = {};
-    item[props.keyName ?? "key"] = arrData[i][props.keyName ?? "key"];
-    item[props.valueName ?? "value"] = arrData[i][props.valueName ?? "value"];
+    item["key"] = arrData[i][props.keyName ?? "key"];
+    item["value"] = arrData[i][props.valueName ?? "value"];
     inputs.value.push(item);
   }
 };

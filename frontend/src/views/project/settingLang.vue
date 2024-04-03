@@ -17,7 +17,7 @@
     :remove-confirm="true"
     remove-confirm-text="将同步删除该语言配置、导航、侧栏等所有数据"
     @remove-item="removeLangItem"
-    v-model:arr="inputLangArray"
+    v-model:objs="inputLangArray"
   >
   </dy-add-k-v>
 
@@ -148,6 +148,7 @@ const refAddLang = ref();
 onMounted(() => {
   //获取原始数据
   let langData = storeConfig.configData["locales"];
+
   let arrData: any = [];
   for (const langDataKey in langData) {
     let item: any = {
@@ -162,8 +163,10 @@ const saveLangConfig = () => {
   //将数据转换成vitepress所需要的格式
   // let resultData: any = {};
   let resultData = storeConfig.configData["locales"];
+
   for (let i = 0; i < inputLangArray.value.length; i++) {
     let item = inputLangArray.value[i];
+    console.log(item, "item -- console.log");
     if (IsEmptyValue(resultData[item.lang])) {
       resultData[item.lang] = {
         label: item.label,

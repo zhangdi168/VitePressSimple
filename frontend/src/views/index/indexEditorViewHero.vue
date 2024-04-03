@@ -73,7 +73,7 @@
       <hr class="my-3" />
       <div>
         <dy-add-k-v
-          v-model:arr="storeIndex.currArticleFrontMatter['hero']['actions']"
+          v-model:objs="storeIndex.currArticleFrontMatter['hero']['actions']"
           add-btn-text="添加主页按钮"
           value-placeholder="跳转链接"
           add-btn-class="bg-orange-200"
@@ -85,7 +85,7 @@
       <hr class="my-3" />
       <div>
         <dy-add-k-v
-          v-model:arr="storeIndex.currArticleFrontMatter['features']"
+          v-model:objs="storeIndex.currArticleFrontMatter['hero']['features']"
           add-btn-text="添加features"
           value-placeholder="功能详情"
           add-btn-class="bg-orange-200"

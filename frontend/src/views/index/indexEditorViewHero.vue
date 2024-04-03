@@ -85,7 +85,7 @@
       <hr class="my-3" />
       <div>
         <dy-add-k-v
-          v-model:objs="storeIndex.currArticleFrontMatter['hero']['features']"
+          v-model:objs="storeIndex.currArticleFrontMatter['features']"
           add-btn-text="添加features"
           value-placeholder="功能详情"
           add-btn-class="bg-orange-200"

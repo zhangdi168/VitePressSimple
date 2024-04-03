@@ -1,4 +1,7 @@
 import { defineStore } from "pinia";
+import { ConfigGet } from "../../wailsjs/go/system/SystemService";
+import { ConfigKeyLayoutNavBgColor } from "@/constant/keys/config";
+import { IsEmptyValue } from "@/utils/utils";
 
 //这是关于布局控制的状态管理文件
 export interface layoutStore {
@@ -6,6 +9,7 @@ export interface layoutStore {
   editorToolIconSize: number; //编辑器工具栏的图标大小
   componentDyAddHeader: any;
   componentDyAddCustomFrontMatter: any;
+  colorBgNav: string;
 }
 
 export const useLayoutStore = defineStore("layout", {
@@ -14,6 +18,7 @@ export const useLayoutStore = defineStore("layout", {
     editorToolIconSize: 24,
     componentDyAddHeader: null,
     componentDyAddCustomFrontMatter: null,
+    colorBgNav: "#ebebeb",
   }),
   actions: {
     //切换显示编辑区
@@ -21,17 +26,11 @@ export const useLayoutStore = defineStore("layout", {
       console.log(isShow, "isShow -- console.log");
       this.showEditorView = isShow;
     },
-    //设置编辑器工具栏的图标大小
-    setEditorToolIconSize(size: number) {
-      this.editorToolIconSize = size;
-    },
-    //设置refDyAddHeader的值
-    setComponentDyAddHeader(ref: any) {
-      this.componentDyAddHeader = ref;
-    },
-    //设置refDyAddFrontMatter的值
-    setComponentDyAddCustomFrontMatter(ref: any) {
-      this.componentDyAddCustomFrontMatter = ref;
+    async loadUserSetting() {
+      //左侧导航栏背景颜色
+      const leftNavBgColor = await ConfigGet(ConfigKeyLayoutNavBgColor);
+      console.log(leftNavBgColor, "leftNavBgColor -- console.log");
+      if (!IsEmptyValue(leftNavBgColor)) this.colorBgNav = leftNavBgColor;
     },
   },
   getters: {

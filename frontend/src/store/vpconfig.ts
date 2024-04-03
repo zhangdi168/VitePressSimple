@@ -19,6 +19,7 @@ import {
 } from "@/configs/defaultLangConfig";
 import { StringGlobalLang, StringRootLang } from "@/configs/cnts";
 import { CreateDir } from "../../wailsjs/go/services/ArticleTreeData";
+
 //这是一个简单的推荐store案例，可以在这里定义你的状态
 //新建pinia时把vpconfig全局替换成你的store名字
 export interface vpconfigStore {

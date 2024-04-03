@@ -8,19 +8,24 @@ import {
 import { dto } from "../../wailsjs/go/models";
 import { getDirectoryPath } from "@/utils/file";
 import {
+  ConfigGet,
   ConfigSet,
   PathExists,
   PathJoin,
 } from "../../wailsjs/go/system/SystemService";
-import { ConfigKeyProjectDir } from "@/constant/keys/config";
+import {
+  ConfigKeyFrontMatterSaveType,
+  ConfigKeyProjectDir,
+} from "@/constant/keys/config";
 import { useVpconfigStore } from "@/store/vpconfig";
 import { getFileNameFromPath, IsEmptyValue } from "@/utils/utils";
-import { useLayoutStore } from "@/store/layout";
 import { VitePressHome } from "@/types/home";
 import { moveTo } from "@/utils/system";
 import { defaultFrontMatter } from "@/configs/defaultFrontMatter";
 import { useHistoryStore } from "@/store/history";
 import { isEmptyArray } from "@/utils/array";
+// @ts-ignore
+import yaml from "js-yaml"; // 浏览器环境（需确保构建工具已正确处理）
 
 //定义首页的数据类型
 export interface indexStore {
@@ -134,11 +139,21 @@ export const useIndexStore = defineStore("index", {
     //保存文章
     async saveCurrArticle(showToast = true) {
       if (this.vditor && this.currArticlePath != "") {
-        const storeLayout = useLayoutStore();
+        // const storeLayout = useLayoutStore();
         const content = this.vditor.getValue();
+        const saveType = await ConfigGet(ConfigKeyFrontMatterSaveType);
+        let fontMatterString = "";
+        if (saveType == "yaml") {
+          fontMatterString = yaml.dump(this.currArticleFrontMatter);
+        } else {
+          fontMatterString = JSON.stringify(
+            this.currArticleFrontMatter,
+            null,
+            4,
+          );
+        }
 
-        const fontMatterStr = JSON.stringify(this.currArticleFrontMatter);
-        const fullContent = `---\n${fontMatterStr}\n---\n${this.currVueCode}\n${content}`;
+        const fullContent = `---\n${fontMatterString}\n---\n${this.currVueCode}\n${content}`;
 
         //获取动态新增的数据
         WriteFileContent(this.currArticlePath, fullContent).then(() => {

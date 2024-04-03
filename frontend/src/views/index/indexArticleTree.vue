@@ -146,6 +146,7 @@ import { isEmptyArray } from "@/utils/array";
 import { useVpconfigStore } from "@/store/vpconfig";
 import { parseTagContent, regexScript, regexStyle } from "@/utils/parse";
 import {
+  ConfigGetBool,
   CopyPath,
   GetPathDir,
   GetPathFileName,
@@ -154,6 +155,7 @@ import {
 } from "../../../wailsjs/go/system/SystemService";
 import { IsEmptyValue } from "@/utils/utils";
 import MenuItem from "@/components/menuItem.vue";
+import { ConfigKeyChangeAutoSave } from "@/constant/keys/config";
 
 const storeIndex = useIndexStore();
 const moreIconShownKeys = ref<string[]>([]);
@@ -242,31 +244,30 @@ const handleClick = (key: string) => {
   }
 };
 
-const openArticle = (path: string) => {
-  ReadFileContent(path).then((content: string) => {
-    storeIndex.saveCurrArticle(false); //先保存
-    // console.log(content, "读取文件内容成功")
-    let matterData = matter(content);
-    let matchScriptArray = parseTagContent(
-      matterData.content ?? "",
-      regexScript,
-    );
-    let matchStyleArray = parseTagContent(matterData.content ?? "", regexStyle);
-    let scriptContent = matchScriptArray[0] ?? "";
-    let styleContent = matchStyleArray[0] ?? "";
-    storeIndex.setCurrScriptContent(scriptContent);
-    storeIndex.setCurrStyleContent(styleContent);
-    storeIndex.setCurrArticlePath(path);
-    // //matter字符串
-    storeIndex.setCurrArticleFrontMatter(matterData.data);
+const openArticle = async (path: string) => {
+  let content = await ReadFileContent(path);
+  let isAutoSave = await ConfigGetBool(ConfigKeyChangeAutoSave);
+  if (isAutoSave === true) {
+    await storeIndex.saveCurrArticle(false); //先保存
+  }
 
-    let vditorContent = (matterData.content ?? "")
-      .replace(scriptContent, "")
-      .replace(styleContent, "");
-    let val = vditorContent ? vditorContent : "# hello vitePress client";
-    // console.log("val:" + val);
-    storeIndex.Vditor?.setValue(val); //设置编辑器的值
-  });
+  let matterData = matter(content);
+  let matchScriptArray = parseTagContent(matterData.content ?? "", regexScript);
+  let matchStyleArray = parseTagContent(matterData.content ?? "", regexStyle);
+  let scriptContent = matchScriptArray[0] ?? "";
+  let styleContent = matchStyleArray[0] ?? "";
+  await storeIndex.setCurrScriptContent(scriptContent);
+  await storeIndex.setCurrStyleContent(styleContent);
+  storeIndex.setCurrArticlePath(path);
+  // //matter字符串
+  storeIndex.setCurrArticleFrontMatter(matterData.data);
+
+  let vditorContent = (matterData.content ?? "")
+    .replace(scriptContent, "")
+    .replace(styleContent, "");
+  let val = vditorContent ? vditorContent : "# hello vitePress client";
+  // console.log("val:" + val);
+  storeIndex.Vditor?.setValue(val); //设置编辑器的值
 };
 const isDir = (key: string) => {
   return !key.includes(".md");

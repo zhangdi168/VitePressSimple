@@ -17,6 +17,7 @@
     "codemirror": "^5.65.16",
     "codemirror-editor-vue3": "^2.4.1",
     "gray-matter": "^4.0.3",
+    "js-yaml": "^4.1.0",
     "jsx": "^0.9.89",
     "lodash-es": "^4.17.21",
     "pinia": "^2.1.7",

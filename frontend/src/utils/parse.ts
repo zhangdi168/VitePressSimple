@@ -12,7 +12,7 @@ export const parseTagContent = (markdownText: string, regex: RegExp) => {
   const results = [];
   let match;
   while ((match = regex.exec(markdownText)) !== null) {
-    console.log(match, "-----match value");
+    // console.log(match, "-----match value");
     //match[0]是包含标签的字符串 match[1]是标签内容（不包含标签）
     results.push(match[0]); // 输出：alert("Hello, world!");
   }

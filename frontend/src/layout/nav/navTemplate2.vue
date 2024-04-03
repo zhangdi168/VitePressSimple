@@ -5,10 +5,11 @@ import { NavList } from "@/configs/navs";
 import { useNavStore } from "@/store/nav";
 import { useRouter } from "vue-router";
 import { OpenURL } from "../../../wailsjs/go/system/SystemService";
+import { useLayoutStore } from "@/store/layout";
 
 const navStore = useNavStore();
 const iconSize = ref<number>(28);
-
+const storeLayout = useLayoutStore();
 const router = useRouter();
 const routerClick = (path: string, name: string) => {
   navStore.setActiveNav(path, name);
@@ -20,7 +21,7 @@ const routerClick = (path: string, name: string) => {
   <div class="flex bg-white justify-start items-start w-screen h-screen">
     <!-- 左侧导航 Start -->
     <div
-      style="background-color: #ebebeb"
+      :style="'background-color:' + storeLayout.colorBgNav"
       class="flex flex-col w-14 justify-center items-center h-full overflow-hidden text-gray-700 rounded"
     >
       <!--    <a class="flex items-center justify-start mt-3" href="#">-->
@@ -58,7 +59,7 @@ const routerClick = (path: string, name: string) => {
       </div>
       <span
         class="flex cursor-pointer items-center w-12 h-12 justify-center mt-auto bg-gray-200 hover:bg-gray-300"
-        @click="OpenURL('https://github.com/zhangdi168')"
+        @click="OpenURL('https://github.com/zhangdi168/VitePressSimple')"
       >
         <icon-park
           :size="iconSize"

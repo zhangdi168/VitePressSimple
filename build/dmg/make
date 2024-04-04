@@ -1,0 +1,54 @@
+ script
+#!/usr/bin/env bash
+
+# 初始化脚本目录路径
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+# 初始化源目录路径
+SOURCE_DIR="$( cd $SCRIPT_DIR/../bin && pwd )"
+# 查找并设置应用程序路径
+APP_PATH=$( find "$SOURCE_DIR" -name '*.app' -maxdepth 1)
+# 提取应用程序名称
+APP_NAME=$(basename "$APP_PATH")
+# 提取卷宗名称（不包括.app后缀）
+VOLUME_NAME=$(basename "$APP_PATH" .app)
+# 查找卷宗图标路径
+VOLUME_ICON=$( find "$SOURCE_DIR" -name '*.icns')
+# 设置DMG文件名
+DMG_NAME="$VOLUME_NAMEInstaller.dmg"
+
+# 如果DMG文件已存在，则删除
+[[ -f $SOURCE_DIR/"$DMG_NAME" ]] && rm $SOURCE_DIR/"$DMG_NAME"
+
+# 调用create-dmg工具创建DMG文件，配置各项参数
+$SCRIPT_DIR/create-dmg \
+  --no-internet-enable \
+  --volname "$VOLUME_NAME" \
+  --volicon "$VOLUME_ICON" \
+  --background "$SCRIPT_DIR/background.tiff" \
+  --text-size 12 \
+  --window-pos 400 400 \
+  --window-size 660 450 \
+  --icon-size 80 \
+  --icon "$APP_NAME" 180 180 \
+  --hide-extension "$APP_NAME" \
+  --app-drop-link 480 180 \
+  --add-file "已损坏修复" "$SCRIPT_DIR/fix-app" 330 290 \
+  "$SOURCE_DIR/$DMG_NAME" \
+  $SOURCE_DIR
+
+
+#$SCRIPT_DIR/create-dmg: 执行位于$SCRIPT_DIR目录下的名为create-dmg的可执行程序或脚本。该程序用于创建一个macOS的磁盘映像（.dmg）文件。
+#--no-internet-enable: 指定在打开生成的磁盘映像时，不应启用互联网访问权限。
+#--volname "$VOLUME_NAME": 设置磁盘映像装载后的卷宗名称为变量$VOLUME_NAME所表示的值。
+#--volicon "$VOLUME_ICON": 为磁盘映像指定卷宗图标，使用变量$VOLUME_ICON所指向的.icns图标文件。
+#--background "$SCRIPT_DIR/background.tiff": 设置磁盘映像窗口背景图像为$SCRIPT_DIR目录下的background.tiff文件。
+#--text-size 12: 设定磁盘映像中所有文本元素的字体大小为12点。
+#--window-pos 400 400: 定义磁盘映像窗口在屏幕上的初始位置，距离左上角分别为400像素和400像素。
+#--window-size 660 450: 设置磁盘映像窗口的尺寸，宽度为660像素，高度为450像素。
+#--icon-size 80: 指定磁盘映像中图标的大小为80像素。
+#--icon "$APP_NAME" 180 180: 添加一个图标到磁盘映像界面，图标对应的应用程序名为$APP_NAME，其在界面中的位置坐标为(180, 180)。
+#--hide-extension "$APP_NAME": 针对$APP_NAME所代表的应用程序，在磁盘映像界面中隐藏其文件扩展名。
+#--app-drop-link 480 180: 在指定位置(480, 180)创建一个“应用程序”拖放链接，用户可以将此应用直接拖放到“应用程序”文件夹进行安装。
+#--add-file "已损坏修复" "$SCRIPT_DIR/fix-app" 330 290: 向磁盘映像添加一个名为“已损坏修复”的文件，实际文件路径为"$SCRIPT_DIR/fix-app"，在界面中的位置坐标为(330, 290)。
+#"$SOURCE_DIR/$DMG_NAME": 指定生成的磁盘映像文件保存的完整路径，由$SOURCE_DIR目录和变量$DMG_NAME所构成的文件名组合而成。
+#$SOURCE_DIR: 最后传递给create-dmg的参数，通常表示需要打包进磁盘映像的源文件目录。这里应包含要分发的应用程序及相关资源。

@@ -80,6 +80,7 @@ func main() {
 			vpsimpler.NewVpConfig(),
 			system.NewSystemService(),
 			services.NewShellService(),
+			services.NewUpdateService(), //在线更新
 		},
 		// Windows platform specific options
 		// Windows平台特定选项

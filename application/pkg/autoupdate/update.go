@@ -22,15 +22,15 @@ type ReleaseInfo struct {
 // GetGitRepoLatestReleaseInfo 获取最新版本发行版的下载地址等信息
 func GetGitRepoLatestReleaseInfo() *ReleaseInfo {
 	if UpdateCfg.GitType == GitTypeGitee { //gitee
-		return GetGiteeRepoReleasesInfo()
+		return getGiteeRepoReleasesInfo()
 	}
 	if UpdateCfg.GitType == GitTypeGithub { //github
-		return GetGithubRepoReleasesInfo()
+		return getGithubRepoReleasesInfo()
 	}
 	return nil
 }
 
-func GetGithubRepoReleasesInfo() *ReleaseInfo {
+func getGithubRepoReleasesInfo() *ReleaseInfo {
 	//owner := "duolabmeng6"   // GitHub 仓库的所有者
 	//repo := "GoEasyDesigner" // GitHub 仓库的名称
 	//https://api.github.com/repos/duolabmeng6/projection_screen_tv/releases
@@ -114,7 +114,7 @@ func GetGithubRepoReleasesInfo() *ReleaseInfo {
 	return releaseInfo
 }
 
-func GetGiteeRepoReleasesInfo() *ReleaseInfo {
+func getGiteeRepoReleasesInfo() *ReleaseInfo {
 	//owner := "duolabmeng6"   // GitHub 仓库的所有者
 	//repo := "GoEasyDesigner" // GitHub 仓库的名称
 	//https://api.github.com/repos/duolabmeng6/projection_screen_tv/releases
@@ -252,11 +252,11 @@ func DownloadCallbackProgress(downloadUrl string, savePath string, fc func(progr
 	return nil
 }
 
-// IsDebug
+// isDebug
 // 判断当前的环境是否为编译后的程序
 // 真为调试模式
 // 假为编译后的程序
-func IsDebug() bool {
+func isDebug() bool {
 	debugMode := false
 	if os.Getenv("DEBUG") != "" {
 		debugMode = true
@@ -268,9 +268,9 @@ func IsDebug() bool {
 // CheckUpdateEntry 检查更新的入口函数
 func CheckUpdateEntry() {
 	if SysIsMac() {
-		CheckUpdateMac()
+		checkUpdateMac()
 	}
 	if SysIsWindow() {
-		CheckUpdateWindow()
+		checkUpdateWindow()
 	}
 }

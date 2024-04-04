@@ -67,6 +67,8 @@ export const useIndexStore = defineStore("index", {
   actions: {
     async loadTreeData() {
       const cfg = useVpconfigStore();
+      await cfg.formatPath(); //获取项目目录
+
       if (await cfg.ExistsProjectDir()) {
         await cfg.readVpConfig(); //读取配置 以及组装路径
         this.articleTreeData = await ParseTreeData(cfg.srcDir);

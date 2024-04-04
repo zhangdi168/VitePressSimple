@@ -9,6 +9,7 @@ import (
 	"path/filepath"
 	"runtime"
 	"strings"
+	"wailstemplate/application/pkg/filehelper"
 )
 
 // SysIsWindow 当前系统是否为windows
@@ -26,8 +27,52 @@ func SysIsLinux() bool {
 	return runtime.GOOS == "linux"
 }
 
-// 解压zip压缩包
-func zipUnzip(compressedPackagePath string, unzipDir string, unzipDirPre []string) bool {
+// UnzipFile 解压缩单个ZIP文件到指定目录
+func UnzipFile(zipFilePath string, destDir string) error {
+	// 打开ZIP文件
+	reader, err := zip.OpenReader(zipFilePath)
+	if err != nil {
+		return fmt.Errorf("failed to open ZIP file: %w", err)
+	}
+	defer reader.Close()
+
+	// 遍历ZIP文件中的每个条目
+	for _, file := range reader.File {
+		// 获取条目的路径信息
+		filePath := filepath.Join(destDir, file.Name)
+
+		// 检查是否为目录，如果是则创建该目录
+		if file.FileInfo().IsDir() {
+			os.MkdirAll(filePath, os.ModePerm)
+			continue
+		}
+
+		// 创建目标文件并打开写入流
+		targetFile, err := os.OpenFile(filePath, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, file.Mode())
+		if err != nil {
+			return fmt.Errorf("failed to create target file: %w", err)
+		}
+		defer targetFile.Close()
+
+		// 打开ZIP条目的读取流
+		rc, err := file.Open()
+		if err != nil {
+			return fmt.Errorf("failed to open ZIP entry for reading: %w", err)
+		}
+		defer rc.Close()
+
+		// 将ZIP条目的内容复制到目标文件
+		_, err = io.Copy(targetFile, rc)
+		if err != nil {
+			return fmt.Errorf("failed to copy data from ZIP entry to target file: %w", err)
+		}
+	}
+
+	return nil
+}
+
+// Unzip 解压zip压缩包（MACOS 用到）
+func Unzip(compressedPackagePath string, unzipDir string, unzipDirPre []string) bool {
 	// 保持权限和软连接解压
 	// unzipDirPre 例如 ["my_app.app/Contents/"] 不填则全部解压
 
@@ -142,14 +187,15 @@ func extractFile(info *zip.File, targetFilePath string) error {
 	return nil
 }
 
-// GetDownloadPath 获取用户的【下载】文件夹
-func GetDownloadPath() string {
+// getDownloadDir 获取用户的【下载】文件夹
+func getDownloadDir() string {
 	usr, err := user.Current()
 	if err != nil {
 		fmt.Println("pull:", err)
 		return ""
 	}
-	downloadFolderPath := filepath.Join(usr.HomeDir, "Downloads")
+	downloadFolderPath := filepath.Join(usr.HomeDir, UpdateCfg.AppName, "download")
+	filehelper.CreateDir(downloadFolderPath)
 	return downloadFolderPath
 }
 
@@ -167,4 +213,30 @@ func ifThenInt(flag bool, resTrue, resFalse int) int {
 		return resTrue
 	}
 	return resFalse
+}
+
+// CopyFile copies the contents of the source file to the destination file.
+// It returns an error if any occurs during the copy process.
+func CopyFile(srcFilePath, dstFilePath string) error {
+	// Open the source file
+	srcFile, err := os.Open(srcFilePath)
+	if err != nil {
+		return fmt.Errorf("failed to open source file '%s': %w", srcFilePath, err)
+	}
+	defer srcFile.Close()
+
+	// Create or truncate the destination file
+	dstFile, err := os.Create(dstFilePath)
+	if err != nil {
+		return fmt.Errorf("failed to create destination file '%s': %w", dstFilePath, err)
+	}
+	defer dstFile.Close()
+
+	// Copy the contents from source to destination
+	_, err = io.Copy(dstFile, srcFile)
+	if err != nil {
+		return fmt.Errorf("failed to copy file contents from '%s' to '%s': %w", srcFilePath, dstFilePath, err)
+	}
+
+	return nil
 }

@@ -52,6 +52,10 @@ export const useVpconfigStore = defineStore("vpconfig", {
     async readVpConfig() {
       //获取项目根目录(绝对路径)
       await this.formatPath();
+
+      if (IsEmptyValue(this.baseDir)) {
+        return;
+      }
       await this.backupConfigFile(); //如果是首次则备份文件夹，放在 this.baseDir后面
       const content = await GetVpConfigData(); //获取config.mts文件内容
       let configData: any = {};

@@ -33,13 +33,13 @@ func TestSystemVersion(t *testing.T) {
 	fmt.Println("Is system Windows:", SysIsWindow())
 	fmt.Println("Is system Linux:", SysIsLinux())
 	fmt.Println("Is system Mac:", SysIsMac())
-	fmt.Println("Is debug mode:", IsDebug())
+	fmt.Println("Is debug mode:", isDebug())
 }
 
 // 测试解压压缩包
 func TestUnzip(t *testing.T) {
 	archivePath := "/Users/ll/Downloads/GoEasyDesigner_MacOS.zip"
-	UpdateSelfMacOSApp(archivePath, "GoEasyDesigner.app")
+	UpdateSelfMacOSApp(archivePath, "GoEasyDesigner.exe")
 }
 func TestUpdateProcessMacOS(t *testing.T) {
 	usr, err := user.Current()
@@ -49,7 +49,7 @@ func TestUpdateProcessMacOS(t *testing.T) {
 	downloadFolderPath := filepath.Join(usr.HomeDir, "Downloads")
 
 	fmt.Println(downloadFolderPath)
-	info := GetGithubRepoReleasesInfo()
+	info := getGithubRepoReleasesInfo()
 
 	err = DownloadCallbackProgress(info.MacDownloadURL, downloadFolderPath+"/mactest.zip", func(progress float64) {
 		fmt.Println("Downloading...", progress)
@@ -71,7 +71,7 @@ func TestUpdateProcessWindows(t *testing.T) {
 	downloadFolderPath := filepath.Join(usr.HomeDir, "Downloads")
 
 	//fmt.Println(downloadFolderPath)
-	//info := GetGithubRepoReleasesInfo()
+	//info := getGithubRepoReleasesInfo()
 
 	//err = DownloadWithProgressCallback(info.WinDownloadURL, downloadFolderPath+"/GoEasyDesigner.exe", func(progress float64) {
 	//	fmt.Println("Downloading...", progress)
@@ -96,7 +96,7 @@ func TestFullUpdateFlow(t *testing.T) {
 		MacReleaseNameContainStr:    "",
 	})
 	info := GetGitRepoLatestReleaseInfo()
-	downloadFolderDir := GetDownloadPath()
+	downloadFolderDir := getDownloadDir()
 	fmt.Println(info.MacDownloadURL)
 	fmt.Println(downloadFolderDir)
 	if info.Version == UpdateCfg.CurrVersion {
@@ -142,5 +142,6 @@ func TestFullUpdateFlow(t *testing.T) {
 	}
 	fmt.Println("Download completed")
 	//updateFlag, status := UpdateSelfMacOSApp(downloadFolderDir+"/"+appName+"_MacOS.zip", appName+".app")
+
 	//fmt.Println(updateFlag, status)
 }

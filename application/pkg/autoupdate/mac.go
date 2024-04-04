@@ -9,8 +9,8 @@ import (
 	"strings"
 )
 
-func CheckUpdateMac() {
-	downloadFolderPath := GetDownloadPath()
+func checkUpdateMac() {
+	downloadFolderPath := getDownloadDir()
 	info := GetGitRepoLatestReleaseInfo()
 	println(info.MacDownloadURL)
 	println(downloadFolderPath)
@@ -97,7 +97,7 @@ func UpdateSelfMacOSApp(ResourceCompressionPackage string, appName string) (bool
 		appFatherDir := MacOsAppPath[:strings.LastIndex(MacOsAppPath, "/")]
 		fmt.Printf("ResourceCompressionPackage %s appFatherDir%s MacOsAppPath%s \r\n", ResourceCompressionPackage, appFatherDir, MacOsAppPath)
 		if MacOsAppPath != "" {
-			tarResult := zipUnzip(ResourceCompressionPackage, appFatherDir, []string{appName + "/Contents/"})
+			tarResult := Unzip(ResourceCompressionPackage, appFatherDir, []string{appName + "/Contents/"})
 			println("tarResult", tarResult)
 			// 解压完成后删除压缩包
 			//os.Remove(ResourceCompressionPackage)

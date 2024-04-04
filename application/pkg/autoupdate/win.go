@@ -5,13 +5,24 @@ import (
 	"github.com/ncruces/zenity"
 	"os"
 	"os/exec"
+	"path/filepath"
+	"strings"
+	"wailstemplate/application/pkg/mylog"
 )
 
+// GetAppPathWindow 获取当前可执行文件的路径。
+//
+// 返回值:
+// string: 可执行文件的完整路径。
+// error: 如果获取过程中出现错误，则返回错误信息；否则返回nil。
 func GetAppPathWindow() (string, error) {
+	// 获取当前执行文件的路径
 	exe, err := os.Executable()
 	if err != nil {
+		// 如果获取路径过程中出现错误，返回空字符串和错误信息
 		return "", err
 	}
+	// 正常获取到路径后，返回该路径和nil作为错误信息
 	return exe, nil
 }
 
@@ -24,72 +35,102 @@ func UpWindowSelfApp(exeResourceFilePath string) (bool, string) {
 	oldFileName := selfPathWindow + ".old.bak"
 	if _, err := os.Stat(oldFileName); err == nil {
 		// 删除文件
-		os.Remove(oldFileName)
+		err := os.Remove(oldFileName)
+		if err != nil {
+			mylog.Error("删除旧文件error ", err)
+			return false, ""
+		}
 	}
 
-	os.Rename(selfPathWindow, oldFileName)
-	os.Rename(exeResourceFilePath, selfPathWindow)
+	err := os.Rename(selfPathWindow, oldFileName)
+	if err != nil {
+		mylog.Error("修改旧文件路径error ", err)
+		return false, err.Error()
+	}
+	//不能用重命名的方式移动，跨磁盘会报错
+	err = CopyFile(exeResourceFilePath, selfPathWindow)
+	if err != nil {
+		mylog.Error("复制新文件路径error ", err)
+		return false, err.Error()
+	}
 
 	// 结束自身运行然后重启自己
 	cmd := exec.Command(selfPathWindow)
 	cmd.Args = append(cmd.Args, os.Args[1:]...)
-	cmd.Start()
+	err = cmd.Start()
+	if err != nil {
+		mylog.Error("重启程序error ", err)
+		return false, ""
+	}
 
 	os.Exit(0) // 此处退出当前进程
 	return true, ""
 }
 
-func CheckUpdateWindow() {
-	downloadFolderPath := GetDownloadPath()
+func checkUpdateWindow() {
+	downloadDir := getDownloadDir()
 	info := GetGitRepoLatestReleaseInfo()
 	if info == nil {
-		zenity.Info("网络原因无法获取更新信息")
+		zenity.Info("Unable to retrieve update information due to network issues")
 		return
 	}
 	if info.Version == UpdateCfg.CurrVersion {
-		err := zenity.Info("当前已经是最新版本")
+		err := zenity.Info("Already on the latest version")
 		if err != nil {
 			return
 		}
 		return
 	}
-
-	err := zenity.Question("软件有新版本可用，是否更新？\n当前版本："+
+	fileName := filepath.Base(info.WinDownloadURL)
+	saveFilePath := filepath.Join(downloadDir, fileName)
+	err := zenity.Question("A new software version is available. Would you like to update?\nCurrent Version: "+
 		UpdateCfg.CurrVersion+
-		"\n最新版本："+info.Version,
-		zenity.Title("更新提示"),
+		"\nLatest Version: "+info.Version,
+		zenity.Title("Update Prompt"),
 		zenity.Icon(zenity.QuestionIcon),
-		zenity.OKLabel("更新"),
-		zenity.CancelLabel("取消"))
-	//ecore.E调试输出(err)
-	println("更新", err)
+		zenity.OKLabel("Update"),
+		zenity.CancelLabel("Cancel"))
+	// ecore.E debug output(err)
+	println("Update:", err)
 	if err != nil {
 		return
 	}
 	progress, _ := zenity.Progress(
-		zenity.Title("软件更新"),
-		zenity.MaxValue(100), // 设置最大进度值为100
+		zenity.Title("Software Update"),
+		zenity.MaxValue(100), // Set maximum progress value to 100
 	)
 
-	progress.Text("正在下载...")
+	progress.Text("Downloading...")
 
-	err = DownloadCallbackProgress(info.WinDownloadURL, downloadFolderPath+"/"+UpdateCfg.AppName+".exe", func(进度 float64) {
-		fmt.Println("正在下载...", 进度)
-		progress.Text("正在下载..." + fmt.Sprintf("%.2f", 进度) + "%")
-		progress.Value(int(进度))
+	err = DownloadCallbackProgress(info.WinDownloadURL, saveFilePath, func(currProgress float64) {
+		fmt.Println("Downloading...", currProgress)
+		progress.Text("Downloading..." + fmt.Sprintf("%.2f", currProgress) + "%")
+		progress.Value(int(currProgress))
 	})
 	if err != nil {
-		fmt.Println("下载出错：", err)
-		zenity.Info("下载错误，检查你的网络")
+		fmt.Println("Download failed:", err)
+		zenity.Info("Download error. Please check your network connection")
 		progress.Close()
 		return
 	}
-	progress.Text("下载完成 即将完成更新")
+	progress.Text("Download complete. Updating soon...")
 	if progress.Close() != nil {
-		fmt.Println("点击了取消")
+		fmt.Println("Cancelled by user")
 		return
 	}
-	fmt.Println("下载完成了")
-	flag, s := UpWindowSelfApp(downloadFolderPath + "/" + UpdateCfg.AppName + ".exe")
+	fmt.Println("Download completed")
+	// Unzip
+
+	if strings.Contains(fileName, ".zip") {
+		err := UnzipFile(filepath.Join(downloadDir, fileName), downloadDir)
+		if err != nil {
+			zenity.Info("UnzipFile error:" + err.Error())
+			mylog.Err("解压更新包失败:", err)
+			return
+		}
+		
+	}
+	// Perform the update operation
+	flag, s := UpWindowSelfApp(downloadDir + "/" + UpdateCfg.AppName + ".exe")
 	println(flag, s)
 }

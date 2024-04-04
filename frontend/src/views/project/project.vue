@@ -77,20 +77,20 @@
 </template>
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
-import SettingBase from "@/views/project/settingBase.vue";
+import SettingBase from "@/views/project/projectSettingBase.vue";
 import { useVpconfigStore } from "@/store/vpconfig";
 import { IconPark } from "@icon-park/vue-next/es/all";
 import DyAddKV from "@/components/dyAddKV.vue";
-import SettingNav from "@/views/project/settingNav.vue";
+import SettingNav from "@/views/project/projectSettingNav.vue";
 
 import { ToastError, ToastInfo, ToastSuccess } from "@/utils/Toast";
 import SimInput from "@/components/simInput.vue";
-import SettingLang from "@/views/project/settingLang.vue";
-import SettingSocial from "@/views/project/settingSocial.vue";
-import SettingSidebar from "@/views/project/settingSidebar.vue";
+import SettingLang from "@/views/project/projectSettingLang.vue";
+import SettingSocial from "@/views/project/projectSettingSocial.vue";
+import SettingSidebar from "@/views/project/projectSettingSidebar.vue";
 import { useIndexStore } from "@/store";
 import EmptyProject from "@/components/emptyProject.vue";
-import SettingSearch from "@/views/project/settingSearch.vue";
+import SettingSearch from "@/views/project/projectSettingSearch.vue";
 
 const activeKey1 = ref<string>("1");
 const activeKey2 = ref("1-1");

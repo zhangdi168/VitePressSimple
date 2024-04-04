@@ -12,3 +12,6 @@ const ConfigKeyFrontMatterSaveType = "front_matter_save_type"
 
 // ConfigKeyLayoutNavBgColor 左侧导航栏背景颜色
 const ConfigKeyLayoutNavBgColor = "layout.nav_bg_color"
+
+// ConfigKeySysUpdateSource 自动更新源
+const ConfigKeySysUpdateSource = "sys.auto_update_source"

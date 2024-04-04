@@ -23,7 +23,9 @@ onMounted(async () => {
   // await vpConfig.initConfig();
   //设定初始项目
   let dir = await ConfigGet(ConfigKeyProjectDir);
-  await storeIndex.changeProject(dir);
+  if (dir !== "") {
+    await storeIndex.changeProject(dir);
+  }
   //监听快捷键
   window.addEventListener("keydown", handleKeyDown);
 });

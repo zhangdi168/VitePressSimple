@@ -1,7 +1,9 @@
 package services
 
 import (
+	"wailstemplate/application/constant/keys"
 	"wailstemplate/application/pkg/autoupdate"
+	"wailstemplate/application/pkg/cfg"
 	setting "wailstemplate/settings"
 )
 
@@ -26,10 +28,15 @@ func (s *UpdateService) HasNewVersion() bool {
 }
 
 func SetUpdateConfig() {
+	source := cfg.GetString(keys.ConfigKeySysUpdateSource)
+	var gitType autoupdate.GitTypeEnum = autoupdate.GitTypeGithub
+	if source == "gitee" {
+		gitType = autoupdate.GitTypeGitee
+	}
 	autoupdate.SetUpdateConfig(autoupdate.UpdateConfig{
 		AppName:                     setting.AppName,
 		CurrVersion:                 setting.Version,
-		GitType:                     autoupdate.GitTypeGitee,
+		GitType:                     gitType,
 		GitOwner:                    setting.GitAuthor,
 		GitRepo:                     setting.GitRepo,
 		WindowReleaseNameContainStr: setting.WindowZipContainStr,

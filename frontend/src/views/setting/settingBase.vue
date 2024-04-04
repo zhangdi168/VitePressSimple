@@ -23,6 +23,17 @@
       ]"
     ></config-radio>
   </div>
+  <div class="ml-5 mt-5">
+    <config-radio
+      :config-key="ConfigKeySysUpdateSource"
+      tooltip="中国用户推荐使用gitee源更新，非中国用户推荐使用github源更新"
+      label="在线更新源"
+      :items="[
+        { label: 'github', value: 'github' },
+        { label: 'gitee', value: 'gitee' },
+      ]"
+    ></config-radio>
+  </div>
   <hr class="my-3" />
   <div class="flex items-center justify-center">
     <icon-btn
@@ -44,6 +55,7 @@ import {
   ConfigKeyChangeAutoSave,
   ConfigKeyFrontMatterSaveType,
   ConfigKeyIsStartup,
+  ConfigKeySysUpdateSource,
 } from "@/constant/keys/config";
 import { useLayoutStore } from "@/store/layout";
 import {

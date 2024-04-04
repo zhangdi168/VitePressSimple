@@ -36,6 +36,7 @@ func TestSystemVersion(t *testing.T) {
 	fmt.Println("Is debug mode:", IsDebug())
 }
 
+// 测试解压压缩包
 func TestUnzip(t *testing.T) {
 	archivePath := "/Users/ll/Downloads/GoEasyDesigner_MacOS.zip"
 	UpdateSelfMacOSApp(archivePath, "GoEasyDesigner.app")
@@ -85,8 +86,17 @@ func TestUpdateProcessWindows(t *testing.T) {
 }
 
 func TestFullUpdateFlow(t *testing.T) {
-	downloadFolderDir := GetDownloadPath()
+	SetUpdateConfig(UpdateConfig{
+		AppName:                     "aaa",
+		CurrVersion:                 "v1.0.0",
+		GitType:                     GitTypeGitee,
+		GitOwner:                    "",
+		GitRepo:                     "",
+		WindowReleaseNameContainStr: "",
+		MacReleaseNameContainStr:    "",
+	})
 	info := GetGitRepoLatestReleaseInfo()
+	downloadFolderDir := GetDownloadPath()
 	fmt.Println(info.MacDownloadURL)
 	fmt.Println(downloadFolderDir)
 	if info.Version == UpdateCfg.CurrVersion {

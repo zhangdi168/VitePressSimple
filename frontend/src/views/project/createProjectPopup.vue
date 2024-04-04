@@ -22,12 +22,12 @@
       <div class="my-2">
         <a-input
           v-model:value="formData.title"
-          placeholder="请输入项目标题"
+          placeholder="请输入项目名称"
           class="w-full"
         >
           <template #suffix>
-            <a-tooltip title="项目的标题，建议中文">
-              <span class="text-gray-500">标题</span>
+            <a-tooltip title="项目的名称，请遵循文件的命名规则">
+              <span class="text-gray-500">名称</span>
             </a-tooltip>
           </template>
         </a-input>
@@ -100,14 +100,16 @@
 import { h, onMounted, ref } from "vue";
 import { ProjectCreate } from "@/types/project";
 import { InfoCircleOutlined, FileOutlined } from "@ant-design/icons-vue";
-import { SelectDir } from "../../../wailsjs/go/system/SystemService";
+import { PathJoin, SelectDir } from "../../../wailsjs/go/system/SystemService";
 import { CreateProject } from "../../../wailsjs/go/vpsimpler/VpManager";
 import { ToastError, ToastInfo } from "@/utils/Toast";
 import { HistoryProject } from "@/utils/historyProject";
 import { useHistoryStore } from "@/store/history";
+import { CreateDir } from "../../../wailsjs/go/services/ArticleTreeData";
+import { useIndexStore } from "@/store";
 
 const formData = ref<ProjectCreate>({
-  title: "我的vitepress站点",
+  title: "VPSimpleProject",
   dir: "",
   docDir: "./docs",
 } as ProjectCreate);
@@ -118,7 +120,8 @@ interface inputModelProps {
   placeholder?: string;
 }
 
-const Create = () => {
+const Create = async () => {
+  await CreateDir(formData.value.dir);
   CreateProject(
     formData.value.title,
     formData.value.description,
@@ -130,15 +133,20 @@ const Create = () => {
       ToastInfo("创建完成");
       modalVisible.value = false;
       useHistoryStore().add(formData.value.dir); //添加到历史记录
+      useIndexStore().changeProject(formData.value.dir);
     }
   });
 };
 
-const selectProjectDir = () => {
-  SelectDir("请选择项目存放目录").then((res: string) => {
-    console.log(res, "-----res value");
-    formData.value.dir = res;
-  });
+const selectProjectDir = async () => {
+  if (formData.value.title == "") {
+    ToastError("请先输入项目名称");
+    return;
+  }
+  let dir = await SelectDir("请选择项目存放目录");
+  if (dir != "") {
+    formData.value.dir = await PathJoin([dir, formData.value.title]);
+  }
 };
 
 const props = defineProps<inputModelProps>();

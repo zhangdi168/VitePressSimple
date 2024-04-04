@@ -17,6 +17,8 @@ export function GetPathExt(arg1:string):Promise<string>;
 
 export function GetPathFileName(arg1:string):Promise<string>;
 
+export function GetSystemType():Promise<string>;
+
 export function GetSystemUserHomeDir():Promise<string>;
 
 export function OpenFileBrowser(arg1:string):Promise<void>;

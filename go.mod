@@ -2,12 +2,13 @@ module wailstemplate
 
 go 1.21
 
-toolchain go1.21.5
+toolchain go1.22.0
 
 require (
 	github.com/gin-gonic/gin v1.9.1
 	github.com/ncruces/zenity v0.10.12
 	github.com/robfig/cron/v3 v3.0.1
+	github.com/spf13/afero v1.11.0
 	github.com/spf13/viper v1.18.1
 	github.com/wailsapp/wails/v2 v2.8.0
 	golang.org/x/sys v0.17.0
@@ -62,7 +63,6 @@ require (
 	github.com/sagikazarmark/slog-shim v0.1.0 // indirect
 	github.com/samber/lo v1.38.1 // indirect
 	github.com/sourcegraph/conc v0.3.0 // indirect
-	github.com/spf13/afero v1.11.0 // indirect
 	github.com/spf13/cast v1.6.0 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/subosito/gotenv v1.6.0 // indirect

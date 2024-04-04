@@ -22,10 +22,10 @@ func NewShellService() *ShellService {
 
 // RunCmd 运行一个cmd对象,返回cmd对象下标
 func (s *ShellService) RunCmd(cmdString string, baseDir string) string {
-	if s.isRunning {
-		return "当前有一个命令正在运行，任务结束才可以运行新的命令"
-	}
-	s.isRunning = true
+	//if s.isRunning {
+	//	return "当前有一个命令正在运行，任务结束才可以运行新的命令"
+	//}
+	//s.isRunning = true
 	name, newCmdArr := parseCmd(cmdString) //解析命令
 	cmd := exec.Command(name, newCmdArr...)
 	cmd.Dir = baseDir
@@ -37,14 +37,14 @@ func (s *ShellService) RunCmd(cmdString string, baseDir string) string {
 
 // StopCmd 停止命令运行
 func (s *ShellService) StopCmd() string {
-	if !s.isRunning {
-		return "当前没有命令正在运行"
-	}
+	//if !s.isRunning {
+	//	return "当前没有命令正在运行"
+	//}
 	err := s.cmd.Process.Signal(syscall.SIGINT)
 	if err != nil {
 		return err.Error()
 	}
-	s.isRunning = false
+	//s.isRunning = false
 	return ""
 }
 
@@ -87,7 +87,7 @@ func (s *ShellService) printCmdOutput() {
 		return
 	}
 	wg.Wait() // 等待所有goroutine完成
-	s.isRunning = false
+	//s.isRunning = false
 }
 
 // GetOutput 从给定的reader中读取输出并打印。

@@ -6,10 +6,13 @@ import { useNavStore } from "@/store/nav";
 import { useRouter } from "vue-router";
 import { OpenURL } from "../../../wailsjs/go/system/SystemService";
 import { useLayoutStore } from "@/store/layout";
+import { useIndexStore } from "@/store";
+import { SystemMac } from "@/constant/enums/system";
 
 const navStore = useNavStore();
 const iconSize = ref<number>(28);
 const storeLayout = useLayoutStore();
+const storeIndex = useIndexStore();
 const router = useRouter();
 const routerClick = (path: string, name: string) => {
   navStore.setActiveNav(path, name);
@@ -18,7 +21,10 @@ const routerClick = (path: string, name: string) => {
 </script>
 
 <template>
-  <div class="flex bg-white justify-start items-start w-screen h-screen">
+  <div
+    :style="SystemMac == storeIndex.systemType ? 'margin-top: 22px;' : ''"
+    class="flex bg-white justify-start items-start w-screen h-screen"
+  >
     <!-- 左侧导航 Start -->
     <div
       :style="'background-color:' + storeLayout.colorBgNav"
@@ -29,7 +35,7 @@ const routerClick = (path: string, name: string) => {
       <!--    </a>-->
       <div
         :key="item.path"
-        v-for="item in NavList()"
+        v-for="(item, index) in NavList()"
         :class="item.borderTop ? 'mt-2 border-t' : 'mt-1'"
         class="flex flex-col items-center justify-center border-gray-300"
       >

@@ -34,6 +34,10 @@ export function GetPathFileName(arg1) {
   return window['go']['system']['SystemService']['GetPathFileName'](arg1);
 }
 
+export function GetSystemType() {
+  return window['go']['system']['SystemService']['GetSystemType']();
+}
+
 export function GetSystemUserHomeDir() {
   return window['go']['system']['SystemService']['GetSystemUserHomeDir']();
 }

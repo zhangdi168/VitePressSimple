@@ -7,11 +7,11 @@ package startup
 
 import (
 	"fmt"
-	"ideatools/application/pkgs/utils"
 	"io/ioutil"
 	"os"
 	"path/filepath"
 	"strings"
+	"wailstemplate/application/pkg/utils"
 )
 
 func EnableAutoStart(appName string, appPath string) error {

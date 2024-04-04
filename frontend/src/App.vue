@@ -7,20 +7,18 @@
 <script lang="ts" setup>
 import NavTemplate1 from "@/layout/nav/navTemplate1.vue";
 import NavTemplate2 from "@/layout/nav/navTemplate2.vue";
-import { nextTick, onBeforeUnmount, onMounted, onUnmounted, ref } from "vue";
-import { useVpconfigStore } from "@/store/vpconfig";
+import { onBeforeUnmount, onMounted, ref } from "vue";
 import { ConfigGet } from "../wailsjs/go/system/SystemService";
 import { ConfigKeyProjectDir } from "@/constant/keys/config";
 import { useIndexStore } from "@/store";
-import { HistoryProject } from "@/utils/historyProject";
-import { useHistoryStore } from "@/store/history";
 //在这里可以设置默认的模板
 const useTemplateIndex = ref(2);
 const storeIndex = useIndexStore();
-const vpConfig = useVpconfigStore();
+// const vpConfig = useVpconfigStore();
 onMounted(async () => {
   // await HistoryProject.initList(); //初始化历史数据
   // await vpConfig.initConfig();
+  await storeIndex.getSystemType(); //获取当前系统
   //设定初始项目
   let dir = await ConfigGet(ConfigKeyProjectDir);
   if (dir !== "") {

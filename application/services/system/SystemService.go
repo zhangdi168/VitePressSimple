@@ -39,6 +39,11 @@ func (s *SystemService) OpenFileBrowser(dir string) {
 	}
 }
 
+// GetSystemType 获取系统类型
+func (s *SystemService) GetSystemType() string {
+	return runtime_.GOOS
+}
+
 // OpenURL 打开网址
 func (s *SystemService) OpenURL(url string) {
 	var err error
@@ -103,10 +108,10 @@ func (s *SystemService) SelectDir(title string) string {
 		{"Image Files", "*.jpg;*.png;*.*"},
 	}
 	opts := runtime.OpenDialogOptions{
-		DefaultDirectory: fmt.Sprintf("C:\\"),
-		DefaultFilename:  fmt.Sprintf("a"),
-		Title:            title,
-		Filters:          filters,
+		//DefaultDirectory: fmt.Sprintf("C:\\"),
+		DefaultFilename: fmt.Sprintf("a"),
+		Title:           title,
+		Filters:         filters,
 	}
 	res, err := runtime.OpenDirectoryDialog(ctx, opts)
 

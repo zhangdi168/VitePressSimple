@@ -6,10 +6,6 @@ export function CheckNetConnect() {
   return window['go']['system']['SystemService']['CheckNetConnect']();
 }
 
-export function CheckUpdate() {
-  return window['go']['system']['SystemService']['CheckUpdate']();
-}
-
 export function ConfigGet(arg1) {
   return window['go']['system']['SystemService']['ConfigGet'](arg1);
 }

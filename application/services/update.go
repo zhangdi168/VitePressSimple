@@ -12,7 +12,20 @@ func NewUpdateService() *UpdateService {
 	return &UpdateService{}
 }
 
-func (s *UpdateService) CheckUpdate() {
+func (s *UpdateService) UpdateNewVersion() {
+	SetUpdateConfig()
+	autoupdate.CheckUpdateEntry()
+}
+func (s *UpdateService) HasNewVersion() bool {
+	SetUpdateConfig()
+	info := autoupdate.GetGitRepoLatestReleaseInfo()
+	if info.Version != setting.Version {
+		return true
+	}
+	return false
+}
+
+func SetUpdateConfig() {
 	autoupdate.SetUpdateConfig(autoupdate.UpdateConfig{
 		AppName:                     setting.AppName,
 		CurrVersion:                 setting.Version,
@@ -22,6 +35,4 @@ func (s *UpdateService) CheckUpdate() {
 		WindowReleaseNameContainStr: setting.WindowZipContainStr,
 		MacReleaseNameContainStr:    setting.MacosZipContainStr,
 	})
-
-	autoupdate.CheckUpdateEntry()
 }

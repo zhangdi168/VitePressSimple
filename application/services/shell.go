@@ -30,7 +30,7 @@ func (s *ShellService) RunCmd(cmdString string, baseDir string) string {
 	cmd := exec.Command(name, newCmdArr...)
 	cmd.Dir = baseDir
 	s.cmd = cmd
-	go s.printCmdOutput()
+	s.printCmdOutput()
 
 	return ""
 }
@@ -50,9 +50,7 @@ func (s *ShellService) StopCmd() string {
 
 // printCmdOutput 捕获并打印命令的输出。
 func (s *ShellService) printCmdOutput() {
-	if s.isRunning {
-		return
-	}
+
 	cmd := s.cmd
 	// 将命令的标准输入设置为操作系统标准输入
 	cmd.Stdin = os.Stdin

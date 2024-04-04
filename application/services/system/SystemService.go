@@ -78,22 +78,6 @@ func (s *SystemService) ConfigGetBool(k string) bool {
 	return cfg.GetBool(k)
 }
 
-// CheckUpdate 检查更新
-func (s *SystemService) CheckUpdate() {
-	////更新程序所在路径
-	//updateExePath := cfg.GetString(constant.ConfigKeySysUpdateExePath)
-	////当前程序名称
-	//ProduceName := cfg.GetString(constant.ConfigKeySysProductName)
-	//cmd := exec.Command(updateExePath)            //参数:【升级程序】HHUpdateApp.exe程序所在路径
-	//cmd.Args = append(cmd.Args, ProduceName, "1") //参数1:【应用程序】的名词，例如：LOLClient；参数1:检查更新模式
-	//cmd.Stdout = os.Stdout
-	//cmd.Stderr = os.Stderr
-	//err := cmd.Run()
-	//if err != nil {
-	//	mylog.Error("CheckUpdate" + err.Error())
-	//}
-}
-
 // CheckNetConnect 检测网络连接是否正常
 func (s *SystemService) CheckNetConnect() string {
 	err := mynet.CheckConnection()

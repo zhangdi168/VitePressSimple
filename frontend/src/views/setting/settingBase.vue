@@ -54,7 +54,7 @@ import {
 import IconBtn from "@/components/iconBtn.vue";
 import ConfigRadio from "@/components/configRadio.vue";
 import ConfigSwitch from "@/components/configSwitch.vue";
-import { CheckUpdate } from "../../../wailsjs/go/services/UpdateService";
+import { UpdateNewVersion } from "../../../wailsjs/go/services/UpdateService";
 
 const storeLayout = useLayoutStore();
 const saveSetting = () => {
@@ -70,7 +70,7 @@ const openDataDir = async () => {
 
 //检查更新
 const checkUpdate = () => {
-  CheckUpdate();
+  UpdateNewVersion();
 };
 </script>
 <style scoped></style>

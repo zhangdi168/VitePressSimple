@@ -3,8 +3,6 @@
 
 export function CheckNetConnect():Promise<string>;
 
-export function CheckUpdate():Promise<void>;
-
 export function ConfigGet(arg1:string):Promise<any>;
 
 export function ConfigGetBool(arg1:string):Promise<boolean>;

@@ -179,7 +179,10 @@ func getGiteeRepoReleasesInfo() *ReleaseInfo {
 		downloadURLs = append(downloadURLs, asset.BrowserDownloadURL)
 		//查找文本是否包含  macos.zip 和 .exe 不区分大小写
 		if strings.Contains(strings.ToLower(asset.Name), UpdateCfg.MacReleaseNameContainStr) {
-			macDownloadURL = asset.BrowserDownloadURL
+			cpuArch := GetCpuArch()
+			if strings.Contains(asset.BrowserDownloadURL, cpuArch) {
+				macDownloadURL = asset.BrowserDownloadURL
+			}
 		}
 		if strings.Contains(strings.ToLower(asset.Name), UpdateCfg.WindowReleaseNameContainStr) {
 			winDownloadURL = asset.BrowserDownloadURL

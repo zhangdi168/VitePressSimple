@@ -7,6 +7,8 @@ import (
 	"os/exec"
 	"path/filepath"
 	"strings"
+	"wailstemplate/application/pkg/filehelper"
+	"wailstemplate/application/pkg/mylog"
 )
 
 func checkUpdateMac() {
@@ -21,7 +23,8 @@ func checkUpdateMac() {
 		}
 		return
 	}
-
+	fileName := filepath.Base(info.MacDownloadURL) //xx.dmg
+	saveDownloadFilePath := filepath.Join(downloadFolderPath, fileName)
 	err := zenity.Question("软件有新版本可用，是否更新？\n当前版本："+
 		UpdateCfg.CurrVersion+
 		"\n最新版本："+info.Version,
@@ -34,32 +37,46 @@ func checkUpdateMac() {
 	if err != nil {
 		return
 	}
-	progress, _ := zenity.Progress(
-		zenity.Title("软件更新"),
-		zenity.MaxValue(100), // 设置最大进度值为100
-	)
+	if !filehelper.FileExists(saveDownloadFilePath) {
+		progress, _ := zenity.Progress(
+			zenity.Title("软件更新"),
+			zenity.MaxValue(100), // 设置最大进度值为100
+		)
 
-	progress.Text("正在下载...")
+		progress.Text("正在下载...")
 
-	err = DownloadCallbackProgress(info.MacDownloadURL, downloadFolderPath+"/"+UpdateCfg.AppName+"_MacOS.zip", func(进度 float64) {
-		fmt.Println("正在下载...", 进度)
-		progress.Text("正在下载..." + fmt.Sprintf("%.2f", 进度) + "%")
-		progress.Value(int(进度))
-	})
-	if err != nil {
-		fmt.Println("下载出错：", err)
-		zenity.Info("下载错误，检查你的网络")
-		progress.Close()
-		return
+		err = DownloadCallbackProgress(info.MacDownloadURL, saveDownloadFilePath, func(currProgress float64) {
+			fmt.Println("正在下载...", currProgress)
+			progress.Text("正在下载..." + fmt.Sprintf("%.2f", currProgress) + "%")
+			progress.Value(int(currProgress))
+		})
+		if err != nil {
+			fmt.Println("下载出错：", err)
+			zenity.Info("下载错误，检查你的网络")
+			progress.Close()
+			return
+		}
+		progress.Text("下载完成 即将完成更新")
+		if progress.Close() != nil {
+			fmt.Println("点击了取消")
+			return
+		}
+		fmt.Println("下载完成了")
 	}
-	progress.Text("下载完成 即将完成更新")
-	if progress.Close() != nil {
-		fmt.Println("点击了取消")
-		return
+
+	//打开dmg文件
+	if filepath.Ext(saveDownloadFilePath) == ".dmg" {
+		cmd := exec.Command("open", saveDownloadFilePath)
+		err := cmd.Run()
+		if err != nil {
+			mylog.Error("Failed to open DMG using 'open' command: %v", err)
+		}
+	} else {
+		mylog.Error(saveDownloadFilePath + "不是dmg文件")
 	}
-	fmt.Println("下载完成了")
-	flag, s := UpdateSelfMacOSApp(downloadFolderPath+"/"+UpdateCfg.AppName+"_MacOS.zip", UpdateCfg.AppName+".app")
-	println(flag, s)
+
+	//flag, s := UpdateSelfMacOSApp(downloadFolderPath+"/"+UpdateCfg.AppName+"_MacOS.zip", UpdateCfg.AppName+".app")
+	//println(flag, s)
 }
 
 func GetMacOsAppPath() string {

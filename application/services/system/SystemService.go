@@ -15,6 +15,7 @@ import (
 	"wailstemplate/application/pkg/mynet"
 	"wailstemplate/application/pkg/utils"
 	"wailstemplate/application/wailshelper"
+	setting "wailstemplate/settings"
 )
 
 type SystemService struct {
@@ -225,4 +226,8 @@ func (s *SystemService) GetPathExt(path string) string {
 // PathJoin 组装文件成系统能识别的路径
 func (s *SystemService) PathJoin(elem []string) string {
 	return filepath.Join(elem...)
+}
+
+func (s *SystemService) GetCurrVersion() string {
+	return setting.Version
 }

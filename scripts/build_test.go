@@ -6,6 +6,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"runtime"
 	"strings"
 	"testing"
 	"wailstemplate/application/constant/enums"
@@ -22,7 +23,20 @@ var platforms = []string{
 	"darwin/amd64",
 }
 
-func TestBuildWindows(t *testing.T) {
+func TestBuildEntry(t *testing.T) {
+	switch runtime.GOOS {
+	case enums.SystemMac:
+		buildMacos()
+		break
+	case enums.SystemLinux:
+		break
+	case enums.SystemWindows:
+		buildWindows()
+		break
+	}
+
+}
+func buildWindows() {
 	for _, platform := range platforms {
 		if !strings.Contains(platform, enums.SystemWindows) {
 			continue
@@ -30,7 +44,7 @@ func TestBuildWindows(t *testing.T) {
 		s := services.NewShellService()
 		s.RunCmd("wails build -platform "+platform, "../")
 		baseDir := filepath.Join("..", "build", "bin")
-		zipPath := filepath.Join(baseDir, fmt.Sprintf("%s_%s.zip", replaceSystemStr(platform), setting.Version))
+		zipPath := filepath.Join(baseDir, fmt.Sprintf("vpsimple_%s_%s.zip", replaceSystemStr(platform), setting.Version))
 		fileList := []string{
 			filepath.Join(baseDir, fmt.Sprintf("%s.exe", setting.AppName)),
 		}
@@ -44,27 +58,28 @@ func TestBuildWindows(t *testing.T) {
 
 }
 
-func TestBuildMacos(t *testing.T) {
+func buildMacos() {
 	for _, platform := range platforms {
 		if !strings.Contains(platform, enums.SystemMac) {
 			continue
 		}
-		//s := services.NewShellService()
-		//s.RunCmd("wails build  -platform "+platform, "../")
-		baseDir := filepath.Join("..", "build", "bin")
-		zipPath := filepath.Join(baseDir, fmt.Sprintf("%s_%s.zip", replaceSystemStr(platform), setting.Version))
-		appPath := filepath.Join(baseDir, fmt.Sprintf("%sInstaller.dmg", setting.AppName))
-		createDmg()
-		if !filehelper.FileExists(appPath) {
-			println(appPath + ": not exists")
-			return
-		}
-		err := filehelper.CompressFilesToZip(zipPath, []string{appPath})
-		if err != nil {
-			println(err.Error())
-		} else {
-			println("ok")
-		}
+		s := services.NewShellService()
+		s.RunCmd("wails build  -platform "+platform, "../")
+		//baseDir := filepath.Join("..", "build", "bin")
+
+		createDmg(platform)
+		//zipPath := filepath.Join(baseDir, fmt.Sprintf("%s_%s.zip", replaceSystemStr(platform), setting.Version))
+		//appPath := filepath.Join(baseDir, fmt.Sprintf("%sInstaller.dmg", setting.AppName))
+		//if !filehelper.FileExists(appPath) {
+		//	println(appPath + ": not exists")
+		//	return
+		//}
+		//err := filehelper.CompressFilesToZip(zipPath, []string{appPath})
+		//if err != nil {
+		//	println(err.Error())
+		//} else {
+		//	println("ok")
+		//}
 
 	}
 
@@ -76,7 +91,7 @@ func replaceSystemStr(platform string) string {
 }
 
 func TestCreateDmg(t *testing.T) {
-	createDmg()
+	createDmg(platforms[0])
 }
 
 // 准备create-dmg命令参数
@@ -90,7 +105,7 @@ func TestCreateDmg(t *testing.T) {
 //	volumeIcon - DMG卷的图标路径
 //	appName - 应用程序的名称
 //	dmgName - 生成的DMG文件的名称
-func createDmg() {
+func createDmg(platform string) {
 
 	// 获取当前脚本所在目录
 	scriptDir := filepath.Join("..", "build", "dmg")
@@ -106,13 +121,13 @@ func createDmg() {
 	appName := filepath.Base(appPath)
 
 	// 提取卷宗名称（不包括.app后缀）
-	volumeName := strings.TrimSuffix(appName, ".app")
+	//volumeName := strings.TrimSuffix(appName, ".app")
 
 	// 查找卷宗图标路径
 	volumeIcon, _ := findVolumeIcon(sourceDir)
 
 	// 设置DMG文件名
-	dmgName := fmt.Sprintf("%sInstaller.dmg", volumeName)
+	dmgName := fmt.Sprintf("vpsimple_%s_%s.dmg", replaceSystemStr(platform), setting.Version)
 
 	// 如果DMG文件已存在，则删除
 	removeExistingDmg(sourceDir, dmgName)
@@ -122,9 +137,9 @@ func createDmg() {
 	// 返回值:
 	//   无
 	args := []string{
-		"--no-internet-enable",  // 禁用互联网启用
-		"--hdiutil-quiet",       // 安静模式执行
-		"--volname", volumeName, // 设置卷名称
+		"--no-internet-enable",       // 禁用互联网启用
+		"--hdiutil-quiet",            // 安静模式执行
+		"--volname", setting.AppName, // 设置卷名称
 		"--volicon", volumeIcon, // 设置卷图标
 		"--background", filepath.Join(scriptDir, "background.tiff"), // 设置背景图像
 		"--text-size", "12", // 设置文本大小

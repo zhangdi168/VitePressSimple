@@ -1,14 +1,17 @@
 <script setup lang="ts">
 import { OpenURL } from "../../../wailsjs/go/system/SystemService";
+import { useIndexStore } from "../../store";
 </script>
 
 <template>
   <div>
     <div class="mx-20 mt-4 flex justify-center border p-3">
-      <span class="text-3xl font-bold text-center">关于软件</span>
+      <span class="text-3xl font-bold text-center"
+        >关于VPSimple {{ useIndexStore().version }}</span
+      >
       <div class="px-4">
         <p>
-          本软件以Vue3、TypeScript与Wails技术栈为核心，旨在为VitePress用户提供前所未有的便捷与可视化配置体验。
+          本软件以Vue3、TypeScript与Wails技术栈为核心，旨在为VitePress用户提供便捷与可视化配置体验。
         </p>
 
         <ul>

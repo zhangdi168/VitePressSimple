@@ -19,6 +19,7 @@ onMounted(async () => {
   // await HistoryProject.initList(); //初始化历史数据
   // await vpConfig.initConfig();
   await storeIndex.getSystemType(); //获取当前系统
+  await storeIndex.getVersion(); //获取当前系统版本
   //设定初始项目
   let dir = await ConfigGet(ConfigKeyProjectDir);
   if (dir !== "") {

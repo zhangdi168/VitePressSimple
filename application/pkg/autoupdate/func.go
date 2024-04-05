@@ -240,3 +240,17 @@ func CopyFile(srcFilePath, dstFilePath string) error {
 
 	return nil
 }
+
+func GetCpuArch() string {
+	// 获取CPU架构
+	cpuArch := runtime.GOARCH
+	switch cpuArch {
+	case "arm64":
+		return "arm64"
+	case "amd64":
+		return "amd64"
+	default:
+		return "amd64"
+	}
+	return "amd64"
+}

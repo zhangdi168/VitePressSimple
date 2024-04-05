@@ -22,6 +22,10 @@ export function CopyPath(arg1, arg2, arg3) {
   return window['go']['system']['SystemService']['CopyPath'](arg1, arg2, arg3);
 }
 
+export function GetCurrVersion() {
+  return window['go']['system']['SystemService']['GetCurrVersion']();
+}
+
 export function GetPathDir(arg1) {
   return window['go']['system']['SystemService']['GetPathDir'](arg1);
 }

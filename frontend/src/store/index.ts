@@ -10,6 +10,7 @@ import { getDirectoryPath } from "@/utils/file";
 import {
   ConfigGet,
   ConfigSet,
+  GetCurrVersion,
   GetSystemType,
   PathExists,
   PathJoin,
@@ -45,6 +46,7 @@ export interface indexStore {
   currDocDir: string; //文档所在目录
   IsEmptyProject: boolean; //是否为空项目
   systemType: string; //系统类型
+  version: string; //系统类型
   currArticleFrontMatter: Record<string, any>; //当前文章front matter
 }
 
@@ -57,6 +59,7 @@ export const useIndexStore = defineStore("index", {
     expandKeys: [],
     selectKeys: [],
     systemType: "",
+    version: "",
     IsEmptyProject: true, //是否为空项目
     searchValue: "", //搜索值
     currArticlePath: "", //当前文章路径
@@ -80,6 +83,9 @@ export const useIndexStore = defineStore("index", {
     //获取系统类型
     async getSystemType() {
       this.systemType = await GetSystemType();
+    },
+    async getVersion() {
+      this.version = await GetCurrVersion();
     },
     async checkProjectDir(dir: string): Promise<string> {
       //判空

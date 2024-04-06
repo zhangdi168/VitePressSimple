@@ -132,7 +132,7 @@ func createDmg(platform string) {
 	// 如果DMG文件已存在，则删除
 	removeExistingDmg(sourceDir, dmgName)
 
-	msg := fmt.Sprintf("右键打开 修复损坏问题'xx damaged'")
+	msg := fmt.Sprintf("若提示'xx 损坏' 右键打开黑色图标修复")
 
 	// 返回值:
 	//   无

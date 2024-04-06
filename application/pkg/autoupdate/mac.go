@@ -70,7 +70,9 @@ func checkUpdateMac() {
 		err := cmd.Run()
 		if err != nil {
 			mylog.Error("Failed to open DMG using 'open' command: %v", err)
+			return
 		}
+		os.Exit(0) // 此处退出当前进程
 	} else {
 		mylog.Error(saveDownloadFilePath + "不是dmg文件")
 	}

@@ -11,6 +11,10 @@ import { onBeforeUnmount, onMounted, ref } from "vue";
 import { ConfigGet } from "../wailsjs/go/system/SystemService";
 import { ConfigKeyProjectDir } from "@/constant/keys/config";
 import { useIndexStore } from "@/store";
+import {
+  HasNewVersion,
+  UpdateNewVersion,
+} from "../wailsjs/go/services/UpdateService";
 //在这里可以设置默认的模板
 const useTemplateIndex = ref(2);
 const storeIndex = useIndexStore();
@@ -20,6 +24,10 @@ onMounted(async () => {
   // await vpConfig.initConfig();
   await storeIndex.getSystemType(); //获取当前系统
   await storeIndex.getVersion(); //获取当前系统版本
+  let hasNewVersion = await HasNewVersion();
+  if (hasNewVersion) {
+    UpdateNewVersion();
+  }
   //设定初始项目
   let dir = await ConfigGet(ConfigKeyProjectDir);
   if (dir !== "") {

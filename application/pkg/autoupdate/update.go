@@ -53,8 +53,14 @@ func getGithubRepoReleasesInfo() *ReleaseInfo {
 		}
 		fmt.Println("请求失败:", err)
 	}
-	defer resp.Body.Close()
-
+	defer func() {
+		if resp != nil {
+			resp.Body.Close()
+		}
+	}()
+	if resp == nil {
+		return nil
+	}
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
 		fmt.Println("读取响应失败:", err)

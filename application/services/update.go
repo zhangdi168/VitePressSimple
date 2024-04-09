@@ -21,6 +21,9 @@ func (s *UpdateService) UpdateNewVersion() {
 func (s *UpdateService) HasNewVersion() bool {
 	SetUpdateConfig()
 	info := autoupdate.GetGitRepoLatestReleaseInfo()
+	if info == nil {
+		return false
+	}
 	if info.Version != setting.Version {
 		return true
 	}

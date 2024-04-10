@@ -18,6 +18,8 @@ import {
 import {
   ConfigKeyFrontMatterSaveType,
   ConfigKeyProjectDir,
+  ConfigKeySysProjectStaticDirName,
+  ConfigKeySysStaticServerPort,
 } from "@/constant/keys/config";
 import { useVpconfigStore } from "@/store/vpconfig";
 import { getFileNameFromPath, IsEmptyValue } from "@/utils/utils";
@@ -47,6 +49,8 @@ export interface indexStore {
   IsEmptyProject: boolean; //是否为空项目
   systemType: string; //系统类型
   version: string; //系统类型
+  staticServerPort: string;
+  staticBaseDir: string;
   currArticleFrontMatter: Record<string, any>; //当前文章front matter
 }
 
@@ -67,6 +71,8 @@ export const useIndexStore = defineStore("index", {
     currStyleContent: "", //当前css代码
     currVueCode: "", //当前vue代码 js+css
     currArticleFrontMatter: {}, //当前文章front matter
+    staticBaseDir: "vpstatic",
+    staticServerPort: "9874",
     currCopyPath: "", //当前剪切路径
   }),
   //定义actions
@@ -86,6 +92,13 @@ export const useIndexStore = defineStore("index", {
     },
     async getVersion() {
       this.version = await GetCurrVersion();
+    },
+    //获取静态端口
+    async getStaticPort() {
+      this.staticServerPort = await ConfigGet(ConfigKeySysStaticServerPort);
+    },
+    async getStaticDir() {
+      this.staticBaseDir = await ConfigGet(ConfigKeySysProjectStaticDirName);
     },
     async checkProjectDir(dir: string): Promise<string> {
       //判空

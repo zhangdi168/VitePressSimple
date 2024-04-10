@@ -12,4 +12,8 @@ export const ConfigKeyLayoutNavBgColor = "layout.nav_bg_color"
 
 export const ConfigKeySysUpdateSource = "sys.auto_update_source"
 
-export  const ConfigArray = ["project_dir","is_startup","history_project","change_auto_save","front_matter_save_type","layout.nav_bg_color","sys.auto_update_source"];
+export const ConfigKeySysStaticServerPort = "sys.static_server_port"
+
+export const ConfigKeySysProjectStaticDirName = "sys.project_static_dir_name"
+
+export  const ConfigArray = ["project_dir","is_startup","history_project","change_auto_save","front_matter_save_type","layout.nav_bg_color","sys.auto_update_source","sys.static_server_port","sys.project_static_dir_name"];

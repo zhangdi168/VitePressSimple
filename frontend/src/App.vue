@@ -24,6 +24,9 @@ onMounted(async () => {
   // await vpConfig.initConfig();
   await storeIndex.getSystemType(); //获取当前系统
   await storeIndex.getVersion(); //获取当前系统版本
+  await storeIndex.getStaticDir();
+  await storeIndex.getStaticPort();
+
   let hasNewVersion = await HasNewVersion();
   if (hasNewVersion) {
     UpdateNewVersion();

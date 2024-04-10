@@ -15,6 +15,10 @@ import (
 
 var ignoreDirs = []string{"public", ".vitepress", ".vitepressBak", "node_modules"}
 
+func init() {
+	ignoreDirs = append(ignoreDirs, cfg.GetString(keys.ConfigKeySysProjectStaticDirName))
+}
+
 type ArticleTreeData struct {
 	currFilePath string //当前正在操作的文件
 }

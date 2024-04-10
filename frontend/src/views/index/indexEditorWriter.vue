@@ -21,7 +21,7 @@ import { defineProps, ref, onMounted, nextTick } from "vue";
 import Vditor from "vditor";
 import "vditor/dist/index.css";
 import { useIndexStore } from "../../store";
-import { DefaultVtitorOptions } from "@/configs/vditor";
+import { getDefaultVtitorOptions } from "@/configs/vditor";
 import { isEmptyArray } from "@/utils/array";
 import CreateProjectPopup from "@/views/project/createProjectPopup.vue";
 import EmptyProject from "@/components/emptyProject.vue";
@@ -33,7 +33,8 @@ const contentEditor = ref<Vditor>();
 
 onMounted(() => {
   nextTick(() => {
-    contentEditor.value = new Vditor("vditor", DefaultVtitorOptions);
+    let opts = getDefaultVtitorOptions();
+    contentEditor.value = new Vditor("vditor", opts);
     storeIndex.setVditorInstance(contentEditor.value);
   });
 });

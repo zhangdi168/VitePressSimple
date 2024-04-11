@@ -81,6 +81,7 @@ func main() {
 			system.NewSystemService(),
 			services.NewShellService(),
 			services.NewUpdateService(), //在线更新
+			services.NewStaticServer(),
 		},
 		// Windows platform specific options
 		// Windows平台特定选项

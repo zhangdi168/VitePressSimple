@@ -1,4 +1,10 @@
-export const getDefaultVtitorOptions = (): IOptions => {
+import { ConfigKeySysStaticServerPort } from "@/constant/keys/config";
+import { ConfigGet } from "../../wailsjs/go/system/SystemService";
+
+export const getDefaultVtitorOptions = async (): Promise<IOptions> => {
+  let port = await ConfigGet(ConfigKeySysStaticServerPort);
+  port = port == "" ? "9874" : port;
+  const uploadUrl = `http://localhost:${port}/upload_image`;
   return {
     // cdn: "https://fastly.jsdelivr.net/npm/",
     //  cdn: "http://localhost:9874/cdn",
@@ -91,8 +97,15 @@ export const getDefaultVtitorOptions = (): IOptions => {
       position: "right",
     },
     upload: {
-      url: "",
-      max: 1,
+      url: uploadUrl,
+      linkToImgUrl: uploadUrl,
+      max: 1024 * 1024 * 5,
+      fieldName: "image",
+      multiple: false, // 是否允许批量上传
+      // withCredentials: true,
+      // headers: {
+      //   "Content-Type": "multipart/form-data",
+      // },
     },
   };
 };

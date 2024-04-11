@@ -29,7 +29,9 @@ import { defaultFrontMatter } from "@/configs/defaultFrontMatter";
 import { useHistoryStore } from "@/store/history";
 import { isEmptyArray } from "@/utils/array";
 // @ts-ignore
-import yaml from "js-yaml"; // 浏览器环境（需确保构建工具已正确处理）
+import yaml from "js-yaml";
+import { replaceImageUrlToLocalStatic } from "@/utils/repalceStatic";
+import { StartStaticServer } from "../../wailsjs/go/services/StaticServer"; // 浏览器环境（需确保构建工具已正确处理）
 
 //定义首页的数据类型
 export interface indexStore {
@@ -132,6 +134,7 @@ export const useIndexStore = defineStore("index", {
       await useHistoryStore().add(dir); //加入到历史项目数据中
       //设置当前的项目路径
       await ConfigSet(ConfigKeyProjectDir, dir);
+      await StartStaticServer(""); //启动静态服务器
       this.clearCurrData();
       await this.loadTreeData();
     },
@@ -180,8 +183,9 @@ export const useIndexStore = defineStore("index", {
           );
         }
 
-        const fullContent = `---\n${fontMatterString}\n---\n${this.currVueCode}\n${content}`;
-
+        let fullContent = `---\n${fontMatterString}\n---\n${this.currVueCode}\n${content}`;
+        //替换域名为本地路径
+        fullContent = replaceImageUrlToLocalStatic(fullContent);
         //获取动态新增的数据
         WriteFileContent(this.currArticlePath, fullContent).then(() => {
           if (showToast) ToastInfo("已保存");

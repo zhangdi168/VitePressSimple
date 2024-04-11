@@ -156,6 +156,7 @@ import {
 import { IsEmptyValue } from "@/utils/utils";
 import MenuItem from "@/components/menuItem.vue";
 import { ConfigKeyChangeAutoSave } from "@/constant/keys/config";
+import { replaceLocalStaticToImageUrl } from "@/utils/repalceStatic";
 
 const storeIndex = useIndexStore();
 const moreIconShownKeys = ref<string[]>([]);
@@ -267,6 +268,8 @@ const openArticle = async (path: string) => {
     .replace(styleContent, "");
   let val = vditorContent ? vditorContent : "# hello vitePress client";
   // console.log("val:" + val);
+  //相对路径转换成 域名替换
+  val = replaceLocalStaticToImageUrl(vditorContent);
   storeIndex.Vditor?.setValue(val); //设置编辑器的值
 };
 const isDir = (key: string) => {

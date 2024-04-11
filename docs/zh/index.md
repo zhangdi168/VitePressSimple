@@ -18,7 +18,7 @@
             "height": ""
         },
         "name": "VPSimple",
-        "text": "VitePress配置工具1",
+        "text": "VitePress配置工具",
         "description": "",
         "tagline": "快速搭建个人博客、产品手册知识库",
         "actions": [

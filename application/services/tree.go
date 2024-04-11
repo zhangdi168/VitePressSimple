@@ -13,7 +13,7 @@ import (
 	"wailstemplate/application/pkg/utils"
 )
 
-var ignoreDirs = []string{"public", ".vitepress", ".vitepressBak", "node_modules"}
+var ignoreDirs = []string{"public", "vpstatic", ".vitepress", ".vitepressBak", "node_modules"}
 
 func init() {
 	ignoreDirs = append(ignoreDirs, cfg.GetString(keys.ConfigKeySysProjectStaticDirName))

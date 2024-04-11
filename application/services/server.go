@@ -2,7 +2,9 @@ package services
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
+	"github.com/google/uuid"
 	"github.com/pkg/errors"
 	"io"
 	"net/http"
@@ -10,8 +12,10 @@ import (
 	"path/filepath"
 	"strings"
 	"sync"
+	"time"
 	"wailstemplate/application/constant/keys"
 	"wailstemplate/application/pkg/cfg"
+	"wailstemplate/application/pkg/filehelper"
 	"wailstemplate/application/pkg/mylog"
 )
 
@@ -26,10 +30,12 @@ func NewStaticServer() *StaticServer {
 
 // StartStaticServer 启动VitePress项目静态资源服务器
 func (s *StaticServer) StartStaticServer(staticDir string) {
-	go func() {
-		s.serverMu.Lock()
-		defer s.serverMu.Unlock()
 
+	go func() {
+
+		if staticDir == "" {
+			staticDir = s.GetStaticFullDir()
+		}
 		port := cfg.GetStringDefault(keys.ConfigKeySysStaticServerPort, "9874")
 		if s.server != nil {
 			if err := s.server.Shutdown(context.Background()); err != nil {
@@ -41,7 +47,7 @@ func (s *StaticServer) StartStaticServer(staticDir string) {
 		router := http.NewServeMux()
 		router.Handle("/", http.FileServer(http.Dir(staticDir)))
 		//图片上传接口
-		router.HandleFunc("/upload_image", handleImageUpload)
+		router.HandleFunc("/upload_image", s.handleImageUpload)
 
 		s.server = &http.Server{
 			Addr:    ":" + port,
@@ -60,8 +66,31 @@ func (s *StaticServer) GetStaticBaseUrl() string {
 	return "http://localhost:" + port
 }
 
-func (s *StaticServer) GetProjectBaseDir() string {
-	return cfg.GetStringDefault(keys.ConfigKeyProjectDir, "")
+// GetStaticFullDir 获取静态资源目录
+func (s *StaticServer) GetStaticFullDir() string {
+	projectDir := cfg.GetStringDefault(keys.ConfigKeyProjectDir, "./")
+	staticDirName := cfg.GetStringDefault(keys.ConfigKeySysProjectStaticDirName, "vpstatic")
+	fullDir := filepath.Join(projectDir, staticDirName)
+	filehelper.CreateDir(fullDir)
+	return fullDir
+}
+
+// ConvertFullPathToUrl 将一个完整的文件路径转换成http url
+func (s *StaticServer) ConvertFullPathToUrl(fullPath string) string {
+	staticFullDir := s.GetStaticFullDir()
+	path := strings.ReplaceAll(fullPath, staticFullDir, "")
+	path = strings.ReplaceAll(path, "\\", "/")
+	return s.GetStaticBaseUrl() + path
+}
+
+func (s *StaticServer) GetStaticImagesFullDir() string {
+	fullDir := filepath.Join(s.GetStaticFullDir(), "images")
+	filehelper.CreateDir(fullDir)
+	return fullDir
+}
+
+func (s *StaticServer) GetProjectStaticName() string {
+	return cfg.GetStringDefault(keys.ConfigKeySysProjectStaticDirName, "")
 }
 
 // UploadFile 上传图片
@@ -73,19 +102,41 @@ func (s *StaticServer) UploadFile() {
 
 const (
 	// 图片上传目录
-	uploadDir = "./images"
+
 	// 最大允许的单个文件大小（以字节为单位）
 	maxFileSize = 10 << 20 // 10 MB
 )
 
-func handleImageUpload(w http.ResponseWriter, r *http.Request) {
+// UploadResponseData 定义响应结构体
+type UploadResponseData struct {
+	ErrFiles []string          `json:"errFiles"`
+	SuccMap  map[string]string `json:"succMap"`
+}
+
+type ImageUploadResponse struct {
+	Code int                `json:"code"`
+	Msg  string             `json:"msg"`
+	Data UploadResponseData `json:"data"`
+}
+
+func allowCors(w http.ResponseWriter) {
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
+	w.Header().Set("Access-Control-Max-Age", "86400") // 缓存预检结果，避免频繁发送OPTIONS请求
+}
+
+func (s *StaticServer) handleImageUpload(w http.ResponseWriter, r *http.Request) {
+
 	if r.Method != http.MethodPost {
-		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		allowCors(w)
+		w.WriteHeader(http.StatusOK)
 		return
 	}
-
+	allowCors(w)
 	// 检查Content-Type是否为multipart/form-data
-	if r.Header.Get("Content-Type") != "multipart/form-data" {
+	contentType := r.Header.Get("Content-Type")
+	if !strings.HasPrefix(contentType, "multipart/form-data") {
 		http.Error(w, "Invalid Content-Type", http.StatusBadRequest)
 		return
 	}
@@ -107,12 +158,23 @@ func handleImageUpload(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	var response ImageUploadResponse
+	response.Code = 0
+	response.Msg = ""
+
+	// 初始化数据结构体
+	response.Data.ErrFiles = make([]string, 0)
+	response.Data.SuccMap = make(map[string]string)
+	errFiles := []string{}
+	succMap := make(map[string]string)
+
 	// 生成唯一的文件名（可包含原始扩展名）
 	uniqFilename := generateUniqueFilename(header.Filename)
 
 	// 计算上传路径
-	uploadPath := filepath.Join(uploadDir, uniqFilename)
-
+	uploadDir := s.GetStaticImagesFullDir()
+	uploadPath := filepath.Join(uploadDir, time.Now().Format("20060102"), uniqFilename+ext)
+	filehelper.CreateDir(filepath.Dir(uploadPath))
 	// 创建文件并写入图片数据
 	out, err := os.Create(uploadPath)
 	if err != nil {
@@ -127,8 +189,19 @@ func handleImageUpload(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	//组装返回数据
+	succMap[filepath.Base(uploadPath)] = fmt.Sprintf("%s", s.ConvertFullPathToUrl(uploadPath))
+	response.Data.ErrFiles = errFiles
+	response.Data.SuccMap = succMap
+	w.Header().Set("Content-Type", "application/json")
+	jsonData, err := json.Marshal(response)
+	if err != nil {
+		http.Error(w, errors.Wrap(err, "failed to marshal JSON response").Error(), http.StatusInternalServerError)
+		return
+	}
 	w.WriteHeader(http.StatusOK)
-	fmt.Fprintf(w, "Image uploaded successfully: %s", uploadPath)
+	w.Write(jsonData)
+
 }
 
 func isAllowedImageType(ext string) bool {
@@ -146,5 +219,6 @@ func generateUniqueFilename(originalName string) string {
 	// 示例简化为仅保留原始文件名：
 	// return originalName
 	// 实际应用中应确保生成的文件名在服务器上是唯一的
-	return ""
+
+	return uuid.New().String()
 }

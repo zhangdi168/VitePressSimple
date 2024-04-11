@@ -36,5 +36,12 @@
     "custom": {}
 }
 ---
+<script setup>
+window.location.href = '/zh/index'; // 跳转到指定URL
+</script>
+
+<style module>
+.button {color: red; font-weight: bold;}
+</style>
 
 

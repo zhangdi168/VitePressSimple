@@ -32,8 +32,8 @@ const storeIndex = useIndexStore();
 const contentEditor = ref<Vditor>();
 
 onMounted(() => {
-  nextTick(() => {
-    let opts = getDefaultVtitorOptions();
+  nextTick(async () => {
+    let opts = await getDefaultVtitorOptions();
     contentEditor.value = new Vditor("vditor", opts);
     storeIndex.setVditorInstance(contentEditor.value);
   });

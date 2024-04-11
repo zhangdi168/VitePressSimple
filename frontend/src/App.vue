@@ -15,6 +15,7 @@ import {
   HasNewVersion,
   UpdateNewVersion,
 } from "../wailsjs/go/services/UpdateService";
+import { StartStaticServer } from "../wailsjs/go/services/StaticServer";
 //在这里可以设置默认的模板
 const useTemplateIndex = ref(2);
 const storeIndex = useIndexStore();

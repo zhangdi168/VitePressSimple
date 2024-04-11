@@ -1,6 +1,6 @@
 //公共配置的默认值
 export const defaultShareConfigValue: any = {
-  srcDir: "./docs",
+  srcDir: "./",
   // logo: "",
   assetsDir: "static",
   // darkModeSwitchLabel: "Appearance",

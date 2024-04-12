@@ -52,7 +52,9 @@
             :key="index"
             :value="item"
           >
-            <q-tooltip>当路由位于 {{ item }} 目录时，会显示此侧边栏</q-tooltip>
+            <q-tooltip
+              >当路由位于 ‘{{ item }}’ 目录时，会显示此侧边栏</q-tooltip
+            >
             {{ item }}
           </a-radio-button>
         </a-radio-group>
@@ -108,7 +110,7 @@
       </div>
       <!--      保存到配置文件-->
       <a-button
-        @click="saveNav()"
+        @click="saveSidebar()"
         class="bg-blue-600 hover:bg-blue-500 text-white flex justify-center items-center"
       >
         <icon-park
@@ -208,10 +210,7 @@ const recognitionSidebar = async () => {
     storeConfig.srcDir,
     storeConfig.currSettingLang,
   ]);
-  let baseDir =
-    storeConfig.currSettingLang == StringGlobalLang
-      ? storeConfig.srcDir
-      : zhLangDir;
+  let baseDir = storeConfig.srcDir;
   if (isUseManySidebars.value) {
     if (currSelectSidebarKey.value == "") {
       ToastError("请选择当前编辑的侧栏");
@@ -283,7 +282,13 @@ const getSubSidebarDirList = async () => {
 
   currSidebarSubDirList.value = list
     .filter((item) => item && !item.title.endsWith(".md"))
-    .map((item) => `/${item.title}/`);
+    .map((item) => {
+      if (storeConfig.IsUseI18n) {
+        return `/${storeConfig.currSettingLang}/${item.title}/`;
+      } else {
+        return `/${item.title}/`;
+      }
+    });
 
   if (currSelectSidebarKey.value == "") {
     currSelectSidebarKey.value = currSidebarSubDirList.value[0];
@@ -349,7 +354,7 @@ const formatNavData = (data: VpNav[]) => {
     return formattedItem;
   });
 };
-const saveNav = () => {
+const saveSidebar = () => {
   if (emptySubDirText.value !== "") {
     ToastError(emptySubDirText.value);
     return;

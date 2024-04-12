@@ -1,6 +1,6 @@
 <template>
   <div v-if="!storeIndex.IsEmptyProject" style="overflow-y: auto">
-    <div class="flex justify-center items-center">
+    <div class="flex justify-center select-none items-center">
       <a-radio-group
         animated
         size="large"

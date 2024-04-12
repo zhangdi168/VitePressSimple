@@ -23,6 +23,19 @@
       ]"
     ></config-radio>
   </div>
+
+  <div class="ml-5 mt-5">
+    <config-radio
+      :config-key="ConfigKeyVditorCdn"
+      tooltip="如果出现markdown编辑器加载不出来的情况，可以手动切换编辑器cdn后【重启】程序"
+      label="编辑器cdn"
+      :items="[
+        { label: 'unpkg', value: VditorCdnUnpkg },
+        { label: 'zstatic', value: VditorCdnZstatic },
+        { label: 'jsdeliver', value: VditorCdnJsdelivr },
+      ]"
+    ></config-radio>
+  </div>
   <div class="ml-5 mt-5">
     <config-radio
       :config-key="ConfigKeySysUpdateSource"
@@ -56,6 +69,7 @@ import {
   ConfigKeyFrontMatterSaveType,
   ConfigKeyIsStartup,
   ConfigKeySysUpdateSource,
+  ConfigKeyVditorCdn,
 } from "@/constant/keys/config";
 import { useLayoutStore } from "@/store/layout";
 import {
@@ -67,6 +81,11 @@ import IconBtn from "@/components/iconBtn.vue";
 import ConfigRadio from "@/components/configRadio.vue";
 import ConfigSwitch from "@/components/configSwitch.vue";
 import { UpdateNewVersion } from "../../../wailsjs/go/services/UpdateService";
+import {
+  VditorCdnJsdelivr,
+  VditorCdnUnpkg,
+  VditorCdnZstatic,
+} from "@/constant/enums/cdn";
 
 const storeLayout = useLayoutStore();
 const saveSetting = () => {

@@ -1,5 +1,6 @@
 <template>
-  <div class="mx-6 text-xl">
+  <empty-project></empty-project>
+  <div v-if="!storeIndex.IsEmptyProject" class="mx-6 mt-4 text-xl">
     <!--        语言选择-->
     <div class="flex justify-start items-center min-h-11 pb-1 ml-2 pr-2 border">
       <select-setting-lang
@@ -148,6 +149,7 @@ import DyAddKV from "@/components/dyAddKV.vue";
 import TreeNode = dto.TreeNode;
 import DyAddNav from "@/components/dyAddNav.vue";
 import { IsEmptyValue } from "@/utils/utils";
+import EmptyProject from "@/components/emptyProject.vue";
 
 const splitterModel = ref(36);
 const storeConfig = useVpconfigStore();

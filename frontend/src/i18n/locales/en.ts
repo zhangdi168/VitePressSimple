@@ -4,6 +4,8 @@ export const en = {
     setting: "Setting",
     config: "Config",
     about: "About",
+    nav: " setting",
+    sidebar: "sidebar setting",
   },
   languages: {
     en: "English",

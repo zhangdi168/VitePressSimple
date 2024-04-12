@@ -19,3 +19,4 @@ const ConfigKeySysUpdateSource = "sys.auto_update_source"
 // ConfigKeySysStaticServerPort 项目的静态资源（图片）服务器端口
 const ConfigKeySysStaticServerPort = "sys.static_server_port"
 const ConfigKeySysProjectStaticDirName = "sys.project_static_dir_name"
+const ConfigKeyVditorCdn = "vditor.cdn"

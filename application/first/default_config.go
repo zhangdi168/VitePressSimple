@@ -2,6 +2,7 @@ package first
 
 import (
 	"wailstemplate/application/constant/cnts"
+	"wailstemplate/application/constant/enums"
 	"wailstemplate/application/constant/keys"
 	"wailstemplate/application/pkg/cfg"
 )
@@ -18,5 +19,7 @@ func InitDefaultConfig() {
 	//项目静态资源服务器的端口
 	cfg.SetDefault(keys.ConfigKeySysStaticServerPort, "9874")
 	cfg.SetDefault(keys.ConfigKeySysProjectStaticDirName, cnts.StaticBaseDir)
+
+	cfg.SetDefault(keys.ConfigKeyVditorCdn, enums.VditorCdnZstatic)
 
 }

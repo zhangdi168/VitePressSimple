@@ -5,10 +5,13 @@ export interface navItem {
   name: string;
   path: string;
   icon?: string;
+  iconColor?: string;
   borderTop?: boolean;
 }
 
 export const NavList = (): navItem[] => {
+  // const color = "#8babed";
+  const color = "#676a67";
   return [
     {
       title: lang("nav.home"),
@@ -16,14 +19,32 @@ export const NavList = (): navItem[] => {
       path: "/",
       icon: "home", //icon park
       borderTop: false,
+      iconColor: color,
     },
 
     {
       title: lang("nav.config"),
       name: "projectSetting",
       path: "/projectSetting",
-      icon: "setting-config",
+      icon: "config",
       borderTop: false,
+      iconColor: color,
+    },
+    {
+      title: lang("nav.nav"),
+      name: "navSetting",
+      path: "/navSetting",
+      icon: "navigation",
+      borderTop: false,
+      iconColor: color,
+    },
+    {
+      title: lang("nav.sidebar"),
+      name: "sidebarSetting",
+      path: "/sidebarSetting",
+      icon: "music-list",
+      borderTop: false,
+      iconColor: color,
     },
     // {
     //   title: lang("nav.preview"),
@@ -36,8 +57,9 @@ export const NavList = (): navItem[] => {
       title: lang("nav.setting"),
       name: "setting",
       path: "/setting",
-      icon: "setting",
+      icon: "more-app",
       borderTop: true,
+      iconColor: color,
     },
     {
       title: lang("nav.about"),
@@ -45,6 +67,7 @@ export const NavList = (): navItem[] => {
       path: "/about",
       icon: "more-three",
       borderTop: false,
+      iconColor: color,
     },
   ];
 };

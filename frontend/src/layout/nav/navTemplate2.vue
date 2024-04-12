@@ -57,7 +57,7 @@ const routerClick = (path: string, name: string) => {
           <icon-park
             :size="iconSize"
             :type="item.icon"
-            fill="#190e19"
+            :fill="item.iconColor ? item.iconColor : '#190e19'"
             strokeLinejoin="bevel"
             theme="outline"
           />

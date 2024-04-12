@@ -5,6 +5,8 @@ export const zhHans = {
     config: "项目配置",
     about: "关于",
     preview: "预览和构建",
+    nav: "导航设置",
+    sidebar: "侧边栏设置",
   },
   languages: {
     en: "English",

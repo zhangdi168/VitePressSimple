@@ -1,9 +1,15 @@
-import { ConfigKeySysStaticServerPort } from "@/constant/keys/config";
+import {
+  ConfigKeySysStaticServerPort,
+  ConfigKeyVditorCdn,
+} from "@/constant/keys/config";
 import { ConfigGet } from "../../wailsjs/go/system/SystemService";
+import { VditorCdnZstatic } from "@/constant/enums/cdn";
 
 export const getDefaultVtitorOptions = async (): Promise<IOptions> => {
   let port = await ConfigGet(ConfigKeySysStaticServerPort);
   port = port == "" ? "9874" : port;
+  let cdn = await ConfigGet(ConfigKeyVditorCdn);
+  if (cdn == "") cdn = VditorCdnZstatic;
   const uploadUrl = `http://localhost:${port}/upload_image`;
   return {
     // cdn: "https://fastly.jsdelivr.net/npm/",
@@ -16,6 +22,9 @@ export const getDefaultVtitorOptions = async (): Promise<IOptions> => {
       enable: true,
       type: "text",
     },
+    // cdn: "https://unpkg.com/vditor",
+    cdn: "https://" + cdn + "/vditor",
+    // cdn: "https://cdn.jsdelivr.net/npm/vditor",
     value: ``,
     toolbar: [
       // 表情符号插入按钮

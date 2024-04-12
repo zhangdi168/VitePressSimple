@@ -1,20 +1,20 @@
 <template>
   <div v-if="!storeIndex.IsEmptyProject" style="overflow-y: auto">
-    <div class="flex justify-center select-none items-center">
-      <a-radio-group
-        animated
-        size="large"
-        centered
-        type="card"
-        v-model:value="activeKey1"
-        style="margin: 8px"
-      >
-        <a-radio-button value="1">基础配置</a-radio-button>
-        <a-radio-button value="2">导航管理</a-radio-button>
-        <a-radio-button value="3">侧栏管理</a-radio-button>
-        <!--        <a-radio-button value="4">构建相关</a-radio-button>-->
-      </a-radio-group>
-    </div>
+    <!--        <div class="flex justify-center select-none items-center">-->
+    <!--          <a-radio-group-->
+    <!--            animated-->
+    <!--            size="large"-->
+    <!--            centered-->
+    <!--            type="card"-->
+    <!--            v-model:value="activeKey1"-->
+    <!--            style="margin: 8px"-->
+    <!--          >-->
+    <!--            <a-radio-button value="1">基础配置</a-radio-button>-->
+    <!--            <a-radio-button value="2">导航管理</a-radio-button>-->
+    <!--            <a-radio-button value="3">侧栏管理</a-radio-button>-->
+    <!--            &lt;!&ndash;        <a-radio-button value="4">构建相关</a-radio-button>&ndash;&gt;-->
+    <!--          </a-radio-group>-->
+    <!--        </div>-->
     <div v-if="activeKey1 === '1'">
       <div class="mt-1 select-none">
         <a-tabs
@@ -62,16 +62,6 @@
         </a-tabs>
       </div>
     </div>
-    <div v-if="activeKey1 === '2'">
-      <div class="mt-1">
-        <setting-nav></setting-nav>
-      </div>
-    </div>
-    <div v-if="activeKey1 === '3'">
-      <div class="mt-1">
-        <setting-sidebar></setting-sidebar>
-      </div>
-    </div>
   </div>
   <empty-project></empty-project>
 </template>
@@ -81,13 +71,9 @@ import SettingBase from "@/views/project/projectSettingBase.vue";
 import { useVpconfigStore } from "@/store/vpconfig";
 import { IconPark } from "@icon-park/vue-next/es/all";
 import DyAddKV from "@/components/dyAddKV.vue";
-import SettingNav from "@/views/project/projectSettingNav.vue";
 
-import { ToastError, ToastInfo, ToastSuccess } from "@/utils/Toast";
-import SimInput from "@/components/simInput.vue";
 import SettingLang from "@/views/project/projectSettingLang.vue";
 import SettingSocial from "@/views/project/projectSettingSocial.vue";
-import SettingSidebar from "@/views/project/projectSettingSidebar.vue";
 import { useIndexStore } from "@/store";
 import EmptyProject from "@/components/emptyProject.vue";
 import SettingSearch from "@/views/project/projectSettingSearch.vue";

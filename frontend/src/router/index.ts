@@ -15,6 +15,16 @@ const router = createRouter({
       component: () => import("@/views/about/about.vue"),
     },
     {
+      path: "/navSetting",
+      name: "navSetting",
+      component: () => import("@/views/nav/navSetting.vue"),
+    },
+    {
+      path: "/sidebarSetting",
+      name: "sidebarSetting",
+      component: () => import("@/views/sidebar/sidebarSetting.vue"),
+    },
+    {
       path: "/projectSetting",
       name: "projectSetting",
       component: () => import("@/views/project/project.vue"),

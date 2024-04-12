@@ -1,5 +1,6 @@
 <template>
-  <div class="flex justify-center mx-20 my-4">
+  <empty-project></empty-project>
+  <div v-if="!storeIndex.IsEmptyProject" class="flex justify-center mx-20 mt-4">
     <!--    选择操作的语言-->
     <div class="mx-2">
       <select-setting-lang></select-setting-lang>
@@ -83,9 +84,11 @@ import { VpNav } from "@/utils/tree";
 import { IconPark } from "@icon-park/vue-next/es/all";
 import SelectSettingLang from "@/components/selectSettingLang.vue";
 import { DeepClone } from "@/utils/deepClone";
+import EmptyProject from "@/components/emptyProject.vue";
+import { useIndexStore } from "@/store";
 
 const storeConfig = useVpconfigStore();
-
+const storeIndex = useIndexStore();
 onMounted(() => {
   // navList.value = storeConfig.configData["themeConfig"]["nav"];
   // console.log(navList.value, "navList -- console.log");

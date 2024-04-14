@@ -56,7 +56,10 @@
             "details": "程序内置markdown编辑器，可实现在程序内进行文档编辑"
         }
     ],
-    "outline": 2
+    "outline": [
+        1,
+        3
+    ]
 }
 ---
 <script setup>

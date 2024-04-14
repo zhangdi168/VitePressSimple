@@ -328,11 +328,15 @@ const copyRouter = async (path: string) => {
     ToastError("复制失败" + err.message);
   }
 };
-const onSubmitInputModalRename = (value: string) => {
+const onSubmitInputModalRename = async (value: string) => {
   let oldPath = currentRenamePath.value;
-  let newPath = getParentDirectory(currentRenamePath.value ?? "") + "/" + value;
+  let dir = await GetPathDir(
+    currentRenamePath.value ?? storeVpConfig.fullSrcDir,
+  );
+  let newPath = await PathJoin([dir, value]);
   if (oldPath?.endsWith(".md")) newPath = newPath + ".md";
-  newPath = newPath.replace("//", "/");
+  // newPath = newPath.replace("//", "/");
+  storeIndex.currArticlePath = newPath;
   // console.log(currentRenamePath.value, "-----currentRenamePath value");
   // console.log(newPath, "-----newPath value");
   Rename(currentRenamePath.value ?? "", newPath).then(() => {

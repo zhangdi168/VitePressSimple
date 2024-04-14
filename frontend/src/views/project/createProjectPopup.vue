@@ -17,7 +17,7 @@
         <span class="select-none text-h5">新建VitePress项目</span>
       </div>
       <div class="mt-2">
-        <a-alert closable description="基于VitePress1.0.2创建" type="success" />
+        <a-alert closable description="基于VitePress1.1.0创建" type="success" />
       </div>
       <div class="my-2">
         <a-input

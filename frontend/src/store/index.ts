@@ -210,15 +210,17 @@ export const useIndexStore = defineStore("index", {
         }
       }
 
-      this.currArticleFrontMatter = frontMatter;
       if (this.currArticleFrontMatter["title"] == "")
         frontMatter["title"] = this.CurrArticleTitle;
-      //当前页面是主页
-      // if (this.currArticleFrontMatter["layout"] == "home") {
-      //   this.currHomeConfig = this.currArticleFrontMatter[
-      //     "hero"
-      //   ] as VitePressHome;
+      //大纲需要是一个数组
+      // if (IsEmptyValue(frontMatter["outline"])) {
+      //   frontMatter["outline"] = [1, 3];
       // }
+      if (!Array.isArray(frontMatter["outline"])) {
+        frontMatter["outline"] = [1, 3];
+      }
+      // console.log("outline", frontMatter);
+      this.currArticleFrontMatter = frontMatter;
     },
   },
   getters: {

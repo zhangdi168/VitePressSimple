@@ -23,8 +23,16 @@
         "tagline": "快速搭建个人博客、产品手册知识库",
         "actions": [
             {
+                "text": "使用教程",
+                "link": "/zh/使用手册/1.软件获取"
+            },
+            {
                 "text": "github",
-                "link": "https://github.com/zhangdi168"
+                "link": "https://github.com/zhangdi168/VitePressSimple"
+            },
+            {
+                "text": "gitee",
+                "link": "https://gitee.com/zhangdi168/VitePressSimple"
             }
         ],
         "head": [],
@@ -56,7 +64,10 @@
             "details": "程序内置markdown编辑器，可实现在程序内进行文档编辑"
         }
     ],
-    "outline": 2
+    "outline": [
+        1,
+        "2"
+    ]
 }
 ---
 <style>
@@ -80,4 +91,4 @@
   }
 }
 </style>
-
+![f95179b2010e4f1e9d347a2428d551a6.png](/vpstatic/images/20240413/f95179b2-010e-4f1e-9d34-7a2428d551a6.png)

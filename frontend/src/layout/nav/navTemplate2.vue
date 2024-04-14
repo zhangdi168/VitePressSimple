@@ -22,7 +22,7 @@ const routerClick = (path: string, name: string) => {
 
 <template>
   <div
-    :style="SystemMac == storeIndex.systemType ? 'margin-top: 22px;' : ''"
+    :style="SystemMac == storeIndex.systemType ? 'padding-top: 25px;' : ''"
     class="flex bg-white justify-start items-start w-screen h-screen"
   >
     <!-- 左侧导航 Start -->

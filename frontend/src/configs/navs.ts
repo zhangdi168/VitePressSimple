@@ -42,7 +42,7 @@ export const NavList = (): navItem[] => {
       title: lang("nav.sidebar"),
       name: "sidebarSetting",
       path: "/sidebarSetting",
-      icon: "music-list",
+      icon: "mindmap-list",
       borderTop: false,
       iconColor: color,
     },

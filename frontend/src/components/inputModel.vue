@@ -16,7 +16,6 @@
       <div class="mt-4 mb-2">
         <a-textarea
           ref="refInput"
-          @keydown.prevent.enter="hideModal"
           v-model:value="val"
           :placeholder="props.placeholder"
           auto-size

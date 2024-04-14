@@ -178,7 +178,7 @@ const onDrop = (info: AntTreeNodeDropEvent) => {
 
 const deletePath = (key: string) => {
   Modal.confirm({
-    content: "确定删除么？",
+    content: "确定删除么？ " + key,
     okType: "danger",
     okText: "确定删除",
     icon: createVNode(ExclamationCircleOutlined),
@@ -187,7 +187,12 @@ const deletePath = (key: string) => {
         if (res != "") {
           ToastError(res);
         } else {
-          ToastInfo("删除成功");
+          ToastInfo(key + "：删除成功");
+          //更新当前文件
+
+          if (storeIndex.currArticlePath == key) {
+            storeIndex.currArticlePath = "";
+          }
           storeIndex.loadTreeData();
         }
       });

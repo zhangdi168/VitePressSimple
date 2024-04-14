@@ -19,11 +19,11 @@
     </div>
     <div class="px-2 mb-2">
       <a-input
-        v-model:value="storeIndex.currArticleFrontMatter['outline']"
-        placeholder="选填：1-6"
+        v-model:value="storeIndex.currArticleFrontMatter['outline'][1]"
+        placeholder="选填：0-6，0时则不显示大纲"
         class="text-gray-500"
         prefix=""
-        suffix="大纲显示级别(1-6)"
+        suffix="大纲显示级别(0-6)"
       />
     </div>
   </div>
@@ -125,9 +125,10 @@
 </template>
 <script setup lang="ts">
 import DyAddHead from "@/components/dyAddKV.vue";
-import { nextTick, onMounted, ref } from "vue";
+import { nextTick, onBeforeMount, onMounted, ref } from "vue";
 import { useIndexStore } from "@/store";
 import { useLayoutStore } from "@/store/layout";
+import { IsEmptyValue } from "@/utils/utils";
 
 const labelCol = { style: { width: "150px" } };
 const wrapperCol = { span: 14 };

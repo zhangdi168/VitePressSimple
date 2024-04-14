@@ -16,6 +16,7 @@ import {
   UpdateNewVersion,
 } from "../wailsjs/go/services/UpdateService";
 import { StartStaticServer } from "../wailsjs/go/services/StaticServer";
+import { SystemMac } from "@/constant/enums/system";
 //在这里可以设置默认的模板
 const useTemplateIndex = ref(2);
 const storeIndex = useIndexStore();
@@ -46,8 +47,13 @@ onBeforeUnmount(() => {
 });
 
 function handleKeyDown(event: KeyboardEvent) {
-  // 监听Ctrl + S快捷键
-  if (event.ctrlKey && event.key === "s") {
+  const isMacOS = storeIndex.systemType == SystemMac;
+
+  // 根据操作系统判断使用哪个键
+  const controlKey = isMacOS ? event.metaKey : event.ctrlKey;
+
+  // 监听 Ctrl (或 Mac 的 Meta) + S 快捷键
+  if (controlKey && event.key === "s") {
     console.log("快捷键被按下 -- console.log");
     storeIndex.saveCurrArticle();
   }

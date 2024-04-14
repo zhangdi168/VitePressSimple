@@ -4,7 +4,7 @@ export const defaultFrontMatter: any = {
   navbar: true, //是否显示导航
   sideBar: true, //是否显示侧栏
   footer: false, //是否显示页脚
-  outline: 2, //是否显示页脚
+  outline: [1, 3], //是否显示页脚
   editLink: false, //是否显示编辑链接
   lastUpdated: true, //是否显示页脚更新时间
   aside: "right", //大纲显示位置--默认右边

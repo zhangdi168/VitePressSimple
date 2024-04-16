@@ -62,7 +62,5 @@
     ]
 }
 ---
-<script setup>
-window.location="/zh/index"
-</script>
+
 

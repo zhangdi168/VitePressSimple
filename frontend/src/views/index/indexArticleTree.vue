@@ -319,7 +319,7 @@ const showPopRename = (value: string, path_: string) => {
 const copyRouter = async (path: string) => {
   try {
     let router = path
-      .replaceAll(storeVpConfig.baseDir, "")
+      .replaceAll(storeVpConfig.fullSrcDir, "")
       .replaceAll("\\", "/")
       .replaceAll(".md", "");
     await navigator.clipboard.writeText(router);

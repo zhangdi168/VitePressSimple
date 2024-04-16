@@ -36,7 +36,7 @@ import { defineConfig } from "vitepress";
     "socialLinks": [
       {
         "icon": "github",
-        "link": "sdada"
+        "link": "https://github.com/zhangdi168/VitePressSimple"
       }
     ],
     "langMenuLabel": "多语言",

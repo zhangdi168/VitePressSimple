@@ -32,7 +32,7 @@
 # Quick Start Guide
 
 Free download for Mac and Windows installation packages:
-[GitHub download link](https://githubs.com/zhangdi168/VitePressSimple/releases)
+[GitHub download link](https://github.com/zhangdi168/VitePressSimple/releases)
 | [Gitee download link](https://gitee.com/zhangdi168/VitePressSimple/releases)
 
 View the complete document：[Chinese Documentation](http://vpsimple.xiaod.co/zh) |

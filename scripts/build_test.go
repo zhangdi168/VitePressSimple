@@ -90,9 +90,9 @@ func replaceSystemStr(platform string) string {
 	return strings.ReplaceAll(s1, "darwin", "mac")
 }
 
-func TestCreateDmg(t *testing.T) {
-	createDmg(platforms[0])
-}
+//func TestCreateDmg(t *testing.T) {
+//	createDmg(platforms[0])
+//}
 
 // 准备create-dmg命令参数
 // 构建用于创建DMG文件的参数列表

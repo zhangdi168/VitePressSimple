@@ -43,7 +43,7 @@
       </div>
       <div
         class="mx-1 cursor-pointer"
-        @click="OpenFileBrowser(storeVpConfig.fullSrcDir)"
+        @click="OpenFileBrowser(storeVpConfig.baseDir)"
       >
         <q-tooltip>在文件浏览器中打开</q-tooltip>
         <icon-park

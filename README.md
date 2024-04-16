@@ -48,7 +48,7 @@ Enter the project name and select the project root directory:
 ## online preview
 ![img.png](./docs/vpstatic/images/openInDir.png)
 
-After the creation is completed, you can **click the folder icon to enter the source directory** (the directory where the documents are located). The default source directory is ./docs. To return to the previous level, i.e., **execute the following command in the project root directory:**
+After the creation is completed, you can **click the folder icon to enter the project root directory** 
 
 ```bash
 # Go to the project root directory, not the original directory

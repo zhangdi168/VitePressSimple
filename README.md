@@ -1,0 +1,92 @@
+<div align="center">
+<a href="https://github.com/zhangdi168/VitePressSimple">
+<img src="./docs/vpstatic/images/vpsimple.png" width="120"/></a>
+</div>
+<h1 align="center">VitePress Simple</h1>
+
+<h3 align="center">VitePress Configuration Tool</h3>
+
+<h3 align="center">
+<strong>English</strong> |
+<a href="https://github.com/zhangdi168/VitePressSimple/blob/main/README_zh.md">
+Simplified Chinese</a>
+</h3>
+
+![vpsimple](./docs/vpstatic/images/demo.png)
+# User Guide
+
+Free download for Mac and Windows installation packages:
+[GitHub download link](https://githubs.com/zhangdi168/VitePressSimple/releases)
+| [Gitee download link](https://gitee.com/zhangdi168/VitePressSimple/releases)
+
+Below is an example VitePress project for easy exploration:
+## Create Vite project
+![Create VitePress project](./docs/vpstatic/images/20240416/9323bce8-7c90-439d-9b1b-49aec08211ea.png)
+Enter the project name and select the project root directory:
+
+![4631dcde70f7427bb5d07a2bd6d80b76.png](./docs/vpstatic/images/20240416/4631dcde-70f7-427b-b5d0-7a2bd6d80b76.png)
+## Go to the project directory and execute
+![img.png](./docs/vpstatic/images/openInDir.png)
+After the creation is completed, you can **click the folder icon to enter the source directory** (the directory where the documents are located). The default source directory is ./docs. To return to the previous level, i.e., **execute the following command in the project root directory:**
+
+```bash
+# Go to the project root directory, not the original directory
+npm install
+npm run dosc:dev
+```
+After executing the above command, VitePress can be tested to run. The default address is: http://localhost:5173. Modifying the document content or configuration in vpsimple will automatically update.
+
+For more documentation, please visit:
+
+[Complete Chinese Documentation Website](http://vpsimple.xiaod.co/zh) |
+[Complete English Documentation Website](http://vpsimple.xiaod.co/en)
+
+
+# Features
+* Developed based on wails2+vite+vue3+typescript
+* Lightweight client program based on Webview2
+* Online editor for markdown documents
+* Support for document directory tree, including moving, cutting, copying, and pasting operations
+* Support for directly copying and pasting images into markdown documents and automatically uploading them to the server
+* Native configuration parsing, directly parsing and rendering .vitepress/config.mts
+* Multilingual support, different languages can be configured separately
+* Navigation bar can be visually configured, and different languages can be separately configured
+* Sidebar can be visually configured, supporting multiple sidebar configurations, multiple languages, and automatic sidebar recognition
+* Search configuration support, optional local configuration or third-party search services
+
+## Build the Project
+
+### Runtime Environment Requirements
+
+* Go (latest version)
+* Node.js >= 16
+* NPM >= 9
+
+### Install Wails
+
+```bash
+go install github.com/wailsapp/wails/v2/cmd/wails@latest
+```
+
+### Clone the Repository
+
+```bash
+git clone https://github.com/zhangdi168/VitePressSimple --depth=1
+```
+
+### Build the Frontend Code
+
+```bash
+npm install --prefix ./frontend
+```
+
+### Compile and Run the Development Version
+
+```bash
+wails dev
+```
+
+### About the Author
+[Author's Personal Website: http://xiaod.co/](http://xiaod.co/)
+
+This project is completely free. If it has been helpful to you, you can buy the author a coffee ☕️.

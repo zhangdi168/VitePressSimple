@@ -11,25 +11,25 @@
     "layout": "home",
     "custom": {},
     "hero": {
-      "image": {
-        "src": "\\images\\home\\index_home.png",
-        "alt": "",
-        "width": "",
-        "height": ""
-      },
-      "name": "VPSimple",
-      "text": "VitePress配置工具",
-      "description": "",
-      "tagline": "快速搭建个人博客、产品手册知识库",
-      "actions": [
-        {
-          "text": "github",
-          "link": "https://github.com/zhangdi168"
-        }
-      ],
-      "head": [],
-      "features": []
-    }, 
+        "image": {
+            "src": "\\images\\home\\index_home.png",
+            "alt": "",
+            "width": "",
+            "height": ""
+        },
+        "name": "VPSimple",
+        "text": "VitePress配置工具",
+        "description": "",
+        "tagline": "快速搭建个人博客、产品手册知识库",
+        "actions": [
+            {
+                "text": "github",
+                "link": "https://github.com/zhangdi168"
+            }
+        ],
+        "head": [],
+        "features": []
+    },
     "features": [
         {
             "title": "跨平台客户端",

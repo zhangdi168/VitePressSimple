@@ -5,11 +5,12 @@
 
 [//]: # (<h1 align="center">VitePress Simple</h1>)
 
-<h3 align="center">VitePress Configuration Tool</h3>
+<h3 align="center">
+<a target="_blank" href="https://vitepress.dev/">VitePress</a> Configuration Tool</h3>
 
 <h3 align="center">
 <strong>English</strong> |
-<a href="https://github.com/zhangdi168/VitePressSimple/blob/main/README_zh.md">
+<a href="https://github.com/zhangdi168/VitePressSimple/blob/master/README_ZH.md">
 简体中文</a>
 </h3>
 
@@ -29,6 +30,7 @@ Enter the project name and select the project root directory:
 ![4631dcde70f7427bb5d07a2bd6d80b76.png](./docs/vpstatic/images/20240416/4631dcde-70f7-427b-b5d0-7a2bd6d80b76.png)
 ## Go to the project directory and execute
 ![img.png](./docs/vpstatic/images/openInDir.png)
+
 After the creation is completed, you can **click the folder icon to enter the source directory** (the directory where the documents are located). The default source directory is ./docs. To return to the previous level, i.e., **execute the following command in the project root directory:**
 
 ```bash

@@ -3,6 +3,11 @@ export const defaultShareConfigValue: any = {
   srcDir: "./",
   // logo: "",
   assetsDir: "static",
+  //生成sitemap的配置
+  sitemap: {
+    hostname: "https://example.com",
+    lastmodDateOnly: false,
+  },
   // darkModeSwitchLabel: "Appearance",
   // lightModeSwitchTitle: "Switch to light theme",
   // darkModeSwitchTitle: "Switch to dark theme",

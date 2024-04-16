@@ -171,7 +171,7 @@ export const useVpconfigStore = defineStore("vpconfig", {
     },
     //保存配置
     async saveConfig() {
-      const res = await SaveConfig(JSON.stringify(this.configData, null, 4));
+      const res = await SaveConfig(JSON.stringify(this.configData, null, 2));
       ToastCheck(res);
     },
   },

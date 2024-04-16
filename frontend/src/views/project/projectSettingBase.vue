@@ -86,6 +86,11 @@
       tooltip="项目的构建输出位置，相对于项目根目录"
       label="构建路径"
     ></sim-input>
+    <sim-input
+      v-model="storeConfig.configData['sitemap']['hostname']"
+      tooltip="为站点生成 sitemap.xml 文件时用到"
+      label="hostname"
+    ></sim-input>
 
     <sim-input
       v-model="storeConfig.configData['assetsDir']"

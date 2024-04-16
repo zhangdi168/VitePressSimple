@@ -1,6 +1,6 @@
 ---
 {
-    "title": "VirePressSimple | VPSimple",
+    "title": "index",
     "description": "",
     "navbar": true,
     "sideBar": false,

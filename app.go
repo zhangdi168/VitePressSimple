@@ -47,4 +47,5 @@ func (a *App) beforeClose(ctx context.Context) (prevent bool) {
 func (a *App) shutdown(ctx context.Context) {
 	// Perform your teardown here
 	// 在此处做一些资源释放的操作
+
 }

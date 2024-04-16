@@ -3,7 +3,10 @@ package main
 import (
 	"embed"
 	"log"
+	"os"
+	"wailstemplate/application/constant/keys"
 	"wailstemplate/application/first"
+	"wailstemplate/application/pkg/cfg"
 	"wailstemplate/application/services"
 	"wailstemplate/application/services/system"
 	"wailstemplate/application/vitepress/vpsimpler"
@@ -36,10 +39,14 @@ func main() {
 	// 创建一个App结构体实例
 	app := NewApp()
 
-	first.InitConfig()        //初始化配置文件
-	first.InitDefaultConfig() //初始化默认配置
-	first.InitLog()           //初始化日志
-	first.CheckStartup()      //开机自启检查
+	first.InitConfig()         //初始化配置文件
+	first.InitDefaultConfig()  //初始化默认配置
+	if !first.CheckCanOpen() { //重复打开检测
+		os.Exit(0)
+	}
+	first.InitLog()      //初始化日志
+	first.CheckStartup() //开机自启检查
+	defer onCloseDo()
 	//first.InitTask()   //初始化定时任务
 	//静态文件服务器,如果需要请取消注释 localhost:9875/images/icon.pmh
 	//mystatic.StartStaticServer("9874", resource, "resources")
@@ -94,6 +101,7 @@ func main() {
 			WebviewBrowserPath:                "",
 			Theme:                             windows.SystemDefault,
 		},
+
 		// Mac platform specific options
 		// Mac平台特定选项
 		Mac: &mac.Options{
@@ -122,4 +130,8 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+}
+
+func onCloseDo() {
+	cfg.Set(keys.ConfigKeySysProgramIsOpen, "no") //打开状态设置成关闭
 }

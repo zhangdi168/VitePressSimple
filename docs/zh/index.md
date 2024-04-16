@@ -40,28 +40,28 @@
     },
     "features": [
         {
-            "title": "Cross-platform client",
-            "details": "Supported operating systems include Windows and macOS."
+            "title": "跨平台客户端",
+            "details": "支持windows、macos等操作系统"
         },
         {
-            "title": "Visual configuration",
-            "details": "Visualization interface configuration"
+            "title": "可视化配置",
+            "details": "可视化界面配置"
         },
         {
-            "title": "Native parsing",
-            "details": "The configuration reading and writing directly parse the original configuration file of vitepress, without relying on third-party data storage."
+            "title": "原生解析",
+            "details": "配置的读写直接解析vitepress原配置文件，不依赖三方数据存储"
         },
         {
-            "title": "multilingual",
-            "details": "Support multi-language configuration"
+            "title": "多语言",
+            "details": "支持多语言配置"
         },
         {
-            "title": "sidebar identification",
-            "details": "Automatically identify folders and article lists and generate sidebars"
+            "title": "侧栏识别",
+            "details": "自动识别文件夹和文章列表并生成侧栏"
         },
         {
-            "title": "Markdown editor",
-            "details": "The program has built-in markdown editor, which allows document editing within the program"
+            "title": "markdown编辑器",
+            "details": "程序内置markdown编辑器，可实现在程序内进行文档编辑"
         }
     ],
     "outline": [

@@ -22,4 +22,7 @@ func InitDefaultConfig() {
 
 	cfg.SetDefault(keys.ConfigKeyVditorCdn, enums.VditorCdnZstatic)
 
+	//cfg.SetDefault(keys.ConfigKeySysProgramCanOpenMany, "no")
+	cfg.SetDefault(keys.ConfigKeySysProgramIsOpen, "no")
+
 }

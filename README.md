@@ -23,6 +23,7 @@ Free download for Mac and Windows installation packages:
 Below is an example VitePress project for easy exploration:
 ## Create Vite project
 ![Create VitePress project](./docs/vpstatic/images/20240416/9323bce8-7c90-439d-9b1b-49aec08211ea.png)
+
 Enter the project name and select the project root directory:
 
 ![4631dcde70f7427bb5d07a2bd6d80b76.png](./docs/vpstatic/images/20240416/4631dcde-70f7-427b-b5d0-7a2bd6d80b76.png)

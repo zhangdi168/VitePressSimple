@@ -2,14 +2,15 @@
 <a href="https://github.com/zhangdi168/VitePressSimple">
 <img src="./docs/vpstatic/images/vpsimple.png" width="120"/></a>
 </div>
-<h1 align="center">VitePress Simple</h1>
+
+[//]: # (<h1 align="center">VitePress Simple</h1>)
 
 <h3 align="center">VitePress Configuration Tool</h3>
 
 <h3 align="center">
 <strong>English</strong> |
 <a href="https://github.com/zhangdi168/VitePressSimple/blob/main/README_zh.md">
-Simplified Chinese</a>
+简体中文</a>
 </h3>
 
 ![vpsimple](./docs/vpstatic/images/demo.png)

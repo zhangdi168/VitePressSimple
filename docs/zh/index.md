@@ -31,8 +31,8 @@
                 "link": "https://github.com/zhangdi168"
             },
             {
-                "text": "",
-                "link": ""
+                "text": "gitee",
+                "link": "https://githee.com/zhangdi168"
             }
         ],
         "head": [],

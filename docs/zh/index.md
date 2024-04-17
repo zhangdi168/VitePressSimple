@@ -28,11 +28,11 @@
             },
             {
                 "text": "github",
-                "link": "https://github.com/zhangdi168"
+                "link": "https://github.com/zhangdi168/VitePressSimple"
             },
             {
                 "text": "gitee",
-                "link": "https://githee.com/zhangdi168"
+                "link": "https://gitee.com/zhangdi168/VitePressSimple"
             }
         ],
         "head": [],

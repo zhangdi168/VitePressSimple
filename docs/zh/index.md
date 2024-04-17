@@ -23,8 +23,16 @@
         "tagline": "快速搭建个人博客、产品手册知识库",
         "actions": [
             {
+                "text": "指南",
+                "link": "/zh/使用手册/1.关于软件"
+            },
+            {
                 "text": "github",
                 "link": "https://github.com/zhangdi168"
+            },
+            {
+                "text": "",
+                "link": ""
             }
         ],
         "head": [],

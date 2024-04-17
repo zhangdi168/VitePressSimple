@@ -57,7 +57,7 @@
         },
         {
             "title": "sidebar identification",
-            "details": "Automatically identify folders and article lists and generate sidebars"
+            "details": "Automatically retrieve article lists and generate sidebars"
         },
         {
             "title": "Markdown editor",

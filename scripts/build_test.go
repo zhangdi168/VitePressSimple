@@ -96,7 +96,6 @@ func replaceSystemStr(platform string) string {
 
 // 准备create-dmg命令参数
 // 构建用于创建DMG文件的参数列表
-//
 // 参数:
 //
 //	scriptDir - 脚本目录的路径
@@ -106,34 +105,25 @@ func replaceSystemStr(platform string) string {
 //	appName - 应用程序的名称
 //	dmgName - 生成的DMG文件的名称
 func createDmg(platform string) {
-
 	// 获取当前脚本所在目录
 	scriptDir := filepath.Join("..", "build", "dmg")
-
 	// 初始化源目录路径
 	sourceDir := filepath.Join(scriptDir, "..", "bin")
-
 	// 查找并设置应用程序路径
 	appPath, err := findAppPath(sourceDir)
 	if err != nil {
 		panic(err)
 	}
 	appName := filepath.Base(appPath)
-
 	// 提取卷宗名称（不包括.app后缀）
 	//volumeName := strings.TrimSuffix(appName, ".app")
-
 	// 查找卷宗图标路径
 	volumeIcon, _ := findVolumeIcon(sourceDir)
-
 	// 设置DMG文件名
 	dmgName := fmt.Sprintf("vpsimple_%s_%s.dmg", replaceSystemStr(platform), setting.Version)
-
 	// 如果DMG文件已存在，则删除
 	removeExistingDmg(sourceDir, dmgName)
-
 	msg := fmt.Sprintf("若提示'xx 损坏' 右键打开黑色图标修复")
-
 	// 返回值:
 	//   无
 	args := []string{

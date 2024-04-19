@@ -31,7 +31,8 @@
 # 快速使用指南
 
 提供Mac、Windows安装包免费下载:
-[github下载地址](https://github.com/zhangdi168/VitePressSimple/releases) 
+[github下载地址](https://github.com/zhangdi168
+/VitePressSimple/releases) 
 | [gitee下载地址](https://gitee.com/zhangdi168/VitePressSimple/releases)
 
 前往官网查看完整文档：[中文文档](http://vpsimple.xiaod.co/zh) |

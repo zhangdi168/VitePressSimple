@@ -251,13 +251,15 @@ const handleClick = (key: string) => {
 };
 
 const openArticle = async (path: string) => {
-  let content = await ReadFileContent(path);
   let isAutoSave = await ConfigGetBool(ConfigKeyChangeAutoSave);
   if (isAutoSave === true) {
     await storeIndex.saveCurrArticle(false); //先保存
   }
+  const content = await ReadFileContent(path);
+  // console.log(content, "content -- console.log");
 
   let matterData = matter(content);
+  // console.log(matterData.data, "matterData.data -- console.log");
   let matchScriptArray = parseTagContent(matterData.content ?? "", regexScript);
   let matchStyleArray = parseTagContent(matterData.content ?? "", regexStyle);
   let scriptContent = matchScriptArray[0] ?? "";
@@ -266,6 +268,7 @@ const openArticle = async (path: string) => {
   await storeIndex.setCurrStyleContent(styleContent);
   storeIndex.setCurrArticlePath(path);
   // //matter字符串
+
   storeIndex.setCurrArticleFrontMatter(matterData.data);
 
   let vditorContent = (matterData.content ?? "")

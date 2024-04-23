@@ -54,8 +54,8 @@
             :value="item"
           >
             <q-tooltip
-              >当路由位于 ‘{{ item }}’ 目录时，会显示此侧边栏</q-tooltip
-            >
+              >当路由位于 ‘{{ item }}’ 目录时，会显示此侧边栏
+            </q-tooltip>
             {{ item }}
           </a-radio-button>
         </a-radio-group>
@@ -93,7 +93,7 @@
           @confirm="recognitionSidebar()"
         >
           <q-tooltip
-            >自动识别{{ storeConfig.SrcLangDir }}目录下的侧栏数据
+            >自动检索{{ storeConfig.SrcLangDir }}目录下的侧栏数据
           </q-tooltip>
           <a-button
             class="bg-blue-500 hover:bg-blue-600 text-white flex justify-center items-center"
@@ -105,7 +105,7 @@
               theme="outline"
               type="scanning"
             />
-            自动识别当前侧栏
+            自动检索当前侧栏
           </a-button>
         </a-popconfirm>
       </div>
@@ -212,14 +212,14 @@ const recognitionSidebar = async () => {
     storeConfig.srcDir,
     storeConfig.currSettingLang,
   ]);
-  let baseDir = storeConfig.srcDir;
+  let baseDir = zhLangDir;
   if (isUseManySidebars.value) {
     if (currSelectSidebarKey.value == "") {
       ToastError("请选择当前编辑的侧栏");
       return;
     }
-    //多侧栏模式，再加上选中的侧栏
-    baseDir = baseDir + currSelectSidebarKey.value;
+    //多侧栏模式，再加上选中的侧栏 currSelectSidebarKey已经包含原目录
+    baseDir = await PathJoin([storeConfig.srcDir, currSelectSidebarKey.value]);
   }
   let treeData = await ParseTreeData(baseDir); //[{key:"路径",title:""}]
   console.log(treeData, "treeData -- console.log");

@@ -1,0 +1,132 @@
+name: Release macOS App
+
+on:
+  release:
+    types: [ published ]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Version tag'
+        required: true
+        default: '1.0.0'
+
+jobs:
+  release:
+    name: Release macOS App
+    runs-on: macos-latest # We can cross compile but need to be on macOS to notarise
+    strategy:
+      matrix:
+        platform:
+          - darwin/amd64
+          - darwin/arm64
+    #          - darwin/universal
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v3
+
+      - name: Normalise platform tag
+        id: normalise_platform
+        shell: bash
+        run: |
+          tag=$(echo ${{ matrix.platform }} | sed -e 's/\//_/g' -e 's/darwin/mac/g' -e 's/amd64/intel/g')
+          echo "tag=$tag" >> "$GITHUB_OUTPUT"
+
+      - name: Normalise version tag
+        id: normalise_version
+        shell: bash
+        run: |
+          if [ "${{ github.event.release.tag_name }}" == "" ]; then
+            version=$(echo ${{ github.event.inputs.tag }} | sed -e 's/v//g')
+            echo "version=$version" >> "$GITHUB_OUTPUT"
+          else
+            version=$(echo ${{ github.event.release.tag_name }} | sed -e 's/v//g')
+            echo "version=$version" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Setup Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: stable
+
+      #      - name: Install gon for macOS notarisation
+      #        shell: bash
+      #        run: wget https://github.com/mitchellh/gon/releases/download/v0.2.5/gon_macos.zip && unzip gon_macos.zip && mv gon /usr/local/bin
+      #
+      #      - name: Import code signing certificate from Github Secrets
+      #        uses: Apple-Actions/import-codesign-certs@v1
+      #        with:
+      #          p12-file-base64: ${{ secrets.APPLE_DEVELOPER_CERTIFICATE_P12_BASE64 }}
+      #          p12-password: ${{ secrets.APPLE_DEVELOPER_CERTIFICATE_PASSWORD }}
+
+      - name: Install wails
+        shell: bash
+        run: go install github.com/wailsapp/wails/v2/cmd/wails@latest
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Build frontend assets
+        shell: bash
+        run: |
+          npm install -g npm@9
+          jq '.info.productVersion = "${{ steps.normalise_version.outputs.version }}"' wails.json > tmp.json
+          mv tmp.json wails.json
+          cd frontend
+          jq '.version = "${{ steps.normalise_version.outputs.version }}"' package.json > tmp.json
+          mv tmp.json package.json
+          npm install
+
+      - name: Build wails app for macOS
+        shell: bash
+        run: |
+          CGO_ENABLED=1 wails build -platform ${{ matrix.platform }} \
+          -ldflags "-X main.version=${{ github.event.release.tag_name }} -X main.gaMeasurementID=${{ secrets.GA_MEASUREMENT_ID }} -X main.gaSecretKey=${{ secrets.MAC_GA_SECRET }}"
+
+      #      - name: Notarise macOS app + create dmg
+      #        shell: bash
+      #        run: gon -log-level=info gon.config.json
+      #        env:
+      #          AC_USERNAME: ${{ secrets.AC_USERNAME }}
+      #          AC_PASSWORD: ${{ secrets.AC_PASSWORD }}
+
+      - name: Checkout create-image
+        uses: actions/checkout@v2
+        with:
+          repository: create-dmg/create-dmg
+          path: ./build/create-dmg
+          ref: master
+
+      - name: Build macOS DMG
+        shell: bash
+        working-directory: ./build
+        run: |
+          mv bin/tinyrdm.app "bin/Tiny RDM.app"
+          ./create-dmg/create-dmg \
+            --no-internet-enable \
+            --volname "Tiny RDM" \
+            --volicon "bin/Tiny RDM.app/Contents/Resources/iconfile.icns" \
+            --background "dmg/background.tiff" \
+            --text-size 12 \
+            --window-pos 400 400 \
+            --window-size 660 450 \
+            --icon-size 80 \
+            --icon "Tiny RDM.app" 180 180 \
+            --hide-extension "Tiny RDM.app" \
+            --app-drop-link 480 180 \
+            --add-file "Repair" "dmg/fix-app" 230 290 \
+            --add-file "损坏修复" "dmg/fix-app_zh" 430 290 \
+            "bin/VPSimple-${{ steps.normalise_platform.outputs.tag }}.dmg" \
+            "bin"
+
+      - name: Rename dmg
+        working-directory: ./build/bin
+        run: mv "VPSimple-${{ steps.normalise_platform.outputs.tag }}.dmg" "VPSimple_${{ steps.normalise_version.outputs.version }}_${{ steps.normalise_platform.outputs.tag }}.dmg"
+
+      - name: Upload release asset (DMG Package)
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: v${{ steps.normalise_version.outputs.version }}
+          files: ./build/bin/VPSimple_${{ steps.normalise_version.outputs.version }}_${{ steps.normalise_platform.outputs.tag }}.dmg
+          token: ${{ secrets.GITHUB_TOKEN }}

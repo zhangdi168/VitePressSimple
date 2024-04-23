@@ -102,7 +102,7 @@ jobs:
         shell: bash
         working-directory: ./build
         run: |
-          mv bin/VitePressSimple.app "bin/VitePressSimple.app"
+          # mv bin/VitePressSimple.app "bin/VitePressSimple.app"
           ./create-dmg/create-dmg \
             --no-internet-enable \
             --volname "VitePressSimple" \

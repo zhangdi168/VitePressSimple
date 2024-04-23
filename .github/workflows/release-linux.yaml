@@ -87,7 +87,7 @@ jobs:
         run: |
           CGO_ENABLED=1 wails build -platform ${{ matrix.platform }} \
           -ldflags "-X main.version=v${{ steps.normalise_version.outputs.version }} -X main.gaMeasurementID=${{ secrets.GA_MEASUREMENT_ID }} -X main.gaSecretKey=${{ secrets.LINUX_GA_SECRET }}" \
-          -o tiny-rdm
+          -o VitePressSimple
 
       - name: Setup control template
         shell: bash
@@ -104,16 +104,16 @@ jobs:
       - name: Setup app template
         shell: bash
         run: |
-          content=$(cat build/linux/vpsimple_0.0.0_amd64/usr/share/applications/tiny-rdm.desktop)
+          content=$(cat build/linux/vpsimple_0.0.0_amd64/usr/share/applications/VitePressSimple.desktop)
           content=$(echo "$content" | sed -e "s/{{.Info.ProductName}}/$(jq -r '.info.productName' wails.json)/g")
           content=$(echo "$content" | sed -e "s/{{.Info.Comments}}/$(jq -r '.info.comments' wails.json)/g")
           echo $content
-          echo "$content" > build/linux/vpsimple_0.0.0_amd64/usr/share/applications/tiny-rdm.desktop
+          echo "$content" > build/linux/vpsimple_0.0.0_amd64/usr/share/applications/VitePressSimple.desktop
 
       - name: Package up deb file
         shell: bash
         run: |
-          mv build/bin/tiny-rdm build/linux/vpsimple_0.0.0_amd64/usr/local/bin/
+          mv build/bin/VitePressSimple build/linux/vpsimple_0.0.0_amd64/usr/local/bin/
           cd build/linux
           mv vpsimple_0.0.0_amd64 "vpsimple_${{ steps.normalise_version.outputs.version }}_amd64"
           sed -i 's/0.0.0/${{ steps.normalise_version.outputs.version }}/g' "vpsimple_${{ steps.normalise_version.outputs.version }}_amd64/DEBIAN/control"
@@ -139,11 +139,11 @@ jobs:
           mkdir -p AppDir/usr/share/icons/hicolor/512x512/apps
           build_dir="build/linux/vpsimple_${{ steps.normalise_version.outputs.version }}_amd64"
 
-          cp -r $build_dir/usr/share/icons/hicolor/512x512/apps/tiny-rdm.png AppDir/usr/share/icons/hicolor/512x512/apps/
-          cp $build_dir/usr/local/bin/tiny-rdm AppDir/usr/bin/
+          cp -r $build_dir/usr/share/icons/hicolor/512x512/apps/VitePressSimple.png AppDir/usr/share/icons/hicolor/512x512/apps/
+          cp $build_dir/usr/local/bin/VitePressSimple AppDir/usr/bin/
 
 
-          sed -i 's#/usr/local/bin/tiny-rdm#tiny-rdm#g' $build_dir/usr/share/applications/tiny-rdm.desktop
+          sed -i 's#/usr/local/bin/VitePressSimple#VitePressSimple#g' $build_dir/usr/share/applications/VitePressSimple.desktop
 
           curl -o linuxdeploy-plugin-gtk.sh "https://raw.githubusercontent.com/tauri-apps/linuxdeploy-plugin-gtk/master/linuxdeploy-plugin-gtk.sh"
 
@@ -155,8 +155,8 @@ jobs:
           ./linuxdeploy --appdir AppDir \
              --output=appimage \
              --plugin=gtk \
-             -e $build_dir/usr/local/bin/tiny-rdm \
-             -d $build_dir/usr/share/applications/tiny-rdm.desktop
+             -e $build_dir/usr/local/bin/VitePressSimple \
+             -d $build_dir/usr/share/applications/VitePressSimple.desktop
 
       - name: Rename deb
         working-directory: ./build/linux

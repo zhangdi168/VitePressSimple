@@ -102,31 +102,31 @@ jobs:
         shell: bash
         working-directory: ./build
         run: |
-          mv bin/tinyrdm.app "bin/Tiny RDM.app"
+          mv bin/VitePressSimple.app "bin/VitePressSimple.app"
           ./create-dmg/create-dmg \
             --no-internet-enable \
-            --volname "Tiny RDM" \
-            --volicon "bin/Tiny RDM.app/Contents/Resources/iconfile.icns" \
+            --volname "VitePressSimple" \
+            --volicon "bin/VitePressSimple.app/Contents/Resources/iconfile.icns" \
             --background "dmg/background.tiff" \
             --text-size 12 \
             --window-pos 400 400 \
             --window-size 660 450 \
             --icon-size 80 \
-            --icon "Tiny RDM.app" 180 180 \
-            --hide-extension "Tiny RDM.app" \
+            --icon "VitePressSimple.app" 180 180 \
+            --hide-extension "VitePressSimple.app" \
             --app-drop-link 480 180 \
             --add-file "Repair" "dmg/fix-app" 230 290 \
             --add-file "损坏修复" "dmg/fix-app_zh" 430 290 \
-            "bin/VPSimple-${{ steps.normalise_platform.outputs.tag }}.dmg" \
+            "bin/VitePressSimple-${{ steps.normalise_platform.outputs.tag }}.dmg" \
             "bin"
 
       - name: Rename dmg
         working-directory: ./build/bin
-        run: mv "VPSimple-${{ steps.normalise_platform.outputs.tag }}.dmg" "VPSimple_${{ steps.normalise_version.outputs.version }}_${{ steps.normalise_platform.outputs.tag }}.dmg"
+        run: mv "VitePressSimple-${{ steps.normalise_platform.outputs.tag }}.dmg" "VitePressSimple_${{ steps.normalise_version.outputs.version }}_${{ steps.normalise_platform.outputs.tag }}.dmg"
 
       - name: Upload release asset (DMG Package)
         uses: softprops/action-gh-release@v1
         with:
           tag_name: v${{ steps.normalise_version.outputs.version }}
-          files: ./build/bin/VPSimple_${{ steps.normalise_version.outputs.version }}_${{ steps.normalise_platform.outputs.tag }}.dmg
+          files: ./build/bin/VitePressSimple_${{ steps.normalise_version.outputs.version }}_${{ steps.normalise_platform.outputs.tag }}.dmg
           token: ${{ secrets.GITHUB_TOKEN }}

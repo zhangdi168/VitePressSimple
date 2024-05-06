@@ -88,7 +88,7 @@ jobs:
 
       - name: Compress portable binary
         working-directory: ./build/bin
-        run: Compress-Archive "Tiny RDM.exe" "VPSimple_Portable_${{ steps.normalise_version.outputs.version }}_${{ steps.normalise_platform.outputs.tag }}.zip"
+        run: Compress-Archive "VitePressSimple.exe" "VPSimple_Portable_${{ steps.normalise_version.outputs.version }}_${{ steps.normalise_platform.outputs.tag }}.zip"
 
       - name: Upload release asset (Portable)
         uses: softprops/action-gh-release@v1

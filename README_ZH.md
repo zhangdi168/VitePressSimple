@@ -16,6 +16,8 @@
 
 ![vpsimple](./docs/vpstatic/images/demo.png)
 
+[→→→ 查看快速入门视频教程](https://www.bilibili.com/video/BV1ki421y7uV/#reply219109211424)
+
 # 功能特性
 * 基于wails2+vite+vue3+typescript开发
 * 基于Webview2的轻量客户端程序
@@ -52,7 +54,7 @@
 ```bash
 # 进入到项目根目录，注意不是原目录
 npm install
-npm run dosc:dev
+npm run docs:dev
 ```
 执行完上述命令后即可运行vitepress测试，
 默认地址是：http://localhost:5173 ,
@@ -83,13 +85,18 @@ git clone https://github.com/zhangdi168/VitePressSimple --depth=1
 ### 构建前端代码
 
 ```bash
-npm install --prefix ./frontend
+cd ./frontend
+npm install 
 ```
 
 ### 编译运行开发版本
 
 ```bash
+# 在线预览
 wails dev
+
+# 构建
+wails build
 ```
 
 
@@ -100,5 +107,6 @@ wails dev
 
 该项目完全免费，如果对你有所帮助，可以请作者喝杯咖啡 ☕️
 
+作者微信：bcxiaod
 
 

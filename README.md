@@ -16,6 +16,8 @@
 
 ![vpsimple](./docs/vpstatic/images/demo.png)
 
+[→→→ Quick Start Video Tutorial：](https://www.bilibili.com/video/BV1ki421y7uV/#reply219109211424)
+
 # Features
 * Developed based on wails2+vite+vue3+typescript
 * Lightweight client program based on Webview2
@@ -38,6 +40,7 @@ Free download for Mac and Windows installation packages:
 View the complete document：[Chinese Documentation](http://vpsimple.xiaod.co/zh) |
 [English Documentation](http://vpsimple.xiaod.co/en)
 
+
 Below is an example VitePress project for easy exploration:
 ## Create VitePress project
 ![Create VitePress project](./docs/vpstatic/images/20240416/9323bce8-7c90-439d-9b1b-49aec08211ea.png)
@@ -53,7 +56,7 @@ After the creation is completed, you can **click the folder icon to enter the pr
 ```bash
 # Go to the project root directory, not the original directory
 npm install
-npm run dosc:dev
+npm run docs:dev
 ```
 After executing the above command, VitePress can be tested to run. The default address is: http://localhost:5173. Modifying the document content or configuration in vpsimple will automatically update.
 
@@ -84,16 +87,23 @@ git clone https://github.com/zhangdi168/VitePressSimple --depth=1
 ### Build the Frontend Code
 
 ```bash
-npm install --prefix ./frontend
+cd ./frontend
+npm install 
 ```
 
 ### Compile and Run the Development Version
 
 ```bash
+# preview
 wails dev
+
+# build
+wails build
 ```
 
 ### About the Author
 [Author's Personal Website: http://xiaod.co/](http://xiaod.co/)
+
+Author's Wechat:bcxiaod
 
 This project is completely free. If it has been helpful to you, you can buy the author a coffee ☕️.

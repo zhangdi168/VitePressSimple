@@ -15,7 +15,7 @@ func TestAutoUpdate(t *testing.T) {
 	autoupdate.SetUpdateConfig(autoupdate.UpdateConfig{
 		AppName:                     setting.AppName,
 		CurrVersion:                 setting.Version,
-		GitType:                     autoupdate.GitTypeGitee,
+		GitType:                     autoupdate.GitTypeGithub,
 		GitOwner:                    setting.GitAuthor,
 		GitRepo:                     setting.GitRepo,
 		WindowReleaseNameContainStr: setting.WindowZipContainStr,

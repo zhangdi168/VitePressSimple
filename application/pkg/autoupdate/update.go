@@ -35,7 +35,7 @@ func getGithubRepoReleasesInfo() *ReleaseInfo {
 	//repo := "GoEasyDesigner" // GitHub 仓库的名称
 	//https://api.github.com/repos/duolabmeng6/projection_screen_tv/releases
 	var urls []string
-	_url := fmt.Sprintf("https://api.github.com/repos/%s/%s/releases", UpdateCfg.CurrVersion, UpdateCfg.GitRepo)
+	_url := fmt.Sprintf("https://api.github.com/repos/%s/%s/releases", UpdateCfg.GitOwner, UpdateCfg.GitRepo)
 	urls = append(urls, _url)
 	_url = fmt.Sprintf("https://go.kenhong.com/releases_latest.json")
 	urls = append(urls, _url)

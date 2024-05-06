@@ -16,7 +16,7 @@
 
 ![vpsimple](./docs/vpstatic/images/demo.png)
 
-[→→→ Quick Start Video Tutorial：](https://www.bilibili.com/video/BV1ki421y7uV/#reply219109211424)
+[→→→ Quick Start Video Tutorial](https://www.bilibili.com/video/BV1ki421y7uV/#reply219109211424)
 
 # Features
 * Developed based on wails2+vite+vue3+typescript

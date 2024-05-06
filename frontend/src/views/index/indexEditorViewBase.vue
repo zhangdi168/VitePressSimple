@@ -91,7 +91,7 @@
 
   <div class="mt-3">
     <dy-add-head
-      v-model:arrayObject="storeIndex.currArticleFrontMatter['head']"
+      v-model:meta="storeIndex.currArticleFrontMatter['head']"
       ref="refDyAddHead"
       add-btn-text="新增meta"
       add-btn-class="bg-blue-500 text-white hover:bg-blue-600"

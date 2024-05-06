@@ -28,11 +28,15 @@
             },
             {
                 "text": "github",
-                "link": "https://github.com/zhangdi168/VitePressSimple"
+                "link": "https://github.com/zhangdi168/VitePressSimple/releases"
             },
             {
                 "text": "gitee",
                 "link": "https://gitee.com/zhangdi168/VitePressSimple"
+            },
+            {
+                "text": "Video Tutorial",
+                "link": "https://www.bilibili.com/video/BV1ki421y7uV/#reply219109211424"
             }
         ],
         "head": [],

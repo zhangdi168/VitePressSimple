@@ -24,15 +24,19 @@
         "actions": [
             {
                 "text": "指南",
-                "link": "/zh/使用手册/1.关于软件"
+                "link": "/en/使用手册/1.关于软件"
             },
             {
                 "text": "github",
-                "link": "https://github.com/zhangdi168/VitePressSimple"
+                "link": "https://github.com/zhangdi168/VitePressSimple/releases"
             },
             {
                 "text": "gitee",
-                "link": "https://gitee.com/zhangdi168/VitePressSimple"
+                "link": "https://gitee.com/zhangdi168/VitePressSimple/releases"
+            },
+            {
+                "text": "视频教程",
+                "link": "https://www.bilibili.com/video/BV1ki421y7uV/#reply219109211424"
             }
         ],
         "head": [],
@@ -67,6 +71,22 @@
     "outline": [
         1,
         "2"
+    ],
+    "head": [
+        [
+            "meta",
+            {
+                "name": "qq",
+                "content": "ee"
+            }
+        ],
+        [
+            "meta",
+            {
+                "name": "ee",
+                "content": "rr"
+            }
+        ]
     ]
 }
 ---

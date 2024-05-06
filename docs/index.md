@@ -67,28 +67,24 @@
     "outline": [
         1,
         "2"
+    ],
+    "head": [
+        [
+            "meta",
+            {
+                "name": "11",
+                "content": "22"
+            }
+        ],
+        [
+            "meta",
+            {
+                "name": "22",
+                "content": "33"
+            }
+        ]
     ]
 }
 ---
-<style>
-:root { 
-  --vp-home-hero-name-color: transparent;
-  --vp-home-hero-name-background: -webkit-linear-gradient(120deg, #bd34fe 30%, #41d1ff);
 
-  --vp-home-hero-image-background-image: linear-gradient(-45deg, #bd34fe 20%, #47caff 20%);
-  --vp-home-hero-image-filter: blur(44px);
-}
 
-@media (min-width: 640px) {
-  :root {
-    --vp-home-hero-image-filter: blur(56px);
-  }
-}
-
-@media (min-width: 960px) {
-  :root {
-    --vp-home-hero-image-filter: blur(68px);
-  }
-}
-</style>
-![f95179b2010e4f1e9d347a2428d551a6.png](/vpstatic/images/20240413/f95179b2-010e-4f1e-9d34-7a2428d551a6.png)

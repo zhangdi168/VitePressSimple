@@ -22,6 +22,7 @@
     >
       <div class="mt-1 px-1 w-2/5">
         <a-input
+          @blur="inputsConvertObject"
           class="w-full"
           v-model:value="inputs[index].key"
           :placeholder="props.keyPlaceholder"
@@ -29,6 +30,7 @@
       </div>
       <div class="mt-1 px-1 w-2/5">
         <a-textarea
+          @blur="inputsConvertObject"
           class="w-full"
           :auto-size="{ minRows: 1 }"
           v-model:value="inputs[index].value"
@@ -68,21 +70,35 @@ import { onMounted, ref, watch } from "vue";
 import { IconPark } from "@icon-park/vue-next/es/all";
 import { IsEmptyValue } from "@/utils/utils";
 
+enum DataType {
+  Array = "Array",
+  Object = "Object",
+  Objects = "Objects",
+  Meta = "Meta",
+}
+
 //双向绑定的数据
 const arr = defineModel<Array<any>>("arr");
 const obj = defineModel<any>("obj");
 const objs = defineModel<any>("objs");
-const arrayObject = defineModel<any>("arrayObject");
+const meta = defineModel<any>("meta");
 
 const inputs = ref<InputItem[]>([]);
-watch(inputs.value, (newVal, oVal) => {
+//当外部值变化时 自动转换为inputs值
+watch(objs, (newVal, oVal) => {
+  setObjsValue(newVal);
+});
+
+//输入框市区焦点时自动覆盖保存
+const inputsConvertObject = () => {
+  console.log("inputsConvertObject -- console.log");
   arr.value = getArray(); //[{key:inpu1,value:val1},{}]
   obj.value = getObject(); //{propName1:vale1,propName2:value2}
   objs.value = getObjects(); // [{propName1:val1,propName2:val1},{}]
 
   //数组第一个值是outKeyName,第二个值是Object。很奇葩的格式。。。
-  arrayObject.value = getArrayObject(); //[outKeyName, {keyName1:input1,keyName2:input2}]
-});
+  meta.value = getMeta(); //[outKeyName, {keyName1:input1,keyName2:input2}]
+};
 
 export interface dyAddKvProps {
   keyPlaceholder: string;
@@ -95,12 +111,18 @@ export interface dyAddKvProps {
   valueName?: string; //值名 默认为value
   removeConfirm?: boolean; //是否需要确认删除
   removeConfirmText?: string; //确认删除文本
+  dataType?: DataType;
 }
 
 const props = defineProps<dyAddKvProps>();
 const emits = defineEmits(["removeItem"]);
 
 onMounted(() => {
+  parseParamModel();
+});
+
+//解析props.defaultValue
+const parseParamModel = () => {
   //判断props.defaultValue是数组还是对象
   if (arr.value) {
     setArrayValue(arr.value);
@@ -111,8 +133,10 @@ onMounted(() => {
   } else if (obj.value) {
     // console.log(obj.value, "obj.value -- console.log");
     setObjValue(obj.value);
+  } else if (meta.value) {
+    setMeta(meta.value);
   }
-});
+};
 
 interface InputItem {
   key: string;
@@ -122,6 +146,7 @@ interface InputItem {
 //传入一个objs数组 转换并设置inputs的值
 const setArrayValue = (arrData: any[]) => {
   if (IsEmptyValue(arrData)) return;
+  inputs.value = [];
   //遍历数组 依次将defaultValue的props.keyName和 props.valueName赋值给inuts
   for (let i = 0; i < arrData.length; i++) {
     let item: any = {};
@@ -133,6 +158,7 @@ const setArrayValue = (arrData: any[]) => {
 //设置对象数组
 const setObjsValue = (arrData: any[]) => {
   if (IsEmptyValue(arrData)) return;
+  inputs.value = [];
   //遍历数组 依次将defaultValue的props.keyName和 props.valueName赋值给inuts
   for (let i = 0; i < arrData.length; i++) {
     inputs.value.push({
@@ -145,7 +171,7 @@ const setObjsValue = (arrData: any[]) => {
 //设置对象
 const setObjValue = (obj_: any) => {
   if (IsEmptyValue(obj_)) return;
-
+  inputs.value = [];
   //遍历对象 依次将key 赋值key和value
   for (const key in obj_) {
     if (obj_ && obj_ && key in obj_) {
@@ -157,6 +183,19 @@ const setObjValue = (obj_: any) => {
       inputs.value.push({
         key: key,
         value: "",
+      });
+    }
+  }
+};
+const setMeta = (arrData: any[]) => {
+  if (IsEmptyValue(arrData)) return;
+  inputs.value = [];
+  //遍历数组 依次将defaultValue的props.keyName和 props.valueName赋值给inuts
+  for (let i = 0; i < arrData.length; i++) {
+    if (arrData[i][0] === "meta") {
+      inputs.value.push({
+        key: arrData[i][1][props.keyName ?? "key"],
+        value: arrData[i][1][props.valueName ?? "value"],
       });
     }
   }
@@ -216,7 +255,7 @@ const getObjects = () => {
   return result;
 };
 
-const getArrayObject = () => {
+const getMeta = () => {
   let keyName = props.keyName || "key";
   let valueName = props.valueName || "value";
   let result = [];

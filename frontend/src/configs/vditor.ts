@@ -4,12 +4,14 @@ import {
 } from "@/constant/keys/config";
 import { ConfigGet } from "../../wailsjs/go/system/SystemService";
 import { VditorCdnZstatic } from "@/constant/enums/cdn";
+import { useVpconfigStore } from "@/store/vpconfig";
 
 export const getDefaultVtitorOptions = async (): Promise<IOptions> => {
   let port = await ConfigGet(ConfigKeySysStaticServerPort);
   port = port == "" ? "9874" : port;
   let cdn = await ConfigGet(ConfigKeyVditorCdn);
   if (cdn == "") cdn = VditorCdnZstatic;
+  const storeVpConfig = useVpconfigStore();
   const uploadUrl = `http://localhost:${port}/upload_image`;
   return {
     // cdn: "https://fastly.jsdelivr.net/npm/",
@@ -111,6 +113,9 @@ export const getDefaultVtitorOptions = async (): Promise<IOptions> => {
       max: 1024 * 1024 * 5,
       fieldName: "image",
       multiple: false, // 是否允许批量上传
+      // extraData: {
+      //   srcDir: storeVpConfig.srcDir, //把原目录（相对路径）传给后端
+      // },
       // withCredentials: true,
       // headers: {
       //   "Content-Type": "multipart/form-data",

@@ -70,7 +70,7 @@
 
     <sim-input
       v-model="storeConfig.configData['srcDir']"
-      tooltip="markdown 页面的目录，相对于项目根目录"
+      tooltip="markdown文档目录,为了保证图片资源正常访问，请在项目创建时就确定好，不要随意更换"
       label="文档路径"
     ></sim-input>
 

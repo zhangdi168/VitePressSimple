@@ -1,5 +1,6 @@
 // 定义辅助工具函数
 import { useIndexStore } from "@/store";
+import { useVpconfigStore } from "@/store/vpconfig";
 
 export function escapeRegExp(str: string): string {
   return str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); // 转义正则特殊字符
@@ -10,7 +11,7 @@ export function replaceImageUrlToLocalStatic(markdownText: string): string {
   const vpstatic = getReplaceVpstaticValue();
   const originalBaseUrl = getReplaceStaticBaseUrl();
 
-  const regex = new RegExp(escapeRegExp(originalBaseUrl) + "(images/.*)", "g");
+  // const regex = new RegExp(escapeRegExp(originalBaseUrl) + "(images/.*)", "g");
 
   // return markdownText.replaceAll(regex, vpstatic + "$1");
   return markdownText.replaceAll(originalBaseUrl, vpstatic);
@@ -31,7 +32,16 @@ export function replaceLocalStaticToImageUrl(markdownText: string): string {
 
 const getReplaceVpstaticValue = () => {
   const storeIndex = useIndexStore();
-  const vpstatic = "](/" + storeIndex.staticBaseDir + "/";
+  const storeVpConfig = useVpconfigStore();
+  let vpstatic = "";
+  if (storeVpConfig.srcDir == "./") {
+    //原目录在项目根目录
+    vpstatic = "](/" + storeIndex.staticBaseDir + "/";
+  } else {
+    //原目录不在项目根目录 如./docs
+    vpstatic = "](/../" + storeIndex.staticBaseDir + "/";
+  }
+
   return vpstatic;
 };
 

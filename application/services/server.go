@@ -143,6 +143,8 @@ func (s *StaticServer) handleImageUpload(w http.ResponseWriter, r *http.Request)
 
 	// 创建一个multipart解析器
 	r.ParseMultipartForm(maxFileSize)
+	//var srcDir string = r.FormValue("srcDir")
+	//srcDirIsRootDir := utils.IfToBool(srcDir == "./", true, false)
 
 	file, header, err := r.FormFile("image")
 	if err != nil {

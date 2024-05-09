@@ -13,7 +13,7 @@ func InitDefaultConfig() {
 	cfg.SetDefault(keys.ConfigKeySysUpdateSource, "github")
 	cfg.SetDefault(keys.ConfigKeyHistoryProject, "[]")
 	cfg.SetDefault(keys.ConfigKeyLayoutNavBgColor, "#ebebeb")
-	cfg.SetDefault(keys.ConfigKeyChangeAutoSave, "yes")
+	cfg.SetDefault(keys.ConfigKeyChangeAutoSave, "no")
 	cfg.SetDefault(keys.ConfigKeyFrontMatterSaveType, "json")
 
 	//项目静态资源服务器的端口

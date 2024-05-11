@@ -13,7 +13,7 @@
       storeIndex.currArticlePath == ''
     "
   >
-    <a-empty description="未选择文章" />
+    <a-empty :description="lang('pageIndex.noSelectedArticle')" />
   </div>
 </template>
 <script lang="ts" setup>
@@ -25,6 +25,7 @@ import { getDefaultVtitorOptions } from "@/configs/vditor";
 import { isEmptyArray } from "@/utils/array";
 import CreateProjectPopup from "@/views/project/createProjectPopup.vue";
 import EmptyProject from "@/components/emptyProject.vue";
+import { lang } from "@/utils/language";
 
 const title = ref("");
 

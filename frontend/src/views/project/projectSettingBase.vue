@@ -6,7 +6,7 @@
         <a-input
           disabled
           v-model:value="storeConfig.configData['themeConfig']['logo']"
-          placeholder="主页图片的链接"
+          :placeholder="lang('pageProject.settingBase.placeholders.logoUrl')"
           class="w-full"
         >
         </a-input>
@@ -14,43 +14,45 @@
 
       <div class="mx-2">
         <a-button class="bg-blue-200" @click="selectLogo">
-          <q-tooltip anchor="bottom left" self="bottom right"
-            >logo图片默认存放于./images/{logo}
+          <q-tooltip anchor="bottom left" self="bottom right">
+            {{ lang("pageProject.settingBase.logoSavePath") }}
           </q-tooltip>
-          选择站点LOGO
+          {{ lang("pageProject.settingBase.selectLogo") }}
         </a-button>
       </div>
     </div>
 
     <sim-input
       v-model="storeConfig.configData['title']"
-      tooltip="即config.title 的标题"
-      placeholder="请输入站点标题"
-      label="页面标题"
+      :tooltip="lang('pageProject.settingBase.tooltips.pageTitle')"
+      :placeholder="lang('pageProject.settingBase.placeholders.pageTitle')"
+      :label="lang('pageProject.settingBase.labels.pageTitle')"
     ></sim-input>
     <sim-input
       v-model="storeConfig.configData['titleTemplate']"
-      tooltip="允许自定义每个页面的标题后缀或整个标题"
-      placeholder="请输入项目标题后缀"
-      label="标题后缀"
+      :tooltip="lang('pageProject.settingBase.tooltips.titleSuffix')"
+      :placeholder="lang('pageProject.settingBase.placeholders.titleSuffix')"
+      :label="lang('pageProject.settingBase.labels.titleSuffix')"
     ></sim-input>
     <sim-input
       v-model="storeConfig.configData['themeConfig']['outline']['level']"
-      tooltip="大纲显示级别"
-      placeholder="请输入大纲显示级别"
-      label="大纲显示级别"
+      :tooltip="lang('pageProject.settingBase.tooltips.outlineLevel')"
+      :placeholder="lang('pageProject.settingBase.placeholders.outlineLevel')"
+      :label="lang('pageProject.settingBase.labels.outlineLevel')"
     ></sim-input>
     <sim-input
       v-model="storeConfig.configData['lang']"
-      tooltip="站点的 lang 属性。这将呈现为页面 HTML 中的 <html lang='en-US'> 标签"
-      placeholder="请输入项目标题后缀"
-      label="html语言"
+      :tooltip="lang('pageProject.settingBase.tooltips.htmlLang')"
+      :placeholder="lang('pageProject.settingBase.placeholders.htmlLang')"
+      :label="lang('pageProject.settingBase.labels.htmlLang')"
     ></sim-input>
     <sim-input
       v-model="storeConfig.configData['description']"
-      tooltip="站点的描述。这将呈现为页面 HTML 中的 <meta> 标签"
-      placeholder="请输入站点的描述"
-      label="站点描述"
+      :tooltip="lang('pageProject.settingBase.tooltips.siteDescription')"
+      :placeholder="
+        lang('pageProject.settingBase.placeholders.siteDescription')
+      "
+      :label="lang('pageProject.settingBase.labels.siteDescription')"
     ></sim-input>
 
     <!--    切换日/夜间文字- -->
@@ -61,51 +63,51 @@
 
     <sim-switch
       v-model="storeConfig.configData['themeConfig']['externalLinkIcon']"
-      tooltip="是否在 markdown 中的外部链接旁显示外部链接图标"
-      placeholder="请输入项目标题后缀"
-      label="外部链接旁显示图标"
+      :tooltip="lang('pageProject.settingBase.tooltips.externalLinkIcon')"
+      :placeholder="lang('pageProject.settingBase.placeholders.titleSuffix')"
+      :label="lang('pageProject.settingBase.labels.externalLinkIcon')"
     ></sim-switch>
 
     <hr class="my-1 w-full" />
 
     <sim-input
       v-model="storeConfig.configData['srcDir']"
-      tooltip="markdown文档目录,为了保证图片资源正常访问，请在项目创建时就确定好，不要随意更换"
-      label="文档路径"
+      :tooltip="lang('pageProject.settingBase.tooltips.docPath')"
+      :label="lang('pageProject.settingBase.labels.docPath')"
     ></sim-input>
 
     <sim-input
       v-model="storeConfig.configData['base']"
-      tooltip="站点将部署到的base URL。如果计划在子路径页面下部署站点，则需要设置此项"
-      placeholder="baseUrl"
-      label="baseUrl"
+      :tooltip="lang('pageProject.settingBase.tooltips.baseUrl')"
+      :placeholder="lang('pageProject.settingBase.placeholders.baseUrl')"
+      :label="lang('pageProject.settingBase.labels.baseUrl')"
     ></sim-input>
 
     <sim-input
       v-model="storeConfig.configData['outDir']"
-      tooltip="项目的构建输出位置，相对于项目根目录"
-      label="构建路径"
+      :tooltip="lang('pageProject.settingBase.tooltips.buildPath')"
+      :label="lang('pageProject.settingBase.labels.buildPath')"
     ></sim-input>
     <sim-input
       v-model="storeConfig.configData['sitemap']['hostname']"
-      tooltip="为站点生成 sitemap.xml 文件时用到"
-      label="hostname"
+      :tooltip="lang('pageProject.settingBase.tooltips.hostname')"
+      :label="lang('pageProject.settingBase.labels.hostname')"
     ></sim-input>
 
     <sim-input
       v-model="storeConfig.configData['assetsDir']"
-      tooltip="指定放置生成的静态资源的目录。该路径应位于构建路径内，并相对于它进行解析。"
-      label="生成静态目录"
+      :tooltip="lang('pageProject.settingBase.tooltips.staticAssets')"
+      :label="lang('pageProject.settingBase.labels.staticAssets')"
     ></sim-input>
 
     <sim-input
       v-model="storeConfig.configData['cacheDir']"
-      tooltip="缓存文件的目录，相对于项目根目录。"
-      label="缓存路径"
+      :tooltip="lang('pageProject.settingBase.tooltips.cachePath')"
+      :label="lang('pageProject.settingBase.labels.staticAssets')"
     ></sim-input>
     <sim-switch
-      v-model="storeConfig.configData['cleanUrls']"
-      tooltip="当设置为 true 时，VitePress 将从 URL 中删除 .html 后缀"
+      v-model="storeConfig.configData['cachePath']"
+      :tooltip="lang('pageProject.settingBase.tooltips.cleanUrls')"
       label="cleanUrls"
     ></sim-switch>
     <!--    <sim-switch-->
@@ -126,7 +128,7 @@
         theme="outline"
         type="save"
       />
-      保存配置
+      {{ lang("common.saveConfig") }}
     </a-button>
   </div>
 </template>
@@ -137,7 +139,6 @@ import SimSwitch from "@/components/simSwitch.vue";
 import {
   CopyPath,
   GetPathExt,
-  GetPathFileName,
   PathJoin,
   SelectFile,
 } from "../../../wailsjs/go/system/SystemService";
@@ -145,6 +146,7 @@ import { ToastCheck, ToastError } from "@/utils/Toast";
 import { useIndexStore } from "@/store";
 import { IconPark } from "@icon-park/vue-next/es/all";
 import { onBeforeMount, onMounted, ref } from "vue";
+import { lang } from "@/utils/language";
 
 const storeConfig = useVpconfigStore();
 const storeIndex = useIndexStore();

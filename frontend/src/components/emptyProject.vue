@@ -1,11 +1,11 @@
 <template>
   <div style="margin-top: 28vh" v-show="storeIndex.IsEmptyProject">
-    <a-empty description="没有正在打开项目，先创建或者打开一个项目吧">
+    <a-empty :description="lang('common.noOpenProject')">
       <a-button @click="createProject" class="bg-green-300" type="default"
-        >新建项目
+        >{{ lang("indexPage.newProject") }}
       </a-button>
       <a-button @click="openProject" class="ml-4 bg-green-200" type="default"
-        >打开项目
+        >{{ lang("indexPage.openProject") }}
       </a-button>
     </a-empty>
   </div>
@@ -22,6 +22,8 @@ import { useIndexStore } from "@/store";
 import CreateProjectPopup from "@/views/project/createProjectPopup.vue";
 import { ref } from "vue";
 import OpenProjectPopup from "@/views/project/openProjectPopup.vue";
+import { lang } from "../utils/language";
+
 const storeIndex = useIndexStore();
 //创建新项目
 const refCreateNewProject = ref();

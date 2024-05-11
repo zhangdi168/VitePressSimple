@@ -1,23 +1,23 @@
 <template>
   <div>
     <div class="flex justify-start items-center">
-      <div class="ml-1">页面类型:</div>
+      <div class="ml-1">{{ lang("pageIndex.pageType") }}</div>
 
       <q-radio
         v-model="storeIndex.currArticleFrontMatter['layout']"
         val="doc"
-        label="doc文档"
+        :label="lang('pageIndex.pageTypeDoc')"
       />
       <q-radio
         v-model="storeIndex.currArticleFrontMatter['layout']"
         val="home"
-        label="home主页"
+        :label="lang('pageIndex.pageTypeHome')"
       />
       <q-radio
         v-model="storeIndex.currArticleFrontMatter['layout']"
         disable
         val="page"
-        label="page"
+        :label="lang('pageIndex.pageTypeCustom')"
       />
     </div>
 
@@ -28,25 +28,25 @@
       <div class="px-1 mb-2">
         <a-input
           v-model:value="storeIndex.currArticleFrontMatter['hero']['name']"
-          placeholder="请输入名称"
+          :placeholder="lang('pageIndex.hero.name')"
           prefix=""
-          suffix="名称"
+          :suffix="lang('pageIndex.hero.name')"
         />
       </div>
       <div class="px-1 mb-2">
         <a-input
           v-model:value="storeIndex.currArticleFrontMatter['hero']['text']"
-          placeholder="请输入简介"
+          :placeholder="lang('pageIndex.hero.text')"
           prefix=""
-          suffix="简介"
+          :suffix="lang('pageIndex.hero.text')"
         />
       </div>
       <div class="px-1 mb-2">
         <a-input
           v-model:value="storeIndex.currArticleFrontMatter['hero']['tagline']"
-          placeholder="`text` 下方的标语"
+          :placeholder="lang('pageIndex.hero.taglineExtra')"
           prefix=""
-          suffix="标语"
+          :suffix="lang('pageIndex.hero.tagline')"
         />
       </div>
       <div class="my-3 flex justify-between">
@@ -56,7 +56,7 @@
             v-model:value="
               storeIndex.currArticleFrontMatter['hero']['image']['src']
             "
-            placeholder="主页图片的链接"
+            :placeholder="lang('pageIndex.hero.image.src')"
             class="w-full"
           >
           </a-input>
@@ -64,9 +64,9 @@
         <div class="mx-2">
           <a-button class="bg-blue-200" @click="selectLogo">
             <q-tooltip anchor="bottom left" self="bottom right"
-              >主页图片默认存放于./images/home/{文件名}
+              >{{ lang("pageIndex.hero.image.tips") }}
             </q-tooltip>
-            选择主页图片
+            {{ lang("pageIndex.hero.image.select") }}
           </a-button>
         </div>
       </div>
@@ -74,10 +74,10 @@
       <div>
         <dy-add-k-v
           v-model:objs="storeIndex.currArticleFrontMatter['hero']['actions']"
-          add-btn-text="添加主页按钮"
-          value-placeholder="跳转链接"
+          :add-btn-text="lang('pageIndex.hero.actions.addBtnText')"
+          :value-placeholder="lang('pageIndex.hero.actions.valuePlaceholder')"
           add-btn-class="bg-orange-200"
-          key-placeholder="文本"
+          :key-placeholder="lang('pageIndex.hero.actions.keyPlaceholder')"
           key-name="text"
           value-name="link"
         ></dy-add-k-v>
@@ -86,10 +86,10 @@
       <div>
         <dy-add-k-v
           v-model:objs="storeIndex.currArticleFrontMatter['features']"
-          add-btn-text="添加features"
-          value-placeholder="功能详情"
+          :add-btn-text="lang('pageIndex.hero.features.addBtnText')"
+          :value-placeholder="lang('pageIndex.hero.features.valuePlaceholder')"
           add-btn-class="bg-orange-200"
-          key-placeholder="功能标题"
+          :key-placeholder="lang('pageIndex.hero.features.keyPlaceholder')"
           key-name="title"
           value-name="details"
         ></dy-add-k-v>
@@ -113,6 +113,7 @@ import { ToastCheck, ToastError } from "@/utils/Toast";
 import { useVpconfigStore } from "@/store/vpconfig";
 import { defaultFrontMatter } from "@/configs/defaultFrontMatter";
 import { IsEmptyValue } from "@/utils/utils";
+import { lang } from "../../utils/language";
 
 const storeIndex = useIndexStore();
 const storeVpConfig = useVpconfigStore();

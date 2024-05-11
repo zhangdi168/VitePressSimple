@@ -17,20 +17,20 @@
           <template #overlay>
             <a-menu>
               <a-menu-item @click="createProject()">
-                <a href="javascript:;">新建项目</a>
+                <a href="javascript:;">{{ lang("pageIndex.newProject") }}</a>
               </a-menu-item>
               <a-menu-item @click="createFile()">
-                <a href="javascript:;">新建文章</a>
+                <a href="javascript:;">{{ lang("pageIndex.newArticle") }}</a>
               </a-menu-item>
               <a-menu-item @click="createDir()">
-                <a href="javascript:;">新建目录</a>
+                <a href="javascript:;">{{ lang("pageIndex.newDirectory") }}</a>
               </a-menu-item>
             </a-menu>
           </template>
         </a-dropdown>
       </div>
       <div class="mx-1 cursor-pointer" @click="openProject()">
-        <q-tooltip>打开现有项目</q-tooltip>
+        <q-tooltip>{{ lang("pageIndex.openExistingProject") }}</q-tooltip>
         <a class="ant-dropdown-link" @click.prevent>
           <icon-park
             :size="iconSize"
@@ -45,7 +45,7 @@
         class="mx-1 cursor-pointer"
         @click="OpenFileBrowser(storeVpConfig.baseDir)"
       >
-        <q-tooltip>在文件浏览器中打开</q-tooltip>
+        <q-tooltip>{{ lang("pageIndex.openInFileBrowser") }}</q-tooltip>
         <icon-park
           :size="iconSize"
           fill="#333"
@@ -56,7 +56,7 @@
         />
       </div>
       <div class="mx-1 cursor-pointer">
-        <q-tooltip>刷新目录树</q-tooltip>
+        <q-tooltip>{{ lang("pageIndex.refreshDirectoryTree") }}</q-tooltip>
         <icon-park
           :size="iconSize"
           fill="#333"
@@ -78,14 +78,14 @@
 
     <input-model
       ref="refModalCreateDir"
-      placeholder="请输入文件夹名称"
-      title="请输入文件夹名称"
+      :placeholder="lang('pageIndex.inputFolderName')"
+      :title="lang('pageIndex.inputFolderName')"
       @submit-input-modal="onSubmitInputModalCreateDir"
     ></input-model>
     <input-model
       ref="refModalCreateFile"
-      title="请输入文章标题"
-      placeholder="请输入文章名称,不带.md后缀"
+      :title="lang('pageIndex.inputArticleTitle')"
+      :placeholder="lang('pageIndex.inputArticleTitle')"
       @submit-input-modal="onSubmitInputModalCreateFile"
     ></input-model>
   </div>
@@ -105,6 +105,7 @@ import {
 import { ToastCheck } from "@/utils/Toast";
 import CreateProjectPopup from "@/views/project/createProjectPopup.vue";
 import OpenProjectPopup from "@/views/project/openProjectPopup.vue";
+import { lang } from "../../utils/language";
 
 const iconSize = ref(24);
 const storeIndex = useIndexStore();
@@ -118,7 +119,8 @@ const createDir = () => {
 const onSubmitInputModalCreateDir = async (value: string) => {
   let fullDir = storeVpConfig.fullSrcDir + "/" + value;
   let res = await CreateDir(fullDir);
-  if (ToastCheck(res, "文件夹创建完成")) await storeIndex.loadTreeData();
+  if (ToastCheck(res, lang("pageIndex.folderCreated")))
+    await storeIndex.loadTreeData();
 };
 
 //弹出层回调 新建文件
@@ -129,7 +131,8 @@ const createFile = async () => {
 const onSubmitInputModalCreateFile = async (value: string) => {
   let fullFile = storeVpConfig.fullSrcDir + "/" + value + ".md";
   let res = await CreateFile(fullFile);
-  if (ToastCheck(res, "文件创建完成")) await storeIndex.loadTreeData();
+  if (ToastCheck(res, lang("pageIndex.articleCreated")))
+    await storeIndex.loadTreeData();
 };
 
 //新建项目

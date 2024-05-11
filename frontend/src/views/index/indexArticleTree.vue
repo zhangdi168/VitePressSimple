@@ -21,7 +21,10 @@
               v-close-popup
             >
               <q-item-section>
-                <menu-item title="新建文章" icon="newlybuild"></menu-item>
+                <menu-item
+                  :title="lang('pageIndex.newArticle')"
+                  icon="newlybuild"
+                ></menu-item>
               </q-item-section>
             </q-item>
             <q-separator />
@@ -31,7 +34,10 @@
               clickable
               v-close-popup
             >
-              <menu-item title="新建目录" icon="folder-plus"></menu-item>
+              <menu-item
+                :title="lang('pageIndex.newDirectory')"
+                icon="folder-plus"
+              ></menu-item>
             </q-item>
             <q-separator />
             <q-item
@@ -39,11 +45,17 @@
               @click="showPopRename(title, treeKey)"
               v-close-popup
             >
-              <menu-item title="重命名" icon="file-editing"></menu-item>
+              <menu-item
+                :title="lang('pageIndex.rename')"
+                icon="file-editing"
+              ></menu-item>
             </q-item>
             <q-separator />
             <q-item clickable @click="copyPath(treeKey)" v-close-popup>
-              <menu-item title="复制" icon="copy-one"></menu-item>
+              <menu-item
+                :title="lang('pageIndex.copy')"
+                icon="copy-one"
+              ></menu-item>
             </q-item>
             <q-item
               v-if="title.endsWith('.md')"
@@ -51,7 +63,10 @@
               @click="copyRouter(treeKey)"
               v-close-popup
             >
-              <menu-item title="复制路由" icon="copy-link"></menu-item>
+              <menu-item
+                :title="lang('pageIndex.copyRoute')"
+                icon="copy-link"
+              ></menu-item>
             </q-item>
             <q-separator />
             <q-item
@@ -60,11 +75,17 @@
               @click="pastePath(treeKey)"
               v-close-popup
             >
-              <menu-item title="粘贴" icon="intersection"></menu-item>
+              <menu-item
+                :title="lang('pageIndex.paste')"
+                icon="intersection"
+              ></menu-item>
             </q-item>
             <q-separator />
             <q-item clickable @click="deletePath(treeKey)" v-close-popup>
-              <menu-item title="删除" icon="delete-five"></menu-item>
+              <menu-item
+                :title="lang('pageIndex.delete')"
+                icon="delete-five"
+              ></menu-item>
             </q-item>
           </q-list>
         </q-menu>
@@ -94,24 +115,24 @@
 
     <input-model
       ref="refModalCreate"
-      placeholder="请输入不带.md后缀的文章标题"
-      title="请输入文章标题"
+      :placeholder="lang('pageIndex.inputArticleTitleWithoutMdSuffix')"
+      :title="lang('pageIndex.inputArticleTitle')"
       @submit-input-modal="onSubmitInputModalCreateFile"
     ></input-model>
     <input-model
       ref="refModalCreateDir"
-      placeholder="请输入文件夹名称"
+      :placeholder="lang('pageIndex.inputFolderName')"
       @submit-input-modal="onSubmitInputModalCreateDir"
     ></input-model>
     <input-model
       ref="refModalRename"
-      placeholder="请输入新名称"
+      :placeholder="lang('pageIndex.inputNewName')"
       @submit-input-modal="onSubmitInputModalRename"
     ></input-model>
     <input-model
       ref="refPasteName"
-      title="请确认新路径"
-      placeholder="请确认或修改新路径"
+      :title="lang('pageIndex.confirmNewPath')"
+      :placeholder="lang('pageIndex.confirmOrModifyNewPath')"
       @submit-input-modal="onSubmitInputModalPasteName"
     ></input-model>
   </div>
@@ -157,6 +178,7 @@ import { IsEmptyValue } from "@/utils/utils";
 import MenuItem from "@/components/menuItem.vue";
 import { ConfigKeyChangeAutoSave } from "@/constant/keys/config";
 import { replaceLocalStaticToImageUrl } from "@/utils/repalceStatic";
+import { lang } from "@/utils/language";
 
 const storeIndex = useIndexStore();
 const moreIconShownKeys = ref<string[]>([]);
@@ -178,16 +200,16 @@ const onDrop = (info: AntTreeNodeDropEvent) => {
 
 const deletePath = (key: string) => {
   Modal.confirm({
-    content: "确定删除么？ " + key,
+    content: lang("common.confirm") + key,
     okType: "danger",
-    okText: "确定删除",
+    okText: lang("common.confirmDelete"),
     icon: createVNode(ExclamationCircleOutlined),
     onOk() {
       DeletePath(key).then((res: string) => {
         if (res != "") {
           ToastError(res);
         } else {
-          ToastInfo(key + "：删除成功");
+          ToastInfo(key + lang("common.deleteSuccess"));
           //更新当前文件
 
           if (storeIndex.currArticlePath == key) {
@@ -197,7 +219,7 @@ const deletePath = (key: string) => {
         }
       });
     },
-    cancelText: "取消",
+    cancelText: lang("common.cancel"),
     onCancel() {
       Modal.destroyAll();
     },
@@ -206,13 +228,13 @@ const deletePath = (key: string) => {
 //复制一个路径
 const copyPath = (path: string) => {
   storeIndex.currCopyPath = path;
-  ToastInfo("路径：‘" + path + "’已经复制");
+  ToastInfo(lang("pageIndex.path") + path + lang("pageIndex.copied"));
 };
 //粘贴路径
 const refPasteName = ref();
 const pastePath = async (baseDir: string) => {
   if (storeIndex.currCopyPath == "") {
-    ToastError("没有复制路径");
+    ToastError(lang("pageIndex.noCopyPath"));
     return;
   }
   let oldName = await GetPathFileName(storeIndex.currCopyPath);
@@ -224,11 +246,15 @@ const onSubmitInputModalPasteName = async (fullPath: string) => {
   let isExists = await PathExists(fullPath);
   let isDir = !fullPath.endsWith(".md");
   if (isExists) {
-    ToastError(`${isDir ? "目录" : "文章"}路径已存在：${fullPath}`);
+    ToastError(
+      `${isDir ? lang("pageIndex.directory") : lang("pageIndex.article")}${lang(
+        "pageIndex.pathExists",
+      )}${fullPath}`,
+    );
     return;
   }
   let res = await CopyPath(storeIndex.currCopyPath, fullPath, isDir);
-  if (ToastCheck(res, "已成功复制")) {
+  if (ToastCheck(res, lang("pageIndex.copiedSuccess"))) {
     storeIndex.currCopyPath = "";
     await storeIndex.loadTreeData();
   }

@@ -13,7 +13,7 @@
         theme="outline"
         type="page-template"
       />
-      使用示例vue代码
+      {{ lang("pageIndex.useExampleVueCode") }}
     </a-button>
   </div>
 
@@ -38,6 +38,7 @@ import type { CmComponentRef } from "codemirror-editor-vue3";
 import type { Editor, EditorConfiguration } from "codemirror";
 import { useIndexStore } from "../../store";
 import { IconPark } from "@icon-park/vue-next/es/all";
+import { lang } from "../../utils/language";
 
 const storeIndex = useIndexStore();
 const code = ref<string>(

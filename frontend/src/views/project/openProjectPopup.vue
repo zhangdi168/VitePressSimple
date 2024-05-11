@@ -6,7 +6,7 @@
       :title="props.placeholder"
       centered
       okType="default"
-      ok-text="从目录中打开项目"
+      :ok-text="lang('pageProject.openProjectFromDirectory')"
       :ok-button-props="{
         class: 'bg-blue-300 text-black mt-4',
       }"
@@ -16,12 +16,14 @@
       <div class="mr-4 my-2">
         <a-alert
           closable
-          description="若项目不是由VPSimple创建，配置文件可能读取失败"
+          :description="lang('pageProject.errorProjectNotVPSimple')"
           type="success"
         />
       </div>
       <div class="flex justify-start items-center">
-        <span class="select-none text-h5">最近项目</span>
+        <span class="select-none text-h5">{{
+          lang("pageProject.recentProject")
+        }}</span>
       </div>
       <div class="mt-2">
         <!--        最近项目列表-->
@@ -33,7 +35,7 @@
                   <a-button
                     @click="openProject(item.title)"
                     class="bg-blue-500 text-white"
-                    >打开
+                    >{{ lang("common.open") }}
                   </a-button>
                 </template>
                 <a-list-item-meta>
@@ -63,9 +65,10 @@ import { HistoryProject } from "@/utils/historyProject";
 import { useIndexStore } from "@/store";
 import { useHistoryStore } from "@/store/history";
 import { ToastError, ToastInfo, ToastSuccess } from "@/utils/Toast";
+import { lang } from "@/utils/language";
 
 const OpenDir = () => {
-  SelectDir("请选择项目存放目录").then((res: string) => {
+  SelectDir(lang("pageProject.errorProjectRootEmpty")).then((res: string) => {
     if (res != "") {
       openProject(res);
     }

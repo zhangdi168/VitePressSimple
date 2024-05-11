@@ -16,9 +16,9 @@
         theme="outline"
         type="copy-one"
       />
-      拷贝
+      {{ lang("pageNav.copy") }}
       <span class="text-red">{{ storeConfig.currSettingLang }}</span>
-      导航数据到剪贴板
+      {{ lang("pageNav.clipboard") }}
     </a-button>
     <a-button
       v-if="storeConfig.IsUseI18n"
@@ -26,15 +26,15 @@
       :disabled="!copyNavData"
       @click="cuttingNav()"
     >
-      <q-tooltip>粘贴剪切板中导航数据【覆盖】当前语言导航</q-tooltip>
+      <q-tooltip> {{ lang("pageNav.coverCurrentNav") }}</q-tooltip>
       <icon-park
         class="mr-1"
         strokeLinejoin="bevel"
         theme="outline"
         type="cutting-one"
       />
-      粘贴<span class="text-red">{{ copyNavLang }}</span
-      >到当前导航
+      {{ lang("pageNav.paste") }}<span class="text-red">{{ copyNavLang }}</span
+      >{{ lang("pageNav.toCurrentNav") }}
     </a-button>
     <!--    保存导航-->
     <div class="flex justify-end">
@@ -48,7 +48,7 @@
           theme="outline"
           type="add-one"
         />
-        新增顶级导航
+        {{ lang("pageNav.addTopNav") }}
       </a-button>
 
       <a-button
@@ -61,7 +61,7 @@
           theme="outline"
           type="save"
         />
-        保存当前导航
+        {{ lang("pageNav.saveCurrentNav") }}
       </a-button>
     </div>
   </div>
@@ -86,6 +86,7 @@ import SelectSettingLang from "@/components/selectSettingLang.vue";
 import { DeepClone } from "@/utils/deepClone";
 import EmptyProject from "@/components/emptyProject.vue";
 import { useIndexStore } from "@/store";
+import { lang } from "../../utils/language";
 
 const storeConfig = useVpconfigStore();
 const storeIndex = useIndexStore();

@@ -3,11 +3,17 @@
     class="flex items-center justify-between pr-5"
     v-show="!storeIndex.IsEmptyProject"
   >
-    <div class="text-gray-400 ml-1.5">当前项目:{{ storeConfig.baseDir }}</div>
+    <div class="text-gray-400 ml-1.5">
+      {{ lang("pageIndex.currentProject") }}{{ storeConfig.baseDir }}
+    </div>
     <div class="flex items-center justify-end">
       <a-tooltip class="mx-1 cursor-pointer">
         <template #title
-          >{{ storeLayout.showEditorView ? "隐藏" : "显示" }}页面属性编辑栏
+          >{{
+            storeLayout.showEditorView
+              ? lang("common.hide")
+              : lang("common.show")
+          }}{{ lang("pageIndex.pageProperties") }}
         </template>
         <icon-park
           class="select-none"
@@ -35,7 +41,7 @@
         class="mx-1 cursor-pointer"
         @click="storeIndex.saveCurrArticle()"
       >
-        <template #title>保存 ctrl+s</template>
+        <template #title>{{ lang("common.saveWithKey") }}</template>
         <icon-park
           :size="storeLayout.editorToolIconSize"
           fill="#493c3c"
@@ -52,6 +58,7 @@ import { IconPark } from "@icon-park/vue-next/es/all";
 import { useIndexStore } from "@/store";
 import { useLayoutStore } from "@/store/layout";
 import { useVpconfigStore } from "@/store/vpconfig";
+import { lang } from "../../utils/language";
 
 const storeIndex = useIndexStore();
 const storeConfig = useVpconfigStore();

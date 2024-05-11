@@ -5,13 +5,13 @@
   <div v-if="storeIndex.currArticlePath != ''" style="height: 100vh">
     <a-tabs v-model:activeKey="activeKey" class="my-0.5 pl-1" type="card">
       <!-- tab   seo相关配置-->
-      <a-tab-pane key="1" tab="基础">
+      <a-tab-pane key="1" :tab="lang('common.base')">
         <index-editor-view-base></index-editor-view-base>
       </a-tab-pane>
-      <a-tab-pane key="2" tab="主页">
+      <a-tab-pane key="2" :tab="lang('common.home')">
         <index-editor-view-hero></index-editor-view-hero>
       </a-tab-pane>
-      <a-tab-pane key="4" tab="代码">
+      <a-tab-pane key="4" :tab="lang('common.code')">
         <div class="ml-1">
           <index-editor-view-vue></index-editor-view-vue>
         </div>
@@ -32,6 +32,7 @@ import { useIndexStore } from "../../store";
 import { useLayoutStore } from "@/store/layout";
 import IndexEditorViewBase from "@/views/index/indexEditorViewBase.vue";
 import IndexEditorViewHero from "@/views/index/indexEditorViewHero.vue";
+import { lang } from "@/utils/language";
 
 const storeIndex = useIndexStore();
 const storeLayout = useLayoutStore();

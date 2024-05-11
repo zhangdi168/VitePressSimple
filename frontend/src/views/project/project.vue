@@ -24,17 +24,17 @@
           type="line"
           animated
         >
-          <a-tab-pane key="1-1" tab="基础设置">
+          <a-tab-pane key="1-1" :tab="lang('pageProject.settingBase.title')">
             <setting-base></setting-base>
           </a-tab-pane>
-          <a-tab-pane key="1-2" tab="多语言">
+          <a-tab-pane key="1-2" :tab="lang('pageProject.settingLang.title')">
             <setting-lang></setting-lang>
           </a-tab-pane>
-          <a-tab-pane key="1-3" tab="路由重写">
+          <a-tab-pane key="1-3" :tab="lang('pageProject.settingRewrite.title')">
             <dy-add-k-v
-              add-btn-text="添加路由重写规则"
-              key-placeholder="文件路径"
-              value-placeholder="路由路径"
+              :add-btn-text="lang('pageProject.settingRewrite.addRewriteRule')"
+              :key-placeholder="lang('pageProject.settingRewrite.filePath')"
+              :value-placeholder="lang('pageProject.settingRewrite.routePath')"
               v-model:obj="storeConfig.configData['rewrites']"
             ></dy-add-k-v>
             <hr class="my-2" />
@@ -49,14 +49,14 @@
                   theme="outline"
                   type="save"
                 />
-                保存配置
+                {{ lang("common.saveConfig") }}
               </a-button>
             </div>
           </a-tab-pane>
-          <a-tab-pane key="1-4" tab="社交帐户">
+          <a-tab-pane key="1-4" :tab="lang('pageProject.settingSocial.title')">
             <setting-social></setting-social>
           </a-tab-pane>
-          <a-tab-pane key="1-5" tab="搜索设置">
+          <a-tab-pane key="1-5" :tab="lang('pageProject.settingSearch.title')">
             <setting-search></setting-search>
           </a-tab-pane>
         </a-tabs>
@@ -77,6 +77,7 @@ import SettingSocial from "@/views/project/projectSettingSocial.vue";
 import { useIndexStore } from "@/store";
 import EmptyProject from "@/components/emptyProject.vue";
 import SettingSearch from "@/views/project/projectSettingSearch.vue";
+import { lang } from "@/utils/language";
 
 const activeKey1 = ref<string>("1");
 const activeKey2 = ref("1-1");

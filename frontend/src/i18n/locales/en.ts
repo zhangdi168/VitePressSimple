@@ -10,28 +10,5 @@ export const en = {
   languages: {
     en: "English",
     "zh-Hans": "简体中文",
-    fr: "Français",
-  },
-  topbar: {
-    minimise: "Minimise",
-    quit: "Quit",
-  },
-  homepage: {
-    welcome: "Welcome to use Wails program developed based on Vue",
-    "getting-started": "Getting Started",
-    "star-me": "Github",
-  },
-  aboutpage: {
-    title: "Wails Template Vue",
-    "project-repository": "Project Repository",
-    author: "Author",
-    misitebao: "Misitebao",
-    "wails-repository": "Wails Repository",
-    thanks: "Thank you all for your support🙏!",
-  },
-  global: {
-    "not-supported":
-      "Because it is a beta version, it can't be done for the time being, it will be completed later.",
-    "click-link": "The currently clicked link is: ",
   },
 };

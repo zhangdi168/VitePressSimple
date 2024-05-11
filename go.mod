@@ -12,7 +12,7 @@ require (
 	github.com/robfig/cron/v3 v3.0.1
 	github.com/spf13/afero v1.11.0
 	github.com/spf13/viper v1.18.1
-	github.com/wailsapp/wails/v2 v2.8.0
+	github.com/wailsapp/wails/v2 v2.8.1
 	golang.org/x/sys v0.17.0
 	gopkg.in/gomail.v2 v2.0.0-20160411212932-81ebce5c23df
 	gorm.io/driver/sqlite v1.5.4

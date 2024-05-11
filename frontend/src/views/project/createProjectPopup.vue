@@ -6,7 +6,7 @@
       :title="props.placeholder"
       centered
       okType="default"
-      ok-text="创建"
+      :ok-text="lang('common.create')"
       :ok-button-props="{
         class: 'bg-blue-300 text-black mt-4',
       }"
@@ -14,20 +14,26 @@
       @ok="Create"
     >
       <div class="flex justify-start items-center">
-        <span class="select-none text-h5">新建VitePress项目</span>
+        <span class="select-none text-h5">{{
+          lang("pageProject.newVitePressProject")
+        }}</span>
       </div>
       <div class="mt-2">
-        <a-alert closable description="基于VitePress1.1.0创建" type="success" />
+        <a-alert
+          closable
+          :description="lang('pageProject.basedOn') + lang('vitePressVersion')"
+          type="success"
+        />
       </div>
       <div class="my-2">
         <a-input
           v-model:value="formData.title"
-          placeholder="请输入项目名称"
+          :placeholder="lang('pageProject.enterProjectName')"
           class="w-full"
         >
           <template #suffix>
-            <a-tooltip title="项目的名称，请遵循文件的命名规则">
-              <span class="text-gray-500">名称</span>
+            <a-tooltip :title="lang('pageProject.projectNameHint')">
+              <span class="text-gray-500">{{ lang("common.name") }}</span>
             </a-tooltip>
           </template>
         </a-input>
@@ -51,12 +57,14 @@
       <div class="my-2">
         <a-input
           v-model:value="formData.description"
-          placeholder="请输入项目描述"
+          :placeholder="lang('pageProject.enterProjectDescription')"
           class="w-full"
         >
           <template #suffix>
-            <a-tooltip title="项目的描述，建议中文">
-              <span class="text-gray-500">描述</span>
+            <a-tooltip :title="lang('pageProject.projectDescriptionHint')">
+              <span class="text-gray-500">{{
+                lang("common.description")
+              }}</span>
             </a-tooltip>
           </template>
         </a-input>
@@ -66,14 +74,14 @@
         <div class="flex-1">
           <a-input
             v-model:value="formData.dir"
-            placeholder="项目根目录是尝试寻找 .vitepress 特殊目录的地方"
+            :placeholder="lang('pageProject.projectRootDirectory')"
             class="w-full"
           >
           </a-input>
         </div>
         <div class="ml-2">
           <a-button class="bg-blue-200" @click="selectProjectDir"
-            >选择根目录
+            >{{ lang("pageProject.chooseRootDirectory") }}
           </a-button>
         </div>
       </div>
@@ -85,10 +93,10 @@
           class="w-full"
         >
           <template #suffix>
-            <a-tooltip
-              title="请源目录是 Markdown 源文件所在的位置，默认为./docs，创建完成后可修改"
-            >
-              <span class="text-gray-500">源目录(文档目录)</span>
+            <a-tooltip :title="lang('pageProject.sourceDirectoryHint')">
+              <span class="text-gray-500">{{
+                lang("pageProject.sourceDirectory")
+              }}</span>
             </a-tooltip>
           </template>
         </a-input>
@@ -107,6 +115,7 @@ import { HistoryProject } from "@/utils/historyProject";
 import { useHistoryStore } from "@/store/history";
 import { CreateDir } from "../../../wailsjs/go/services/ArticleTreeData";
 import { useIndexStore } from "@/store";
+import { lang } from "@/utils/language";
 
 const formData = ref<ProjectCreate>({
   title: "VPSimpleProject",
@@ -140,10 +149,10 @@ const Create = async () => {
 
 const selectProjectDir = async () => {
   if (formData.value.title == "") {
-    ToastError("请先输入项目名称");
+    ToastError(lang("pageProject.errorProjectNameEmpty"));
     return;
   }
-  let dir = await SelectDir("请选择项目存放目录");
+  let dir = await SelectDir(lang("pageProject.errorProjectRootEmpty"));
   if (dir != "") {
     formData.value.dir = await PathJoin([dir, formData.value.title]);
   }

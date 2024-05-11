@@ -9,21 +9,28 @@
       ></select-setting-lang>
       <a-popconfirm
         class="ml-3 pt-1"
-        title="切换后将[清空]当前语言的侧栏数据"
-        ok-text="我已知晓"
-        cancel-text="算了"
+        :title="lang('pageSidebar.switchThemesTip')"
+        :ok-text="lang('pageSidebar.confirmSwitchButtonOk')"
+        :cancel-text="lang('pageSidebar.confirmSwitchButtonCancel')"
         :ok-button-props="{ class: 'bg-blue-6 00 text-white' }"
         @confirm="changeSidebarConfirmModal()"
       >
         <q-tooltip class="text-2xl">
           <span class="text-cyan-500"> {{ storeConfig.currSettingLang }}</span
-          >当前为
-          <span class="text-cyan-500"
-            >{{ isUseManySidebars ? "多" : "单" }}侧栏</span
-          >
-          模式，
+          >{{ lang("pageSidebar.current") }}
+          <span class="text-cyan-500">{{
+            isUseManySidebars
+              ? lang("pageSidebar.multiSidebar")
+              : lang("pageSidebar.singleSidebar")
+          }}</span>
+          {{ lang("pageSidebar.mode") }}，
           <span class="text-red-500"
-            >点击切换成{{ isUseManySidebars ? "单" : "多" }}侧栏</span
+            >{{ lang("pageSidebar.switchThemesTip")
+            }}{{
+              isUseManySidebars
+                ? lang("pageSidebar.singleSidebar")
+                : lang("pageSidebar.multiSidebar")
+            }}</span
           >
         </q-tooltip>
         <a-button class="cursor-pointer bg-green-100">
@@ -42,7 +49,7 @@
       v-if="isUseManySidebars"
     >
       <div>
-        选择当前编辑的侧栏：
+        {{ lang("pageSidebar.chooseEditedSidebar") }}，
         <a-radio-group
           class="mt-2"
           @change="subSidebarChange"
@@ -54,7 +61,8 @@
             :value="item"
           >
             <q-tooltip
-              >当路由位于 ‘{{ item }}’ 目录时，会显示此侧边栏
+              >{{ lang("pageSidebar.whenRouteInTip") }} ‘{{ item }}’
+              {{ lang("pageSidebar.whenRouteInTip2") }}
             </q-tooltip>
             {{ item }}
           </a-radio-button>
@@ -64,7 +72,7 @@
         {{ emptySubDirText }}
       </div>
       <div class="mr-4 cursor-pointer" @click="setCurrTreeData">
-        <q-tooltip>重新加载侧栏目录</q-tooltip>
+        <q-tooltip> {{ lang("pageSidebar.reloadSidebarTip") }}</q-tooltip>
         <icon-park strokeLinejoin="bevel" theme="outline" type="refresh" />
       </div>
     </div>
@@ -81,19 +89,20 @@
           theme="outline"
           type="add-one"
         />
-        新增顶级侧栏
+        {{ lang("pageSidebar.addTopSidebar") }}
       </a-button>
       <!--    自动识别侧栏-->
       <div class="mx-1">
         <a-popconfirm
-          title="识别到的侧栏数据将会全部覆盖当前侧栏数据"
-          ok-text="我已知晓"
-          cancel-text="算了"
+          :title="lang('pageSidebar.recognitionWarning')"
+          :ok-text="lang('common.know')"
+          cancel-text="lang('common.cancel')"
           :ok-button-props="{ class: 'bg-blue-500 text-white' }"
           @confirm="recognitionSidebar()"
         >
           <q-tooltip
-            >自动检索{{ storeConfig.SrcLangDir }}目录下的侧栏数据
+            >{{ lang("pageSidebar.autoRecognize") }}{{ storeConfig.SrcLangDir
+            }}{{ lang("pageSidebar.sidebarData") }}
           </q-tooltip>
           <a-button
             class="bg-blue-500 hover:bg-blue-600 text-white flex justify-center items-center"
@@ -105,7 +114,7 @@
               theme="outline"
               type="scanning"
             />
-            自动检索当前侧栏
+            {{ lang("pageSidebar.autoRecognizeSidebar") }}
           </a-button>
         </a-popconfirm>
       </div>
@@ -120,7 +129,7 @@
           theme="outline"
           type="save"
         />
-        保存当前侧栏
+        {{ lang("pageSidebar.saveSidebar") }}
       </a-button>
     </div>
     <!--        动态添加侧栏-->
@@ -150,6 +159,7 @@ import TreeNode = dto.TreeNode;
 import DyAddNav from "@/components/dyAddNav.vue";
 import { IsEmptyValue } from "@/utils/utils";
 import EmptyProject from "@/components/emptyProject.vue";
+import { lang } from "@/utils/language";
 
 const splitterModel = ref(36);
 const storeConfig = useVpconfigStore();
@@ -176,7 +186,7 @@ const hasSubSidebarDir = computed(() => {
 });
 const emptySubDirText = computed(() => {
   if (isUseManySidebars.value && !hasSubSidebarDir.value) {
-    return storeConfig.SrcLangDir + " 路径下不存在子目录，请先前往创建！";
+    return storeConfig.SrcLangDir + lang("pageSidebar.noSubDirectoryTip");
   }
   return "";
 });
@@ -215,7 +225,7 @@ const recognitionSidebar = async () => {
   let baseDir = zhLangDir;
   if (isUseManySidebars.value) {
     if (currSelectSidebarKey.value == "") {
-      ToastError("请选择当前编辑的侧栏");
+      ToastError(lang("pageSidebar.selectSidebarTip"));
       return;
     }
     //多侧栏模式，再加上选中的侧栏 currSelectSidebarKey已经包含原目录
@@ -224,7 +234,11 @@ const recognitionSidebar = async () => {
   let treeData = await ParseTreeData(baseDir); //[{key:"路径",title:""}]
   console.log(treeData, "treeData -- console.log");
   if (!treeData) {
-    ToastError(`识别到的侧栏数据为空，请确保${baseDir}文件夹下存在文件`);
+    ToastError(
+      `${lang("pageSidebar.recognitionWarning2")}${baseDir}${lang(
+        "pageSidebar.existFile",
+      )}`,
+    );
   } else {
     //开始转换数据,将属性转换成侧栏结构
     let existingLinks: string[] = sidebarTree.value.flatMap((nav) =>

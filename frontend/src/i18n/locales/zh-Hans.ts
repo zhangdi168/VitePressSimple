@@ -395,13 +395,33 @@ export const zhHans = {
         editLinkPattern: "编辑链接地址",
       },
     },
-    //社交帐户
-    settingSocial: {
-      title: "社交帐户",
-    },
+
     //搜索设置
     settingSearch: {
       title: "搜索设置",
+      //搜索提供者
+      searchProvider: "搜索提供者",
+      //支持使用浏览器内索引进行模糊全文搜索(local)
+      tooltips: {
+        tooltips: "VitePress支持使用浏览器内索引进行模糊全文搜索(local)",
+        AlgoliaAppId:
+          "Algolia 搜索 AppId,setting -> Team and Access -> API keys -> Application ID  ",
+        AlgoliaSearchKey:
+          "Algolia 搜索 apiKey ,setting -> Team and Access -> API keys -> Search-Only API Key",
+        AlgoliaIndexName: "Algolia 搜索 indexName,创建的 index 的名称",
+      },
+    },
+    //社交帐户
+    settingSocial: {
+      title: "社交帐户",
+      //当前支持的图标标识(点击可复制)：
+      tooltipsIcon: "当前支持的图标标识(点击可复制)：",
+      //添加社交账户
+      addSocialAccount: "添加社交账户",
+      //图标标识
+      icon: "图标标识",
+      //跳转链接
+      link: "跳转链接",
     },
     //路由重写
     settingRewrite: {
@@ -412,6 +432,35 @@ export const zhHans = {
       filePath: "文件路径",
       //路由路径
       routePath: "路由路径",
+    },
+  },
+  pageSetting: {
+    //基础设置
+    settingBase: {
+      title: "基础设置",
+      autoSaveArticle: {
+        label: "切换文章自动保存:",
+        tooltip: "文章切换时自动保存",
+      },
+      startup: {
+        label: "是否开机自启:",
+        tooltip: "重启程序后生效",
+      },
+      frontMatterSaveType: {
+        label: "frontMatter保存方式",
+        tooltip: "文章的frontMatter 保存方式",
+      },
+      editorCdn: {
+        label: "编辑器cdn",
+        tooltip:
+          "如果出现markdown编辑器加载不出来的情况，可以手动切换编辑器cdn后【重启】程序",
+      },
+      sysUpdateSource: {
+        label: "在线更新源",
+        tooltip: "中国用户推荐使用gitee源更新，非中国用户推荐使用github源更新",
+      },
+      checkUpdate: "检查更新",
+      openDataDir: "打开程序数据目录",
     },
   },
 };

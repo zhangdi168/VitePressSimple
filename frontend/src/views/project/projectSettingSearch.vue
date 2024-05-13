@@ -1,9 +1,9 @@
 <template>
   <div>
     <sim-radio
-      tooltip="VitePress 支持使用浏览器内索引进行模糊全文搜索(local)"
+      :tooltip="lang('pageProject.settingSearch.tooltips.tooltips')"
       v-model="storeConfig.configData['themeConfig']['search']['provider']"
-      label="搜索提供者"
+      :label="lang('pageProject.settingSearch.searchProvider')"
       :items="[
         { label: 'local', value: 'local' },
         { label: 'algolia', value: 'algolia' },
@@ -20,7 +20,7 @@
         v-model="
           storeConfig.configData['themeConfig']['search']['options']['appId']
         "
-        tooltip="Algolia 搜索 AppId,setting -> Team and Access -> API keys -> Application ID  "
+        :tooltip="lang('pageProject.settingSearch.tooltips.AlgoliaAppId')"
         label="AppId"
       >
       </sim-input>
@@ -28,7 +28,7 @@
         v-model="
           storeConfig.configData['themeConfig']['search']['options']['apiKey']
         "
-        tooltip="Algolia 搜索 apiKey ,setting -> Team and Access -> API keys -> Search-Only API Key "
+        :tooltip="lang('pageProject.settingSearch.tooltips.AlgoliaSearchKey')"
         label="apiKey"
       >
       </sim-input>
@@ -38,7 +38,7 @@
             'indexName'
           ]
         "
-        tooltip="Algolia 搜索 indexName,创建的 index 的名称"
+        :tooltip="lang('pageProject.settingSearch.tooltips.AlgoliaIndexName')"
         label="indexName"
       >
       </sim-input>
@@ -55,7 +55,7 @@
           theme="outline"
           type="save"
         />
-        保存配置
+        {{ lang("common.saveConfig") }}
       </a-button>
     </div>
   </div>
@@ -67,6 +67,7 @@ import { onBeforeMount } from "vue";
 import { IsEmptyValue } from "@/utils/utils";
 import { defaultShareConfigValue } from "@/configs/defaultShareConfig";
 import SimInput from "@/components/simInput.vue";
+import { lang } from "@/utils/language";
 
 const storeConfig = useVpconfigStore();
 onBeforeMount(() => {

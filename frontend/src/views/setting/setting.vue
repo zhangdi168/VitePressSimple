@@ -7,7 +7,7 @@
       type="line"
       animated
     >
-      <a-tab-pane key="1" tab="基础设置">
+      <a-tab-pane key="1" :tab="lang('pageSetting.settingBase.title')">
         <setting-base></setting-base>
       </a-tab-pane>
     </a-tabs>
@@ -16,6 +16,7 @@
 <script lang="ts" setup>
 import { ref } from "vue";
 import SettingBase from "@/views/setting/settingBase.vue";
+import { lang } from "@/utils/language";
 
 const activeKey = ref("1");
 </script>

@@ -49,7 +49,7 @@
       v-if="isUseManySidebars"
     >
       <div>
-        {{ lang("pageSidebar.chooseEditedSidebar") }}，
+        {{ lang("pageSidebar.chooseEditedSidebar") }}
         <a-radio-group
           class="mt-2"
           @change="subSidebarChange"

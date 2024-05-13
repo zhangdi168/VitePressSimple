@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-wrap mx-8 mt-3">
-    当前支持的图标标识(点击可复制)：
+    {{ lang("pageProject.settingSocial.tooltipsIcon") }}
     <div @click="CopyText(item)" class="cursor-pointer" v-for="item in soList">
       <a-tag color="cyan">{{ item }}</a-tag>
     </div>
@@ -8,9 +8,9 @@
   <hr class="my-3" />
   <dy-add-k-v
     class="mt-2 mx-6"
-    add-btn-text="添加社交账户"
-    key-placeholder="图标标识"
-    value-placeholder="跳转链接"
+    :add-btn-text="lang('pageProject.settingSocial.addSocialAccount')"
+    :key-placeholder="lang('pageProject.settingSocial.icon')"
+    value-placeholder="lang('pageProject.settingSocial.link')"
     key-name="icon"
     value-name="link"
     ref="refDyAdd"
@@ -29,7 +29,7 @@
         theme="outline"
         type="save"
       />
-      保存配置
+      {{ lang("common.saveConfig") }}
     </a-button>
   </div>
 </template>
@@ -39,6 +39,7 @@ import { ToastError, ToastSuccess } from "@/utils/Toast";
 import { useVpconfigStore } from "@/store/vpconfig";
 import { IconPark } from "@icon-park/vue-next/es/all";
 import { onMounted, ref } from "vue";
+import { lang } from "../../utils/language";
 
 onMounted(() => {
   console.log(

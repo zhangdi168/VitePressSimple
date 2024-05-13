@@ -1,6 +1,7 @@
 <template>
   <!--    切换语言-->
-  <div class="flex justify-end">
+  <div class="flex items-center">
+    language：
     <div class="language border items-center flex justify-center">
       <divW
         v-for="item in languages"
@@ -30,6 +31,7 @@ const onclickLanguageHandle = (item: string) => {
   margin-right: 18px;
   border-radius: 8px;
   overflow: hidden;
+
   .lang-item {
     display: inline-block;
     min-width: 50px;
@@ -41,10 +43,12 @@ const onclickLanguageHandle = (item: string) => {
     text-decoration: none;
     color: #000000;
     font-size: 14px;
+
     &:hover {
       background-color: #ff050542;
       cursor: pointer;
     }
+
     &.active {
       background-color: #6888d5;
       color: #ffffff;
@@ -52,6 +56,7 @@ const onclickLanguageHandle = (item: string) => {
     }
   }
 }
+
 .bar {
   display: flex;
   flex-direction: row;
@@ -59,6 +64,7 @@ const onclickLanguageHandle = (item: string) => {
   align-items: center;
   justify-content: flex-end;
   min-width: 150px;
+
   .bar-btn {
     display: inline-block;
     min-width: 80px;
@@ -72,6 +78,7 @@ const onclickLanguageHandle = (item: string) => {
     text-decoration: none;
     color: #000000;
     font-size: 14px;
+
     &:hover {
       background-color: #d7a8d8;
       color: #ffffff;

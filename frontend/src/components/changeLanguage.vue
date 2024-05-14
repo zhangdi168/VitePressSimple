@@ -18,11 +18,19 @@
 <script lang="ts" setup>
 import { useI18n } from "vue-i18n";
 import { lang } from "../utils/language";
+import { ConfigSet } from "../../wailsjs/go/system/SystemService";
+import { ConfigKeyLang } from "@/constant/keys/config";
 
 const { t, availableLocales: languages, locale } = useI18n();
 
-//设置语言
+/**
+ * 处理点击语言项的事件
+ * @param {string} item - 被点击的语言项
+ * @description 根据点击的语言项来切换当前的语言
+ */
 const onclickLanguageHandle = (item: string) => {
+  ConfigSet(ConfigKeyLang, item);
+  // 如果点击的语言项不等于当前语言，则更新为点击的语言项
   item !== locale.value ? (locale.value = item) : false;
 };
 </script>

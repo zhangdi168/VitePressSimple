@@ -9,7 +9,7 @@ import NavTemplate1 from "@/layout/nav/navTemplate1.vue";
 import NavTemplate2 from "@/layout/nav/navTemplate2.vue";
 import { onBeforeUnmount, onMounted, ref } from "vue";
 import { ConfigGet } from "../wailsjs/go/system/SystemService";
-import { ConfigKeyProjectDir } from "@/constant/keys/config";
+import { ConfigKeyLang, ConfigKeyProjectDir } from "@/constant/keys/config";
 import { useIndexStore } from "@/store";
 import {
   HasNewVersion,
@@ -17,9 +17,11 @@ import {
 } from "../wailsjs/go/services/UpdateService";
 import { StartStaticServer } from "../wailsjs/go/services/StaticServer";
 import { SystemMac } from "@/constant/enums/system";
+import { useI18n } from "vue-i18n";
 //在这里可以设置默认的模板
 const useTemplateIndex = ref(2);
 const storeIndex = useIndexStore();
+const { locale } = useI18n();
 // const vpConfig = useVpconfigStore();
 onMounted(async () => {
   // await HistoryProject.initList(); //初始化历史数据
@@ -28,7 +30,9 @@ onMounted(async () => {
   await storeIndex.getVersion(); //获取当前系统版本
   await storeIndex.getStaticDir();
   await storeIndex.getStaticPort();
-
+  ConfigGet(ConfigKeyLang).then((res) => {
+    locale.value = res == "" ? "en" : res;
+  }); //设置语言
   let hasNewVersion = await HasNewVersion();
   if (hasNewVersion) {
     UpdateNewVersion();

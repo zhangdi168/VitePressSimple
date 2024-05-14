@@ -21,6 +21,7 @@ func InitDefaultConfig() {
 	cfg.SetDefault(keys.ConfigKeySysProjectStaticDirName, cnts.StaticBaseDir)
 
 	cfg.SetDefault(keys.ConfigKeyVditorCdn, enums.VditorCdnZstatic)
+	cfg.SetDefault(keys.ConfigKeyLang, "en")
 
 	//cfg.SetDefault(keys.ConfigKeySysProgramCanOpenMany, "no")
 	cfg.SetDefault(keys.ConfigKeySysProgramIsOpen, "no")

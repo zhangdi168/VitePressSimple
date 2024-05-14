@@ -359,4 +359,37 @@ export const en = {
       openDataDir: "Open Program Data Directory",
     },
   },
+
+  pageAbout: {
+    // 关于
+    title: "about software",
+    // 隐私协议
+    privacy: "Privacy Policy",
+    // 关于作者
+    author: "About the Author",
+    // 作者博客：
+    authorBlog: "Author's Blog:",
+    // 作者GitHub
+    authorGithub: "Author's GitHub",
+    // 作者Gitee
+    authorGitee: "Author's Gitee",
+    // 作者微信
+    authorWx: "Author's WeChat",
+    privacy1:
+      "Welcome to use VitePressSimple (hereinafter referred to as 'VPSimple' or 'this software'). We understand the importance of personal privacy and are committed to protecting your personal information security. This Privacy Policy clearly explains how we collect, use, store, share, and protect your personal information while you use VPSimple. Please read and understand this agreement before using the software. Your continued use will be deemed as acceptance of this Privacy Policy.",
+    privacy2: "Necessary Usage Information",
+    privacy3:
+      ": To provide and optimize VPSimple's services, we may collect basic usage data generated during your use of the software, such as device type, operating system version, software version, etc. This information is necessary to ensure software operation, troubleshoot issues, provide technical support, and improve product performance.",
+    privacy4: "Website Analytics",
+    privacy5:
+      ": VPSimple uses third-party service provider 51.la for website analytics to help us understand user behavior, optimize user experience, and enhance service quality. 51.la might collect anonymous statistical data such as visit logs, IP addresses, browser types, access times, and page interactions. Please note that 51.la's privacy policy is independent of this agreement, and their data collection and processing activities are governed by their own privacy policy. Refer to the\n" +
+      "51.la Privacy Policy for more details.",
+    privacy6:
+      "VPSimple strictly adheres to legal requirements and takes appropriate technical and organizational measures to protect the security of your personal information, preventing loss, misuse, unauthorized access, disclosure, or modification. We retain your personal information for the shortest time necessary to achieve the intended purposes and promptly delete or anonymize it when no longer needed.",
+    privacy7:
+      "VPSimple is released under the Apache License\n" +
+      "2.0 open-source license. While the software follows open-source principles, the handling of user personal information still adheres to this Privacy Policy. The open-source license does not affect or alter our commitment to protecting your personal information.",
+    privacy8:
+      "This Privacy Policy takes effect from the date of publication. Thank you for choosing VitePressSimple; we will continue to respect and protect your personal information rights.",
+  },
 };

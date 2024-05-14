@@ -1,9 +1,9 @@
 <template>
   <div class="flex justify-center">
     <a-radio-group v-model:value="activeKey" style="margin: 8px">
-      <a-radio-button value="1">关于</a-radio-button>
-      <a-radio-button value="2">隐私协议</a-radio-button>
-      <a-radio-button value="3">关于作者</a-radio-button>
+      <a-radio-button value="1">{{ lang("pageAbout.title") }}</a-radio-button>
+      <a-radio-button value="2">{{ lang("pageAbout.privacy") }}</a-radio-button>
+      <a-radio-button value="3">{{ lang("pageAbout.author") }}</a-radio-button>
     </a-radio-group>
   </div>
   <div v-show="activeKey == '1'">
@@ -21,6 +21,7 @@ import { ref } from "vue";
 import AboutSoftware from "@/views/about/aboutSoftware.vue";
 import AboutPrivacy from "@/views/about/aboutPrivacy.vue";
 import AboutAuthor from "@/views/about/aboutAuthor.vue";
+import { lang } from "../../utils/language";
 
 const activeKey = ref("1");
 </script>

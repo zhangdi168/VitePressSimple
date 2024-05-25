@@ -54,6 +54,7 @@ export const zhHans = {
     open: "打开",
     //保存配置
     saveConfig: "保存配置",
+    terminal: "终端命令",
   },
   pageIndex: {
     newProject: "新建项目",

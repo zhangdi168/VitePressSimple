@@ -4,6 +4,21 @@
     v-show="!storeIndex.IsEmptyProject"
   >
     <div class="flex items-center justify-start">
+      <!--      终端命令-->
+      <a-tooltip
+        class="mx-1 cursor-pointer"
+        @click="storeIndex.saveCurrArticle()"
+      >
+        <template #title>{{ lang("common.terminal") }}</template>
+        <icon-park
+          :size="storeLayout.editorToolIconSize"
+          fill="#493c3c"
+          strokeLinejoin="bevel"
+          theme="outline"
+          type="terminal"
+        />
+      </a-tooltip>
+      <!--      显示或隐藏-->
       <a-tooltip class="mx-1 cursor-pointer">
         <template #title
           >{{
@@ -33,7 +48,7 @@
           type="file-hiding"
         />
       </a-tooltip>
-
+      <!--保存-->
       <a-tooltip
         class="mx-1 cursor-pointer"
         @click="storeIndex.saveCurrArticle()"

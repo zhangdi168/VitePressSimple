@@ -75,6 +75,8 @@ func main() {
 		OnBeforeClose:     app.beforeClose,
 		OnShutdown:        app.shutdown,
 		WindowStartState:  options.Maximised,
+		CSSDragProperty:   "--wails-draggable",
+		CSSDragValue:      "drag",
 		AssetServer: &assetserver.Options{
 			Assets:     assets,
 			Handler:    nil,

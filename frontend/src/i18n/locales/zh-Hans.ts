@@ -33,7 +33,7 @@ export const zhHans = {
     //显示
     show: "显示",
     //保存 ctrl+s
-    saveWithKey: "保存",
+    saveWithKey: "保存 ctrl+s",
     //基础
     base: "基础",
     //主页

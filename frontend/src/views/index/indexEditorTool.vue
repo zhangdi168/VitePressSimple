@@ -3,10 +3,7 @@
     class="flex items-center justify-between pr-5"
     v-show="!storeIndex.IsEmptyProject"
   >
-    <div class="text-gray-400 ml-1.5">
-      {{ lang("pageIndex.currentProject") }}{{ storeConfig.baseDir }}
-    </div>
-    <div class="flex items-center justify-end">
+    <div class="flex items-center justify-start">
       <a-tooltip class="mx-1 cursor-pointer">
         <template #title
           >{{
@@ -50,6 +47,9 @@
           type="save"
         />
       </a-tooltip>
+    </div>
+    <div class="text-gray-400 ml-1.5">
+      {{ lang("pageIndex.currentProject") }}{{ storeConfig.baseDir }}
     </div>
   </div>
 </template>

@@ -5,6 +5,7 @@ import (
 	"io/fs"
 	"os"
 	"path/filepath"
+	"wailstemplate/application/constant/cnts"
 	"wailstemplate/application/constant/keys"
 	"wailstemplate/application/pkg/cfg"
 	"wailstemplate/application/pkg/filehelper"
@@ -39,7 +40,7 @@ func (s *VpManager) CreateProject(title, description, dir string) string {
 	}
 
 	//4.复制模板文件到目标目录
-	s.CopyTemplateFile(dir)
+	s.CopyTemplateFile(dir, cnts.TemplateRootDir)
 
 	//5.设置当前项目目录为新建的目录
 	cfg.Set(keys.ConfigKeyProjectDir, dir)
@@ -61,8 +62,9 @@ func (s *VpManager) CreateProject(title, description, dir string) string {
 }
 
 // CopyTemplateFile 复制模板文件到新建项目
-func (s *VpManager) CopyTemplateFile(targetDir string) {
-	err := fs.WalkDir(s.fs, "vitepress-template", func(path string, d fs.DirEntry, err error) error {
+func (s *VpManager) CopyTemplateFile(targetDir string, rootDir string) {
+
+	err := fs.WalkDir(s.fs, rootDir, func(path string, d fs.DirEntry, err error) error {
 		if err != nil {
 			return err
 		}

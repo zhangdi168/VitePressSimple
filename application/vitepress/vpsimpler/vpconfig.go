@@ -11,8 +11,8 @@ import (
 	"wailstemplate/application/vitepress/tsparser"
 )
 
-var ConfigNames = []string{"config.mts", "config.ts", "config.js", "index.js", "index.ts", "index.mts"}
-var defaultFileName = "config.mts"
+var ConfigNames = []string{"vpsimple.ts"}
+var defaultFileName = "vpsimple.ts"
 
 // VpConfig 操作配置文件相关的类
 type VpConfig struct {
@@ -27,8 +27,36 @@ func (s *VpConfig) GetVpConfigData() string {
 	path, err := s.GetConfigPath()
 	if err != nil {
 		mylog.Error("获取vitepress配置文件路径异常" + err.Error())
+		//尝试从config.mts中获取(低版本容错)
+		baseDir := cfg.GetString(keys.ConfigKeyProjectDir)
+		configMtsPath := filepath.Join(baseDir, ".vitepress", "config.mts")
+		if filehelper.FileExists(configMtsPath) {
+			//如果存在config.mts说明是旧版本，开始迁移
+			content := getTsContent(configMtsPath)
+			if content == "" {
+				return ""
+			}
+			vpsimpleTsPath := filepath.Join(baseDir, ".vitepress", "vpsimple.ts")
+			IndexTsPath := filepath.Join(baseDir, ".vitepress", CONFIGFILE)
+			CustomerTsPath := filepath.Join(baseDir, ".vitepress", "customer.ts")
+			filehelper.CreateFile(vpsimpleTsPath)
+			filehelper.CreateFile(IndexTsPath)
+			filehelper.CreateFile(CustomerTsPath)
+			filehelper.WriteContent(vpsimpleTsPath, "export const VpSimpleConfig = "+content+";\n")
+			filehelper.WriteContent(IndexTsPath, INDEXTSCONTENT)
+			filehelper.WriteContent(CustomerTsPath, CUSTOMERCONTENT)
+			filehelper.RenamePath(configMtsPath, strings.ReplaceAll(configMtsPath, "config.mts", "config_bak.mts"))
+			return content
+		}
 		return ""
+	} else {
+		return getTsContent(path)
 	}
+
+}
+
+// 获取花括号里的内容
+func getTsContent(path string) string {
 	content, err := filehelper.ReadContent(path)
 	if err != nil {
 		mylog.Error("获取vitepress配置文件内容异常" + err.Error())
@@ -42,14 +70,15 @@ func (s *VpConfig) GetVpConfigData() string {
 	}
 	return dataContent
 }
-func (s *VpConfig) filterContentString(content string) string {
-	//删除掉导入的花括号
-	content = strings.ReplaceAll(content, "{ defineConfig }", "")
-	content = strings.ReplaceAll(content, "{defineConfig}", "")
-	content = strings.ReplaceAll(content, "{ defineConfig}", "")
-	content = strings.ReplaceAll(content, "{defineConfig }", "")
-	return content
-}
+
+//func (s *VpConfig) filterContentString(content string) string {
+//	//删除掉导入的花括号
+//	content = strings.ReplaceAll(content, "{ defineConfig }", "")
+//	content = strings.ReplaceAll(content, "{defineConfig}", "")
+//	content = strings.ReplaceAll(content, "{ defineConfig}", "")
+//	content = strings.ReplaceAll(content, "{defineConfig }", "")
+//	return content
+//}
 
 // SaveConfig 保存配置文件
 func (s *VpConfig) SaveConfig(configContentJson string) string {
@@ -59,9 +88,10 @@ func (s *VpConfig) SaveConfig(configContentJson string) string {
 	}
 	err = s.RenameConfigName(configPath)
 	if err != nil {
-		return "重命名配置文件config.mts异常：" + err.Error()
+		return "重命名配置文件vpsimple.ts异常：" + err.Error()
 	}
-	newContent := "import { defineConfig } from \"vitepress\";\n\texport default defineConfig(" + configContentJson + ");\n"
+	newContent :=
+		"export const VpSimpleConfig = " + configContentJson + ";\n"
 	err = filehelper.WriteContent(s.getDefaultConfigPath(), newContent)
 	if err != nil {
 		return err.Error()
@@ -95,7 +125,7 @@ func (s *VpConfig) getDefaultConfigPath() string {
 
 // ReplaceDefaultConfigContent 获取默认的属性信息
 func (s *VpConfig) ReplaceDefaultConfigContent(title string, description string) string {
-	template := "{\n  title: \"{title}\",\n  description: \"{description}\",\n  srcDir: \"./docs\",\n  themeConfig: {\n    \n    nav: [\n      {\n        text: \"Home\",\n        link: \"/\"\n      },\n      {\n        text: \"About\",\n        link: \"/about\"\n      },\n      {\n        text: \"Contact\",\n        link: \"/contact\"\n      }\n    ],\n    \n    sidebar: [\n      {\n        text: \"Examples\",\n        items: [\n          { text: \"Markdown Examples\", link: \"/markdown-examples\" },\n          { text: \"Runtime API Examples\", link: \"/api-examples\" }\n        ]\n      }\n    ],\n   \n    socialLinks: [\n      { icon: \"github\", link: \"https://github.com/vuejs/vitepress\" }\n    ]\n  }\n}"
+	template := "{\n  title: \"{title}\",\n  description: \"{description}\",\n  srcDir: \"./docs\",\n  themeConfig: {   \n       nav: [\n      {\n        text: \"Home\",\n        link: \"/\"\n      },\n      {\n        text: \"About\",\n        link: \"/about\"\n      },\n      {\n        text: \"Contact\",\n        link: \"/contact\"\n      }\n    ],\n    \n    sidebar: [\n      {\n        text: \"Examples\",\n        items: [\n          { text: \"Markdown Examples\", link: \"/markdown-examples\" },\n          { text: \"Runtime API Examples\", link: \"/api-examples\" }\n        ]\n      }\n    ],\n   \n    socialLinks: [\n      { icon: \"github\", link: \"https://github.com/vuejs/vitepress\" }\n    ]\n  }\n}"
 	newContent := strings.ReplaceAll(template, "{title}", title)
 	newContent = strings.ReplaceAll(newContent, "{description}", description)
 	return newContent
@@ -117,7 +147,7 @@ func (s *VpConfig) GetConfigPath() (string, error) {
 			return configPath, nil
 		}
 	}
-	return "", fmt.Errorf("配置文件不存在config.js/config.ts/config.mts")
+	return "", fmt.Errorf("配置文件vpsimple.ts不存在")
 	//path := filepath.Join(baseDir, ".vitepress", defaultFileName)
 	//if !filehelper.FileExists(path) { //文件不存在会先创建
 	//	filehelper.CreateFile(path)

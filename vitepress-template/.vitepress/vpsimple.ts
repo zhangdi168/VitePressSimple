@@ -1,6 +1,4 @@
-import { defineConfig } from "vitepress";
-
-export default defineConfig({
+export const VpSimpleConfig = {
   title: "vitepress-demo",
   description: "A VitePress Site",
   srcDir: "./docs",
@@ -32,4 +30,4 @@ export default defineConfig({
       { icon: "github", link: "https://github.com/vuejs/vitepress" }
     ]
   }
-});
+};

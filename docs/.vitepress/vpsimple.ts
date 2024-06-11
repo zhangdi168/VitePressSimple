@@ -1,5 +1,4 @@
-import { defineConfig } from "vitepress";
-	export default defineConfig({
+export const VpSimpleConfig = {
   "title": "VitePressSimple",
   "description": "VitePressSimple文档",
   "srcDir": "./",
@@ -341,4 +340,4 @@ import { defineConfig } from "vitepress";
     "hostname": "http://vpsimple.xiaod.co/",
     "lastmodDateOnly": false
   }
-});
+};

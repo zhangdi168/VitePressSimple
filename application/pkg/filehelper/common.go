@@ -97,6 +97,7 @@ func CreateFile(_path string) string {
 	if err != nil {
 		return err.Error()
 	}
+
 	defer file.Close()
 
 	return ""

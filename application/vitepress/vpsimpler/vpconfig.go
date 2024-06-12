@@ -29,23 +29,23 @@ func (s *VpConfig) GetVpConfigData() string {
 		mylog.Error("获取vitepress配置文件路径异常" + err.Error())
 		//尝试从config.mts中获取(低版本容错)
 		baseDir := cfg.GetString(keys.ConfigKeyProjectDir)
-		configMtsPath := filepath.Join(baseDir, ".vitepress", "config.mts")
+		configMtsPath := filepath.Join(baseDir, ConfigFile1)
 		if filehelper.FileExists(configMtsPath) {
 			//如果存在config.mts说明是旧版本，开始迁移
 			content := getTsContent(configMtsPath)
 			if content == "" {
 				return ""
 			}
-			vpsimpleTsPath := filepath.Join(baseDir, ".vitepress", "vpsimple.ts")
-			IndexTsPath := filepath.Join(baseDir, ".vitepress", CONFIGFILE)
-			CustomerTsPath := filepath.Join(baseDir, ".vitepress", "customer.ts")
+			vpsimpleTsPath := filepath.Join(baseDir, VpsimpleFile)
+			IndexTsPath := filepath.Join(baseDir, ConfigFile)
+			CustomerTsPath := filepath.Join(baseDir, CustomerFile)
 			filehelper.CreateFile(vpsimpleTsPath)
 			filehelper.CreateFile(IndexTsPath)
 			filehelper.CreateFile(CustomerTsPath)
 			filehelper.WriteContent(vpsimpleTsPath, "export const VpSimpleConfig = "+content+";\n")
-			filehelper.WriteContent(IndexTsPath, CONFIGCONTENT)
-			filehelper.WriteContent(CustomerTsPath, CUSTOMERCONTENT)
-			filehelper.RenamePath(configMtsPath, strings.ReplaceAll(configMtsPath, "config.mts", "config_bak.mts"))
+			filehelper.WriteContent(IndexTsPath, ConfigContent)
+			filehelper.WriteContent(CustomerTsPath, CustomerContent)
+			filehelper.RenamePath(configMtsPath, filepath.Join(baseDir, ConfigFile1Rename))
 			return content
 		}
 		return ""
@@ -120,7 +120,7 @@ func (s *VpConfig) RenameConfigName(currPath string) error {
 
 func (s *VpConfig) getDefaultConfigPath() string {
 	baseDir := cfg.GetString(keys.ConfigKeyProjectDir)
-	return filepath.Join(baseDir, ".vitepress", defaultFileName)
+	return filepath.Join(baseDir, ".vitepress", "config", defaultFileName)
 }
 
 // ReplaceDefaultConfigContent 获取默认的属性信息
@@ -142,7 +142,7 @@ func (s *VpConfig) GetConfigPath() (string, error) {
 		return "", fmt.Errorf("未配置当前项目路径，请先配置")
 	}
 	for _, name := range ConfigNames {
-		configPath := filepath.Join(baseDir, ".vitepress", name)
+		configPath := filepath.Join(baseDir, ".vitepress", "config", name)
 		if filehelper.FileExists(configPath) {
 			return configPath, nil
 		}

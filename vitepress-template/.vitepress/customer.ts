@@ -6,13 +6,13 @@ export const CustomerConfig = {
       "link",
       {
         rel: "stylesheet",
-        href: "/bigimg/fancybox.css"//大图css
+        href: "/plugins/bigimg/fancybox.css"//大图css
       }
     ],
     [
       "script",
       {
-        src: "/bigimg/fancybox.umd.js"//大图js
+        src: "/plugins/bigimg/fancybox.umd.js"//大图js
       }
     ]
   ],

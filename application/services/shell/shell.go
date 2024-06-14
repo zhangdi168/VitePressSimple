@@ -67,7 +67,7 @@ func (s *ShellService) StopCmd() string {
 	err := s.cmd.Process.Signal(os.Interrupt)
 	if err != nil {
 
-		s.notice("停止命令运行失败2:"+err.Error(), true)
+		s.notice("\ncmd stop error:"+err.Error(), true)
 		return err.Error()
 	}
 	//// 等待命令结束

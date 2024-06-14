@@ -36,6 +36,7 @@ export const en = {
     description: "Description",
     open: "Open",
     saveConfig: "Save Configuration",
+    terminal: "terminal",
   },
   pageIndex: {
     newProject: "New Project",

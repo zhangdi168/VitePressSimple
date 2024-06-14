@@ -21,6 +21,8 @@ const ConfigKeySysStaticServerPort = "sys.static_server_port"
 
 const ConfigKeySysProgramIsOpen = "sys.program_is_open"
 
+const ConfigKeySysTerminalDir = "sys.terminal_dir"
+
 //const ConfigKeySysProgramCanOpenMany = "sys.program_can_open_many"
 
 const ConfigKeySysProjectStaticDirName = "sys.project_static_dir_name"

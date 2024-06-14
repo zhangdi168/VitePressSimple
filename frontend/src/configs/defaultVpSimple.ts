@@ -3,6 +3,7 @@ import { VPSimpleConfig } from "@/types/vpsimpleConfig";
 
 export const defaultVpSimple: VPSimpleConfig = {
   shellBaseDir: "", //shell运行目录
+  gitBaseDir: "", //git运行目录
   cmdDocsDev: "npm run docs:dev", //启动文档开发服务
   cmdDocsBuild: "npm run docs:build", //打包文档
   cmdNpmInstall: "npm install", //启动文档服务

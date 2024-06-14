@@ -26,7 +26,7 @@ func NewVpConfig() *VpConfig {
 func (s *VpConfig) GetVpConfigData() string {
 	path, err := s.GetConfigPath()
 	if err != nil {
-		mylog.Error("获取vitepress配置文件路径异常" + err.Error())
+		mylog.Error("获取vitepress配置文件" + path + "路径异常" + err.Error())
 		//尝试从config.mts中获取(低版本容错)
 		baseDir := cfg.GetString(keys.ConfigKeyProjectDir)
 		configMtsPath := filepath.Join(baseDir, ConfigFile1)

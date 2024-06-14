@@ -42,7 +42,13 @@
       :is-full-width="true"
       v-model="storeShell.vpsimpleConfig.shellBaseDir"
       tooltip="命令运行目录的路径，默认值是项目根目录"
-      label="命令运行目录"
+      label="默认命令目录"
+    ></sim-input>
+    <sim-input
+      :is-full-width="true"
+      v-model="storeShell.vpsimpleConfig.gitBaseDir"
+      tooltip="git命令运行的目录，一般为vitepress项目根目录，但有时vitepres是做其它项目的子项目，所以需要指定git命令运行的目录"
+      label="git命令目录"
     ></sim-input>
     <!--    文档dev命令-->
     <sim-input
@@ -259,15 +265,18 @@ const createAndRunCmd = async (index: number) => {
     ToastError("cmd命令不能为空");
     return;
   }
+  const cmdDir = cmd.trim().startsWith("git")
+    ? storeShell.vpsimpleConfig.gitBaseDir
+    : storeShell.vpsimpleConfig.shellBaseDir;
 
   if (isSystemShell) {
     currShellIndex.value = await storeShell.createSystemShellAndRun(
-      storeShell.vpsimpleConfig.shellBaseDir,
+      cmdDir,
       cmd,
     );
   } else {
     currShellIndex.value = await storeShell.createShellAndRun(
-      storeShell.vpsimpleConfig.shellBaseDir,
+      cmdDir,
       cmd,
       isAlone,
     );

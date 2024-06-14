@@ -78,7 +78,7 @@ func main() {
 		OnShutdown:        app.shutdown,
 		WindowStartState:  options.Maximised,
 		CSSDragProperty:   utils.IfToString(utils.IsMacOS(), "--wails-draggable", ""),
-		CSSDragValue:      utils.IfToString(utils.IsMacOS(), "drag", "drag-win"),
+		CSSDragValue:      utils.IfToString(utils.IsMacOS(), "drag-mac", "drag-win"),
 		AssetServer: &assetserver.Options{
 			Assets:     assets,
 			Handler:    nil,

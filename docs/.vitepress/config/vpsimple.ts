@@ -339,5 +339,17 @@ export const VpSimpleConfig = {
   "sitemap": {
     "hostname": "http://vpsimple.xiaod.co/",
     "lastmodDateOnly": false
+  },
+  "vpsimple": {
+    "shellBaseDir": "/Users/xiaod/project/vittepress-simple/docs",
+    "gitBaseDir": "/Users/xiaod/project/vittepress-simple",
+    "cmdDocsDev": "npm run docs:dev",
+    "cmdDocsBuild": "npm run docs:build",
+    "cmdNpmInstall": "npm install",
+    "cmdGitInit": "git init",
+    "cmdGitPull": "git pull",
+    "cmdGitAdd": "git add .",
+    "cmdGitCommit": "git commit -m 'autoupdate'",
+    "cmdGitPush": "git push"
   }
 };

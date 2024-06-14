@@ -28,3 +28,5 @@ const ConfigKeyVditorCdn = "vditor.cdn"
 
 // ConfigKeyLang 语言配置
 const ConfigKeyLang = "sys.lang"
+
+const ConfigKeyShellBaseDir = "shell.base_dir"

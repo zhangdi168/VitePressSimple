@@ -18,12 +18,20 @@ import {
 import { StartStaticServer } from "../wailsjs/go/services/StaticServer";
 import { SystemMac } from "@/constant/enums/system";
 import { useI18n } from "vue-i18n";
+import { EventsOff, EventsOffAll, EventsOn } from "../wailsjs/runtime";
+import { services } from "../wailsjs/go/models";
+import NotifyShellData = services.NotifyShellData;
+import { useShellStore } from "@/store/shell";
 //在这里可以设置默认的模板
 const useTemplateIndex = ref(2);
 const storeIndex = useIndexStore();
 const { locale } = useI18n();
 // const vpConfig = useVpconfigStore();
 onMounted(async () => {
+  EventsOn("shell", (data: NotifyShellData) => {
+    useShellStore().handlerShellNotify(data);
+  });
+
   // await HistoryProject.initList(); //初始化历史数据
   // await vpConfig.initConfig();
   await storeIndex.getSystemType(); //获取当前系统
@@ -48,6 +56,9 @@ onMounted(async () => {
 onBeforeUnmount(() => {
   // 不要忘记在组件卸载时移除事件监听器，防止内存泄漏
   window.removeEventListener("keydown", handleKeyDown);
+
+  //取消监听所有的事件
+  EventsOff("shell");
 });
 
 function handleKeyDown(event: KeyboardEvent) {

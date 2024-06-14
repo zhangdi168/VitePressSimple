@@ -7,6 +7,7 @@ import (
 	"wailstemplate/application/constant/keys"
 	"wailstemplate/application/first"
 	"wailstemplate/application/pkg/cfg"
+	"wailstemplate/application/pkg/utils"
 	"wailstemplate/application/services"
 	"wailstemplate/application/services/system"
 	"wailstemplate/application/vitepress/vpsimpler"
@@ -75,8 +76,8 @@ func main() {
 		OnBeforeClose:     app.beforeClose,
 		OnShutdown:        app.shutdown,
 		WindowStartState:  options.Maximised,
-		CSSDragProperty:   "--wails-draggable",
-		CSSDragValue:      "drag",
+		CSSDragProperty:   utils.IfToString(utils.IsMacOS(), "--wails-draggable", ""),
+		CSSDragValue:      utils.IfToString(utils.IsMacOS(), "drag", "drag-win"),
 		AssetServer: &assetserver.Options{
 			Assets:     assets,
 			Handler:    nil,
@@ -88,7 +89,7 @@ func main() {
 			vpsimpler.NewVpManager(vpFs),
 			vpsimpler.NewVpConfig(),
 			system.NewSystemService(),
-			services.NewShellService(),
+			services.NewShellManager(),
 			services.NewUpdateService(), //在线更新
 			services.NewStaticServer(),
 		},

@@ -41,8 +41,8 @@ func buildWindows() {
 		if !strings.Contains(platform, enums.SystemWindows) {
 			continue
 		}
-		s := services.NewShellService()
-		s.RunCmd("wails build -platform "+platform, "../")
+		s := services.NewShellService(0, nil)
+		s.RunCmd("wails build -platform "+platform, "../", false)
 		baseDir := filepath.Join("..", "build", "bin")
 		zipPath := filepath.Join(baseDir, fmt.Sprintf("vpsimple_%s_%s.zip", replaceSystemStr(platform), setting.Version))
 		fileList := []string{
@@ -63,8 +63,8 @@ func buildMacos() {
 		if !strings.Contains(platform, enums.SystemMac) {
 			continue
 		}
-		s := services.NewShellService()
-		s.RunCmd("wails build  -platform "+platform, "../")
+		s := services.NewShellService(0, nil)
+		s.RunCmd("wails build  -platform "+platform, "../", false)
 		//baseDir := filepath.Join("..", "build", "bin")
 
 		createDmg(platform)

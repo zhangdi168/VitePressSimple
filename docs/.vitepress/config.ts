@@ -1,4 +1,4 @@
-import { CustomerConfig } from "./customer";
+import { CustomerConfig } from "./custom";
 import { VpSimpleConfig } from "./vpsimple";
 
 export default {

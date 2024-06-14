@@ -1,6 +1,6 @@
 import mdItCustomAttrs from "markdown-it-custom-attrs";
 
-export const CustomerConfig = {
+export const CustomConfig = {
   head: [
     [
       "link",

@@ -1,6 +1,9 @@
 //公共配置的默认值
+import { defaultVpSimple } from "@/configs/defaultVpSimple";
+
 export const defaultShareConfigValue: any = {
   srcDir: "./",
+  vpsimple: defaultVpSimple, //软件级别配置，无关vitepress
   // logo: "",
   assetsDir: "static",
   //生成sitemap的配置

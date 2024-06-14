@@ -117,6 +117,14 @@ func IfToString(condition bool, trueValue, falseValue string) string {
 	return falseValue
 }
 
+// IfToAny 模拟三元运算符，返回any类型
+func IfToAny(condition bool, trueValue, falseValue any) any {
+	if condition {
+		return trueValue
+	}
+	return falseValue
+}
+
 // IfToSlice 模拟三元运算符，返回[]interface{}类型
 //func IfToSlice(condition bool, trueValue, falseValue []interface{}) []interface{} {
 //	if condition {

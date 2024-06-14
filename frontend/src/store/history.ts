@@ -45,7 +45,7 @@ export const useHistoryStore = defineStore("historyProjects", {
         ToastError("读取历史项目失败" + e.message);
         // this.currentList = [];
       }
-      console.log(this.currentList, "this.currentList -- console.log");
+      // console.log(this.currentList, "this.currentList -- console.log");
     },
     saveToConfig() {
       ConfigSet(ConfigKeyHistoryProject, JSON.stringify(this.currentList));

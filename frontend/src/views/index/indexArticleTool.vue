@@ -29,6 +29,8 @@
           </template>
         </a-dropdown>
       </div>
+
+      <!--      打开现有项目-->
       <div class="mx-1 cursor-pointer" @click="openProject()">
         <q-tooltip>{{ lang("pageIndex.openExistingProject") }}</q-tooltip>
         <a class="ant-dropdown-link" @click.prevent>

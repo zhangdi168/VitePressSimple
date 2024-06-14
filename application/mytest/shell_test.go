@@ -14,10 +14,11 @@ import (
 )
 
 func TestShell(t *testing.T) {
-	shell := services.NewShellService()
-	dir := filepath.Join("E:\\mydev\\vittepress-simple\\docs")
-	shell.RunCmd("npm run docs:dev", dir)
-
+	manager := services.NewShellManager()
+	shellIndex := manager.CreateShell()
+	baseDir := filepath.Join("C:\\Users\\Administrator\\Documents\\vitepress\\demo\\VPSimpleProject613-1")
+	manager.RunCmd(baseDir, "npm run docs:build ", shellIndex, false)
+	select {}
 }
 
 // PrintCmdOutput 打印命令执行后的输出。

@@ -4,6 +4,9 @@
     v-show="!storeIndex.IsEmptyProject"
   >
     <div class="flex items-center justify-start">
+      <!--    终端-->
+      <index-editor-tool-shell></index-editor-tool-shell>
+      <!-- 隐藏或关闭右侧栏-->
       <a-tooltip class="mx-1 cursor-pointer">
         <template #title
           >{{
@@ -34,6 +37,7 @@
         />
       </a-tooltip>
 
+      <!--      保存-->
       <a-tooltip
         class="mx-1 cursor-pointer"
         @click="storeIndex.saveCurrArticle()"
@@ -48,6 +52,7 @@
         />
       </a-tooltip>
     </div>
+
     <div class="text-gray-400 ml-1.5">
       {{ lang("pageIndex.currentProject") }}{{ storeConfig.baseDir }}
     </div>
@@ -59,6 +64,7 @@ import { useIndexStore } from "@/store";
 import { useLayoutStore } from "@/store/layout";
 import { useVpconfigStore } from "@/store/vpconfig";
 import { lang } from "../../utils/language";
+import IndexEditorToolShell from "@/views/index/indexEditorToolShell.vue";
 
 const storeIndex = useIndexStore();
 const storeConfig = useVpconfigStore();

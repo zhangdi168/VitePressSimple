@@ -41,3 +41,24 @@ export namespace dto {
 
 }
 
+export namespace services {
+	
+	export class NotifyShellData {
+	    shell_index?: number;
+	    content?: string;
+	    is_error?: boolean;
+	
+	    static createFrom(source: any = {}) {
+	        return new NotifyShellData(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.shell_index = source["shell_index"];
+	        this.content = source["content"];
+	        this.is_error = source["is_error"];
+	    }
+	}
+
+}
+

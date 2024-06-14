@@ -31,7 +31,8 @@ import { isEmptyArray } from "@/utils/array";
 // @ts-ignore
 import yaml from "js-yaml";
 import { replaceImageUrlToLocalStatic } from "@/utils/repalceStatic";
-import { StartStaticServer } from "../../wailsjs/go/services/StaticServer"; // 浏览器环境（需确保构建工具已正确处理）
+import { StartStaticServer } from "../../wailsjs/go/services/StaticServer";
+import { useShellStore } from "@/store/shell"; // 浏览器环境（需确保构建工具已正确处理）
 
 //定义首页的数据类型
 export interface indexStore {
@@ -137,6 +138,7 @@ export const useIndexStore = defineStore("index", {
       await StartStaticServer(""); //启动静态服务器
       this.clearCurrData();
       await this.loadTreeData();
+      useShellStore().loadVpSimpleConfig();
     },
     //设置编辑器的实例
     async setVditorInstance(vditor_: Vditor | null) {

@@ -44,7 +44,7 @@ func (s *VpConfig) GetVpConfigData() string {
 			filehelper.CreateFile(CustomerTsPath)
 			filehelper.WriteContent(vpsimpleTsPath, "export const VpSimpleConfig = "+content+";\n")
 			filehelper.WriteContent(IndexTsPath, ConfigContent)
-			filehelper.WriteContent(CustomerTsPath, CustomerContent)
+			filehelper.WriteContent(CustomerTsPath, CustomContent)
 			filehelper.RenamePath(configMtsPath, filepath.Join(baseDir, ConfigFile1Rename))
 			return content
 		}

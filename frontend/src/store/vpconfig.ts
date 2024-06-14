@@ -139,6 +139,7 @@ export const useVpconfigStore = defineStore("vpconfig", {
     checkRootConfig() {
       //设置 共享配置的默认值
       for (const key in defaultShareConfigValue) {
+        // console.log(key, "key -- console.log");
         if (IsEmptyValue(this.configData[key])) {
           this.configData[key] = defaultShareConfigValue[key];
         }

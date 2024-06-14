@@ -8,7 +8,7 @@
       class="w-full"
     >
       <template #prefix>
-        <span class="text-gray-700">{{ props.label }}：</span>
+        <span class="text-gray-500">{{ props.label }}：</span>
       </template>
       <template #suffix>
         <a-tooltip :title="props.tooltip">

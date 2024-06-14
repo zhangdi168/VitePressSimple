@@ -9,6 +9,7 @@ import (
 	"wailstemplate/application/pkg/cfg"
 	"wailstemplate/application/pkg/utils"
 	"wailstemplate/application/services"
+	"wailstemplate/application/services/shell"
 	"wailstemplate/application/services/system"
 	"wailstemplate/application/vitepress/vpsimpler"
 	setting "wailstemplate/settings"
@@ -89,7 +90,7 @@ func main() {
 			vpsimpler.NewVpManager(vpFs),
 			vpsimpler.NewVpConfig(),
 			system.NewSystemService(),
-			services.NewShellManager(),
+			shell.NewShellManager(),
 			services.NewUpdateService(), //在线更新
 			services.NewStaticServer(),
 		},

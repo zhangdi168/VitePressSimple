@@ -41,7 +41,7 @@ export namespace dto {
 
 }
 
-export namespace services {
+export namespace shell {
 	
 	export class NotifyShellData {
 	    shell_index?: number;

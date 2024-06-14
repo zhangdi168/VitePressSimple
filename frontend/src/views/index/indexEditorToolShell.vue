@@ -128,17 +128,20 @@
       <pre v-html="storeShell.messages[currShellIndex]"></pre>
     </div>
     <!--    底部按钮操作组-->
-    <!--    <div-->
-    <!--      v-show="Object.keys(storeShell.messages).length > 0"-->
-    <!--      class="flex mt-5 justify-end items-center"-->
-    <!--    >-->
-    <!--      <a-button class="mx-2 bg-orange-200">移除当前终端</a-button>-->
-    <!--      <a-button-->
-    <!--        @click="storeShell.stopCmd(currShellIndex)"-->
-    <!--        class="mx-2 bg-red-200"-->
-    <!--        >中断命令-->
-    <!--      </a-button>-->
-    <!--    </div>-->
+    <div
+      v-show="
+        Object.keys(storeShell.messages).length > 0 &&
+        storeIndex.systemType != SystemWindows
+      "
+      class="flex mt-5 justify-end items-center"
+    >
+      <!--          <a-button class="mx-2 bg-orange-200">移除当前终端</a-button>-->
+      <a-button
+        @click="storeShell.stopCmd(currShellIndex)"
+        class="mx-2 bg-red-200"
+        >中断命令
+      </a-button>
+    </div>
 
     <!--    空终端-->
     <div v-show="Object.keys(storeShell.messages).length == 0">
@@ -159,6 +162,7 @@ import { defaultVpSimple } from "@/configs/defaultVpSimple";
 
 import { useShellStore } from "@/store/shell";
 import { ToastError } from "@/utils/Toast";
+import { SystemWindows } from "@/constant/enums/system";
 
 const storeIndex = useIndexStore();
 const storeLayout = useLayoutStore();
@@ -255,12 +259,7 @@ const createAndRunCmd = async (index: number) => {
     ToastError("cmd命令不能为空");
     return;
   }
-  // console.log(cmd, "cmd -- console.log");
-  console.log(
-    storeShell.vpsimpleConfig,
-    "storeShell.vpsimpleConfig -- console.log",
-  );
-  console.log(cmdList.value, "cmdList.value -- console.log");
+
   if (isSystemShell) {
     currShellIndex.value = await storeShell.createSystemShellAndRun(
       storeShell.vpsimpleConfig.shellBaseDir,
@@ -273,7 +272,9 @@ const createAndRunCmd = async (index: number) => {
       isAlone,
     );
   }
-  if (!isAlone) {
+  if (isAlone && storeIndex.systemType == SystemWindows) {
+    isShowShellLog.value = false;
+  } else {
     isShowShellLog.value = true;
   }
 };

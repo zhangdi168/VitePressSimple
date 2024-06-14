@@ -1,17 +1,19 @@
 import { defineStore } from "pinia";
-import { services } from "../../wailsjs/go/models";
-import {
-  CreateShell,
-  RunCmd,
-  RunCmdBySystem,
-  StopShell,
-} from "../../wailsjs/go/services/ShellManager";
+
 import { ToastCheck } from "@/utils/Toast";
 import AnsiToHtml from "ansi-to-html";
 import { IsEmptyValue } from "@/utils/utils";
 import { VPSimpleConfig } from "@/types/vpsimpleConfig";
 import { useVpconfigStore } from "@/store/vpconfig";
-import NotifyShellData = services.NotifyShellData;
+
+import {
+  CreateShell,
+  RunCmd,
+  RunCmdBySystem,
+  StopShell,
+} from "../../wailsjs/go/shell/ShellManager";
+import { shell } from "../../wailsjs/go/models";
+import NotifyShellData = shell.NotifyShellData;
 //这是一个简单的推荐store案例，可以在这里定义你的状态
 //新建pinia时把shell全局替换成你的store名字
 export interface shellStore {
@@ -43,7 +45,7 @@ export const useShellStore = defineStore("shell", {
         this.setContent(shellIndex, `${cmd}\n`);
       }
 
-      RunCmd(baseDir, cmd, shellIndex, isAlone).then((r) => {
+      RunCmd(baseDir, cmd, shellIndex, isAlone).then((r: any) => {
         ToastCheck(r, "");
       });
       return shellIndex;

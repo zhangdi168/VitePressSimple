@@ -19,9 +19,10 @@ import { StartStaticServer } from "../wailsjs/go/services/StaticServer";
 import { SystemMac } from "@/constant/enums/system";
 import { useI18n } from "vue-i18n";
 import { EventsOff, EventsOffAll, EventsOn } from "../wailsjs/runtime";
-import { services } from "../wailsjs/go/models";
-import NotifyShellData = services.NotifyShellData;
+
 import { useShellStore } from "@/store/shell";
+import { shell } from "../wailsjs/go/models";
+import NotifyShellData = shell.NotifyShellData;
 //在这里可以设置默认的模板
 const useTemplateIndex = ref(2);
 const storeIndex = useIndexStore();

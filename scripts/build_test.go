@@ -11,7 +11,7 @@ import (
 	"testing"
 	"wailstemplate/application/constant/enums"
 	"wailstemplate/application/pkg/filehelper"
-	"wailstemplate/application/services"
+	"wailstemplate/application/services/shell"
 	setting "wailstemplate/settings"
 )
 
@@ -41,7 +41,7 @@ func buildWindows() {
 		if !strings.Contains(platform, enums.SystemWindows) {
 			continue
 		}
-		s := services.NewShellService(0, nil)
+		s := shell.NewShellService(0, nil)
 		s.RunCmd("wails build -platform "+platform, "../", false)
 		baseDir := filepath.Join("..", "build", "bin")
 		zipPath := filepath.Join(baseDir, fmt.Sprintf("vpsimple_%s_%s.zip", replaceSystemStr(platform), setting.Version))
@@ -63,7 +63,7 @@ func buildMacos() {
 		if !strings.Contains(platform, enums.SystemMac) {
 			continue
 		}
-		s := services.NewShellService(0, nil)
+		s := shell.NewShellService(0, nil)
 		s.RunCmd("wails build  -platform "+platform, "../", false)
 		//baseDir := filepath.Join("..", "build", "bin")
 

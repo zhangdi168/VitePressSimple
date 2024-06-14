@@ -9,12 +9,12 @@ import (
 	"path/filepath"
 	"sync"
 	"testing"
-	"wailstemplate/application/services"
+	"wailstemplate/application/services/shell"
 	"wailstemplate/application/vitepress/vpsimpler"
 )
 
 func TestShell(t *testing.T) {
-	manager := services.NewShellManager()
+	manager := shell.NewShellManager()
 	shellIndex := manager.CreateShell()
 	baseDir := filepath.Join("C:\\Users\\Administrator\\Documents\\vitepress\\demo\\VPSimpleProject613-1")
 	manager.RunCmd(baseDir, "npm run docs:build ", shellIndex, false)

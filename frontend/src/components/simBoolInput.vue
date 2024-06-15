@@ -1,5 +1,5 @@
 <template>
-  <div class="flex justify-start">
+  <div class="flex justify-start" :style="StyleNoDrag">
     <sim-switch
       :label="props.boolLabel"
       :tooltip="props.boolTooltip"
@@ -18,6 +18,7 @@
 import SimSwitch from "@/components/simSwitch.vue";
 import SimInput from "@/components/simInput.vue";
 import { onMounted, ref, watch } from "vue";
+import { StyleNoDrag } from "@/configs/cnts";
 
 const model = defineModel<any>();
 const useChecked = ref(false);

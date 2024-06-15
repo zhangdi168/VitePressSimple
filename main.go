@@ -7,7 +7,6 @@ import (
 	"wailstemplate/application/constant/keys"
 	"wailstemplate/application/first"
 	"wailstemplate/application/pkg/cfg"
-	"wailstemplate/application/pkg/utils"
 	"wailstemplate/application/services"
 	"wailstemplate/application/services/shell"
 	"wailstemplate/application/services/system"
@@ -77,8 +76,8 @@ func main() {
 		OnBeforeClose:     app.beforeClose,
 		OnShutdown:        app.shutdown,
 		WindowStartState:  options.Maximised,
-		CSSDragProperty:   utils.IfToString(utils.IsMacOS(), "--wails-draggable", ""),
-		CSSDragValue:      utils.IfToString(utils.IsMacOS(), "drag-mac", "drag-win"),
+		//CSSDragProperty:   cnts.CssDragName,
+		//CSSDragValue:      cnts.CssDragValue,
 		AssetServer: &assetserver.Options{
 			Assets:     assets,
 			Handler:    nil,

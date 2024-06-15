@@ -1,5 +1,9 @@
 <template>
-  <div class="px-1.5 my-3" :class="props.isFullWidth ? 'w-full' : 'w-1/3'">
+  <div
+    class="px-1.5 my-3"
+    :style="StyleNoDrag"
+    :class="props.isFullWidth ? 'w-full' : 'w-1/3'"
+  >
     <a-input
       :auto-size="{ minRows: 1, maxRows: 3 }"
       v-model:value="model"
@@ -19,6 +23,8 @@
   </div>
 </template>
 <script setup lang="ts">
+import { StyleDrag, StyleNoDrag } from "@/configs/cnts";
+
 const model = defineModel();
 import { InfoCircleOutlined } from "@ant-design/icons-vue";
 

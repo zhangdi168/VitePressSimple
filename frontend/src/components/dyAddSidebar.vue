@@ -1,6 +1,10 @@
 <template>
   <div>
-    <div v-if="showAddTopSidebar" class="flex justify-start ml-5">
+    <div
+      v-if="showAddTopSidebar"
+      class="flex justify-start ml-5"
+      :style="StyleNoDrag"
+    >
       <a-button
         class="bg-blue-200 flex justify-center items-center hover:bg-blue-100"
         @click="addTopNav"
@@ -18,6 +22,7 @@
       <div class="flex mt-1 justify-start items-center" :style="marginLeft">
         <div class="mt-1 px-1 w-1/5">
           <a-input
+            :style="StyleNoDrag"
             :class="hasChildren(index) ? '' : 'text-blue-600'"
             placeholder="侧栏文本"
             class="w-full"
@@ -26,6 +31,7 @@
         </div>
         <div class="mt-1 px-1 w-1/5">
           <a-input
+            :style="StyleNoDrag"
             :class="hasChildren(index) ? '' : 'text-blue-600'"
             placeholder="跳转链接"
             :disabled="hasChildren(index)"
@@ -64,12 +70,12 @@
               <a-menu>
                 <a-menu-item>
                   <a href="javascript:;" @click="moveNav(index, 'forward')"
-                  >↑上移</a
+                    >↑上移</a
                   >
                 </a-menu-item>
                 <a-menu-item>
                   <a href="javascript:;" @click="moveNav(index, 'backward')"
-                  >↓下移</a
+                    >↓下移</a
                   >
                 </a-menu-item>
               </a-menu>
@@ -84,7 +90,7 @@
               type="primary"
               ghost
               @click="addSubNav(index)"
-            >添加子级
+              >添加子级
             </a-button>
           </a-tooltip>
         </div>
@@ -99,7 +105,7 @@
             @cancel="cancel"
           >
             <a-button type="primary" @click="setCurrIndex(index)" danger ghost
-            >删除
+              >删除
             </a-button>
           </a-popconfirm>
         </div>
@@ -123,6 +129,7 @@
 import { IconPark } from "@icon-park/vue-next/es/all";
 import { computed, ref } from "vue";
 import { VpNav } from "@/utils/tree";
+import { StyleNoDrag } from "@/configs/cnts";
 
 interface Prop {
   level: number;
@@ -150,7 +157,7 @@ const hasChildren = (index: number) => {
 };
 const props = defineProps<Prop>();
 const SidebarArray = defineModel<any[]>("sidebarArray", {
-  required: true
+  required: true,
 });
 const marginLeft = computed(() => {
   return `margin-left:${(props.level - 1) * 30}px`;
@@ -208,7 +215,7 @@ function moveNav(index: number, direction: "forward" | "backward") {
   // 使用解构赋值交换两个元素的位置
   [SidebarArray.value[index], SidebarArray.value[newIndex]] = [
     SidebarArray.value[newIndex],
-    SidebarArray.value[index]
+    SidebarArray.value[index],
   ];
 }
 </script>

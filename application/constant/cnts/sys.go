@@ -4,3 +4,6 @@ package cnts
 const StaticBaseDir = "vpstatic"
 const TemplateRootDir = "vitepress-template"
 const TemplateConfigDir = "vitepress-template/.vitepress"
+
+const CssDragName = "allow-drag"
+const CssDragValue = "1"

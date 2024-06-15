@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white" style="height: 100vh">
+  <div class="bg-white" style="height: 100vh" :style="StyleNoDrag">
     <!--    顶部菜单栏-->
     <!--    <index-bar></index-bar>-->
 
@@ -23,6 +23,7 @@
 import { ref } from "vue";
 import IndexEditor from "./indexEditor.vue";
 import IndexArticle from "./indexArticle.vue";
+import { StyleNoDrag } from "@/configs/cnts";
 
 const splitterModel = ref(248);
 </script>

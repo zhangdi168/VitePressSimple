@@ -24,4 +24,6 @@ export const ConfigKeyVditorCdn = "vditor.cdn"
 
 export const ConfigKeyLang = "sys.lang"
 
-export  const ConfigArray = ["project_dir","is_startup","history_project","change_auto_save","front_matter_save_type","layout.nav_bg_color","sys.auto_update_source","sys.static_server_port","sys.program_is_open","sys.terminal_dir","sys.project_static_dir_name","vditor.cdn","sys.lang"];
+export const ConfigKeyShellBaseDir = "shell.base_dir"
+
+export  const ConfigArray = ["project_dir","is_startup","history_project","change_auto_save","front_matter_save_type","layout.nav_bg_color","sys.auto_update_source","sys.static_server_port","sys.program_is_open","sys.terminal_dir","sys.project_static_dir_name","vditor.cdn","sys.lang","shell.base_dir"];

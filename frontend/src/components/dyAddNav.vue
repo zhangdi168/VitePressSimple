@@ -1,6 +1,10 @@
 <template>
   <div>
-    <div v-if="showAddTopNav" class="flex justify-center ml-5">
+    <div
+      v-if="showAddTopNav"
+      class="flex justify-center ml-5"
+      :style="StyleNoDrag"
+    >
       <a-button
         class="bg-blue-200 flex justify-center items-center hover:bg-blue-100"
         @click="addTopNav"
@@ -18,6 +22,7 @@
       <div class="flex mt-1 justify-center items-center" :style="marginLeft">
         <div class="mt-1 px-1 w-1/5">
           <a-input
+            :style="StyleNoDrag"
             :class="hasChildren(index) ? '' : 'text-blue-600'"
             placeholder="导航文本"
             class="w-full"
@@ -26,6 +31,7 @@
         </div>
         <div class="mt-1 px-1 w-1/5">
           <a-input
+            :style="StyleNoDrag"
             :class="hasChildren(index) ? '' : 'text-blue-600'"
             placeholder="跳转链接"
             :disabled="hasChildren(index)"
@@ -118,6 +124,7 @@ import { IconPark } from "@icon-park/vue-next/es/all";
 import { computed, ref } from "vue";
 import { VpNav } from "@/utils/tree";
 import { ToastInfo } from "@/utils/Toast";
+import { StyleNoDrag } from "@/configs/cnts";
 
 interface Prop {
   level: number;

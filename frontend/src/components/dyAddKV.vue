@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="flex justify-start pl-3">
+    <div class="flex justify-start pl-3" :style="StyleNoDrag">
       <a-button
         class="bg-blue-200 flex justify-center items-center hover:bg-blue-100"
         :class="props.addBtnClass"
@@ -22,6 +22,7 @@
     >
       <div class="mt-1 px-1 w-2/5">
         <a-input
+          :style="StyleNoDrag"
           @blur="inputsConvertObject"
           class="w-full"
           v-model:value="inputs[index].key"
@@ -30,6 +31,7 @@
       </div>
       <div class="mt-1 px-1 w-2/5">
         <a-textarea
+          :style="StyleNoDrag"
           @blur="inputsConvertObject"
           class="w-full"
           :auto-size="{ minRows: 1 }"
@@ -69,6 +71,7 @@
 import { onMounted, ref, watch } from "vue";
 import { IconPark } from "@icon-park/vue-next/es/all";
 import { IsEmptyValue } from "@/utils/utils";
+import { StyleNoDrag } from "@/configs/cnts";
 
 enum DataType {
   Array = "Array",

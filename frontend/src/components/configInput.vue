@@ -1,5 +1,5 @@
 <template>
-  <div class="mt-2 items-end text-right">
+  <div class="mt-2 items-end text-right" :style="StyleNoDrag">
     <q-input
       v-if="props.formType == 'text'"
       outlined
@@ -31,6 +31,7 @@
 <script setup lang="ts">
 import { defineProps, onMounted, ref, watch } from "vue";
 import { ConfigGet, ConfigSet } from "../../wailsjs/go/system/SystemService";
+import { StyleNoDrag } from "@/configs/cnts";
 
 const props = defineProps({
   configKey: {

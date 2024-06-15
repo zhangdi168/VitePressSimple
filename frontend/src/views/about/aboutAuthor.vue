@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { OpenURL } from "../../../wailsjs/go/system/SystemService";
 import { lang } from "../../utils/language";
+import { StyleNoDrag } from "@/configs/cnts";
 </script>
 
 <template>

@@ -7,7 +7,11 @@
       type="line"
       animated
     >
-      <a-tab-pane key="1" :tab="lang('pageSetting.settingBase.title')">
+      <a-tab-pane
+        key="1"
+        :tab="lang('pageSetting.settingBase.title')"
+        :style="StyleNoDrag"
+      >
         <setting-base></setting-base>
       </a-tab-pane>
     </a-tabs>
@@ -17,6 +21,7 @@
 import { ref } from "vue";
 import SettingBase from "@/views/setting/settingBase.vue";
 import { lang } from "@/utils/language";
+import { StyleNoDrag } from "@/configs/cnts";
 
 const activeKey = ref("1");
 </script>

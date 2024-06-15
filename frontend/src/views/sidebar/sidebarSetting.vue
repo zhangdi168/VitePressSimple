@@ -1,6 +1,10 @@
 <template>
   <empty-project></empty-project>
-  <div v-if="!storeIndex.IsEmptyProject" class="mx-6 mt-4 text-xl">
+  <div
+    v-if="!storeIndex.IsEmptyProject"
+    class="mx-6 mt-4 text-xl"
+    :style="StyleNoDrag"
+  >
     <!--        语言选择-->
     <div class="flex justify-start items-center min-h-11 pb-1 ml-2 pr-2 border">
       <select-setting-lang
@@ -148,7 +152,7 @@ import { VpNav } from "@/utils/tree";
 import { IconPark } from "@icon-park/vue-next/es/all";
 import DyAddSidebar from "@/components/dyAddSidebar.vue";
 import { ParseTreeData } from "../../../wailsjs/go/services/ArticleTreeData";
-import { StringGlobalLang } from "@/configs/cnts";
+import { StringGlobalLang, StyleNoDrag } from "@/configs/cnts";
 import { PathJoin } from "../../../wailsjs/go/system/SystemService";
 import SelectSettingLang from "@/components/selectSettingLang.vue";
 import { ToastError, ToastSuccess } from "@/utils/Toast";

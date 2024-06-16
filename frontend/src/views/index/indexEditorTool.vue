@@ -2,6 +2,7 @@
   <div
     class="flex items-center justify-between pr-5"
     v-show="!storeIndex.IsEmptyProject"
+    :style="StyleNoDrag"
   >
     <div class="flex items-center justify-start">
       <!--    终端-->
@@ -65,6 +66,7 @@ import { useLayoutStore } from "@/store/layout";
 import { useVpconfigStore } from "@/store/vpconfig";
 import { lang } from "../../utils/language";
 import IndexEditorToolShell from "@/views/index/indexEditorToolShell.vue";
+import { StyleNoDrag } from "@/configs/cnts";
 
 const storeIndex = useIndexStore();
 const storeConfig = useVpconfigStore();

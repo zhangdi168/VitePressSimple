@@ -29,6 +29,7 @@
 
   <!--  弹出层：编辑shell配置-->
   <a-modal
+    :style="StyleNoDrag"
     @ok="saveConfig"
     ok-text="Save"
     width="40%"
@@ -109,6 +110,7 @@
 
   <!--  弹出层命令运行日志-->
   <a-modal
+    :style="StyleNoDrag"
     width="50%"
     :cancel-button-props="{ style: 'display:none' }"
     :ok-button-props="{ class: 'bg-blue-500', style: 'display:none' }"
@@ -169,6 +171,7 @@ import { defaultVpSimple } from "@/configs/defaultVpSimple";
 import { useShellStore } from "@/store/shell";
 import { ToastError } from "@/utils/Toast";
 import { SystemWindows } from "@/constant/enums/system";
+import { StyleNoDrag } from "@/configs/cnts";
 
 const storeIndex = useIndexStore();
 const storeLayout = useLayoutStore();

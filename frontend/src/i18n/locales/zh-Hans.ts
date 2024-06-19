@@ -1,3 +1,5 @@
+import { ZhShell } from "@/i18n/locales/zh/shell";
+
 export const zhHans = {
   nav: {
     home: "主页",
@@ -57,6 +59,7 @@ export const zhHans = {
     terminal: "终端命令",
   },
   pageIndex: {
+    shell: ZhShell,
     newProject: "新建项目",
     newArticle: "新建文章",
     openProject: "打开项目",

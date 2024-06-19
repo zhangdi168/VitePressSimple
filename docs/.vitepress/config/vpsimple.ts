@@ -189,7 +189,7 @@ export const VpSimpleConfig = {
           },
           {
             "text": "更新记录",
-            "link": "/zh/更新记录/v1.0.0"
+            "link": "/zh/更新记录/v1.0"
           }
         ],
         "sidebar": {
@@ -215,8 +215,12 @@ export const VpSimpleConfig = {
           ],
           "/zh/更新记录/": [
             {
-              "text": "v1.0.0",
-              "link": "/zh/更新记录/v1.0.0"
+              "text": "v1.0",
+              "link": "/zh/更新记录/v1.0"
+            },
+            {
+              "text": "v1.1",
+              "link": "/zh/更新记录/v1.1"
             }
           ],
           "/zh/使用手册/": [
@@ -280,7 +284,7 @@ export const VpSimpleConfig = {
           },
           {
             "text": "versions",
-            "link": "/en/更新记录/v1.0.0"
+            "link": "/en/更新记录/v1.0"
           }
         ],
         "sidebar": {
@@ -312,8 +316,56 @@ export const VpSimpleConfig = {
           ],
           "/en/更新记录/": [
             {
-              "text": "v1.0.0",
-              "link": "/en/更新记录/v1.0.0"
+              "text": "v1.0",
+              "link": "/en/更新记录/v1.0"
+            },
+            {
+              "text": "v1.1",
+              "link": "/en/更新记录/v1.1"
+            }
+          ],
+          "/en/zh/": [
+            {
+              "text": "使用手册",
+              "items": [
+                {
+                  "text": "1.关于软件",
+                  "link": "/en/zh/使用手册/1.关于软件"
+                },
+                {
+                  "text": "2.入门使用",
+                  "link": "/en/zh/使用手册/2.入门使用"
+                },
+                {
+                  "text": "3.项目配置",
+                  "link": "/en/zh/使用手册/3.项目配置"
+                },
+                {
+                  "text": "4.导航管理",
+                  "link": "/en/zh/使用手册/4.导航管理"
+                },
+                {
+                  "text": "5.侧栏管理",
+                  "link": "/en/zh/使用手册/5.侧栏管理"
+                },
+                {
+                  "text": "6.软件设置",
+                  "link": "/en/zh/使用手册/6.软件设置"
+                }
+              ]
+            },
+            {
+              "text": "更新记录",
+              "items": [
+                {
+                  "text": "v1.0.0",
+                  "link": "/en/zh/更新记录/v1.0.0"
+                }
+              ]
+            },
+            {
+              "text": "index",
+              "link": "/en/zh/index"
             }
           ]
         },
@@ -341,8 +393,8 @@ export const VpSimpleConfig = {
     "lastmodDateOnly": false
   },
   "vpsimple": {
-    "shellBaseDir": "/Users/xiaod/project/vittepress-simple/docs",
-    "gitBaseDir": "/Users/xiaod/project/vittepress-simple",
+    "shellBaseDir": "E:\\mydev\\vittepress-simple\\docs",
+    "gitBaseDir": "E:\\mydev\\vittepress-simple",
     "cmdDocsDev": "npm run docs:dev",
     "cmdDocsBuild": "npm run docs:build",
     "cmdNpmInstall": "npm install",

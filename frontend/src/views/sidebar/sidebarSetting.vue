@@ -100,7 +100,7 @@
         <a-popconfirm
           :title="lang('pageSidebar.recognitionWarning')"
           :ok-text="lang('common.know')"
-          cancel-text="lang('common.cancel')"
+          :cancel-text="lang('common.cancel')"
           :ok-button-props="{ class: 'bg-blue-500 text-white' }"
           @confirm="recognitionSidebar()"
         >

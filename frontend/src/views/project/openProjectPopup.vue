@@ -10,6 +10,7 @@
       :ok-button-props="{
         class: 'bg-blue-300 text-black mt-4',
       }"
+      width="42%"
       :cancel-button-props="{ ghost: true }"
       @ok="OpenDir"
     >

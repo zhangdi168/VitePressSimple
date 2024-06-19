@@ -2,7 +2,7 @@ package setting
 
 import "wailstemplate/application/db/entity"
 
-const Version = "v1.0.1"
+const Version = "v1.1.0"
 
 const AppName = "VitePressSimple"
 const GitRepo = "VitePressSimple"

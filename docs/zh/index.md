@@ -1,6 +1,6 @@
 ---
 {
-    "title": "VirePressSimple | VPSimple",
+    "title": "index",
     "description": "",
     "navbar": true,
     "sideBar": false,
@@ -24,7 +24,7 @@
         "actions": [
             {
                 "text": "指南",
-                "link": "/en/使用手册/1.关于软件"
+                "link": "/zh/使用手册/1.关于软件"
             },
             {
                 "text": "github",

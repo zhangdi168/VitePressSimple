@@ -1,3 +1,5 @@
+import { EnShell } from "@/i18n/locales/en/shell";
+
 export const en = {
   nav: {
     home: "Home",
@@ -20,7 +22,7 @@ export const en = {
   common: {
     confirm: "Confirm",
     know: "Acknowledged",
-    cancel: "Cancel",
+    cancel: "cancel",
     confirmDelete: "Confirm Deletion",
     deleteSuccess: "Deleted Successfully",
     hide: "Hide",
@@ -39,6 +41,7 @@ export const en = {
     terminal: "terminal",
   },
   pageIndex: {
+    shell: EnShell,
     newProject: "New Project",
     newArticle: "New Article",
     openProject: "Open Project",

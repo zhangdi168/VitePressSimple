@@ -1,5 +1,4 @@
 import { ToastError } from "@/utils/Toast";
-import { UserConfig } from "vite";
 
 export function parseJsObject(content: string): any {
   // 现在尝试解析为JSON
@@ -9,16 +8,16 @@ export function parseJsObject(content: string): any {
   } catch (error) {
     //解析异常 尝试使用eval的方式进行解析
     if (!content.endsWith("}") || !content.startsWith("{")) {
-      ToastError("config.mts文件内容错误101，请检查后重试");
+      ToastError("config/index.ts文件内容错误101，请检查后重试");
       return "";
     }
-    try {
-      //不推荐的做法，无奈之举，不然没办法正确解析配置的内容
-      return eval(`(${content})`) as UserConfig;
-    } catch (e) {
-      ToastError("config.mts文件内容解析错误102，请检查后重试");
-      return null;
-    }
+    // try {
+    //   //不推荐的做法，无奈之举，不然没办法正确解析配置的内容
+    //   return eval(`(${content})`) as UserConfig;
+    // } catch (e) {
+    //   ToastError("config.mts文件内容解析错误102，请检查后重试");
+    //   return null;
+    // }
   }
 }
 

@@ -23,7 +23,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import { StyleDrag, StyleNoDrag } from "@/configs/cnts";
+import { StyleNoDrag } from "@/configs/cnts";
 
 const model = defineModel();
 import { InfoCircleOutlined } from "@ant-design/icons-vue";
